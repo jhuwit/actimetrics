@@ -13,7 +13,7 @@
 #' higher values are higher levels of verbosity.
 #' @export
 #' @examples
-#' path = acti_example_gt3x()
+#' path = actiread::acti_example_gt3x()
 #' ac = actiread::acti_read_gt3x(path, verbose = FALSE)
 #' out = acti_calculate_counts(ac)
 #'

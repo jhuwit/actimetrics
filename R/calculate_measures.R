@@ -17,14 +17,6 @@
 #' @param verbose print diagnostic messages
 #' @param fix_zeros Should [actibase::acti_fill_zeros] be run before calculating
 #' the measures?
-#' @param fill_in if \code{fix_zeros = TRUE}, should the zeros be
-#' filled in with the last
-#' @param by_second Should the last observation carried forward be done
-#' only within the same second?
-#' @param trim if \code{fix_zeros = TRUE},
-#' should the time course be trimmed for zero values at
-#' the beginning and the end of the time course?
-#' observation carried forward?
 #' @param calculate_mims Should MIMS units be calculated?
 #' @param calculate_ac Should Activity Counts from the \code{activityCounts}
 #' package be calculated?
@@ -43,7 +35,7 @@
 #' @return A data set with the calculated features
 #' @export
 #' @examples
-#' file = acti_example_gt3x()
+#' file = actiread::acti_example_gt3x()
 #' res = actiread::acti_read_gt3x(file, verbose = FALSE)
 #' measures = calculate_measures(res, dynamic_range = NULL,
 #'     calculate_mims = FALSE)

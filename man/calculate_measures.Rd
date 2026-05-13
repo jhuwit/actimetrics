@@ -115,17 +115,6 @@ in the input}
 \item{...}{additional arguments to pass to [MIMSunit::mims_unit]}
 
 \item{allow_truncation}{truncate small values}
-
-\item{fill_in}{if \code{fix_zeros = TRUE}, should the zeros be
-filled in with the last}
-
-\item{by_second}{Should the last observation carried forward be done
-only within the same second?}
-
-\item{trim}{if \code{fix_zeros = TRUE},
-should the time course be trimmed for zero values at
-the beginning and the end of the time course?
-observation carried forward?}
 }
 \value{
 A data set with the calculated features
@@ -134,7 +123,7 @@ A data set with the calculated features
 Calculate Summary Measures from Raw Accelerometer Data
 }
 \examples{
-file = acti_example_gt3x()
+file = actiread::acti_example_gt3x()
 res = actiread::acti_read_gt3x(file, verbose = FALSE)
 measures = calculate_measures(res, dynamic_range = NULL,
     calculate_mims = FALSE)

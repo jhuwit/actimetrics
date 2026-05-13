@@ -68,7 +68,7 @@ This calls [acti_check_data], [acti_calculate_distance], and
 path = actiread::acti_example_gt3x()
 ac = actiread::acti_read_gt3x(path)
 out = acti_calculate_counts(ac)
-path = acti_example_gt3x()
+path = actiread::acti_example_gt3x()
 ac = actiread::acti_read_gt3x(path, verbose = FALSE)
 out = acti_calculate_counts(ac)
 

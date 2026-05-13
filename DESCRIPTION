@@ -40,7 +40,8 @@ Imports:
     purrr,
     tibble,
     rlang,
-    stats
+    stats,
+    tidyr
 Remotes: muschellij2/stepcount, dipetkov/actigraph.sleepr
 URL: https://github.com/jhuwit/actimetrics
 BugReports: https://github.com/jhuwit/actimetrics/issues

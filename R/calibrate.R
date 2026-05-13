@@ -51,7 +51,7 @@ acti_calibrate = function(
     ...)
 
   if (round_after_calibration) {
-    for (i in xyz) {
+    for (i in actibase::xyz) {
       data[[i]] = round(data[[i]], 3)
     }
   }

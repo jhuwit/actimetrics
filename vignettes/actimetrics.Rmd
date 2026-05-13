@@ -29,7 +29,7 @@ data <- data[1:12000, ]
 ## Summary metrics
 
 ```{r}
-summary <- calculate_measures(
+summary <- acti_calculate_measures(
   data,
   calculate_mims = FALSE,
   calculate_ac = FALSE,

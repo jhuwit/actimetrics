@@ -37,24 +37,25 @@
 #' file = actiread::acti_example_gt3x()
 #' res = actiread::acti_read_gt3x(file, verbose = FALSE)
 #' res = res[1:12000, ]
-#' measures = calculate_measures(
+#' measures = acti_calculate_measures(
 #'   res,
 #'   dynamic_range = NULL,
 #'   calculate_mims = FALSE,
 #'   calculate_ac = FALSE,
 #'   flag_data = FALSE
 #' )
-#' auc = calculate_auc(res)
+#' auc = acti_calculate_auc(res)
 #' \donttest{
-#' mims = calculate_mims(res, dynamic_range = NULL)
+#' mims = acti_calculate_mims(res, dynamic_range = NULL)
 #' }
 #' if (requireNamespace("data.table", quietly = TRUE)) {
 #'    dt = data.table::as.data.table(res)
-#'    out = calculate_measures(dt, calculate_mims = FALSE, flag_data = FALSE,
+#'    out = acti_calculate_measures(dt, calculate_mims = FALSE, flag_data = FALSE,
 #'      calculate_ac = FALSE)
 #' }
-calculate_measures = function(
-  data, unit = "1 min",
+acti_calculate_measures = function(
+  data,
+  unit = "1 min",
   fix_zeros = TRUE,
   dynamic_range = NULL,
   calculate_mims = TRUE,
@@ -104,7 +105,7 @@ calculate_measures = function(
       data %>%
         dplyr::select(dplyr::starts_with("flag_")) > 0
     )
-    flags = calculate_flags(data, unit = unit)
+    flags = acti_calculate_flags(data, unit = unit)
     data = data %>%
       dplyr::select(-dplyr::starts_with("flag"))
   }
@@ -115,11 +116,11 @@ calculate_measures = function(
   if (verbose) {
     message("Calculating ai0")
   }
-  res = calculate_ai(data, unit = unit, verbose = verbose > 1)
+  res = acti_calculate_ai(data, unit = unit, verbose = verbose > 1)
   if (verbose) {
     message("Calculating MAD")
   }
-  mad = calculate_mad(data, unit = unit, verbose = verbose > 1)
+  mad = acti_calculate_mad(data, unit = unit, verbose = verbose > 1)
   if (verbose) {
     message("Joining AI and MAD")
   }
@@ -131,7 +132,7 @@ calculate_measures = function(
     if (verbose) {
       message("Calculating MIMS")
     }
-    calculate_mims_fun = get("calculate_mims", mode = "function")
+    calculate_mims_fun = get("acti_calculate_mims", mode = "function")
     mims = calculate_mims_fun(data, unit = unit,
                               dynamic_range = dynamic_range,
                               ...)
@@ -141,6 +142,7 @@ calculate_measures = function(
     if (verbose) {
       message("Calculating AC")
     }
+    # not an acti here because internal
     ac = calculate_activity_counts(
       data,
       unit = unit,
@@ -203,8 +205,8 @@ is_dt = function(x) {
 .datatable.aware = TRUE
 
 #' @export
-#' @rdname calculate_measures
-calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
+#' @rdname acti_calculate_measures
+acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
                         verbose = FALSE) {
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
@@ -286,12 +288,12 @@ join_all_time = function(data, unit = "1 min", ensure_all_time) {
 }
 
 #' @export
-#' @rdname calculate_measures
-calculate_activity_index = calculate_ai
+#' @rdname acti_calculate_measures
+acti_calculate_activity_index = acti_calculate_ai
 
 #' @export
-#' @rdname calculate_measures
-calculate_flags = function(data, unit = "1 min", ensure_all_time = TRUE) {
+#' @rdname acti_calculate_measures
+acti_calculate_flags = function(data, unit = "1 min", ensure_all_time = TRUE) {
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   data = acti_standardize_data(
@@ -319,8 +321,8 @@ calculate_flags = function(data, unit = "1 min", ensure_all_time = TRUE) {
 }
 
 #' @export
-#' @rdname calculate_measures
-calculate_n_idle = function(data, unit = "1 min", ensure_all_time = TRUE) {
+#' @rdname acti_calculate_measures
+acti_calculate_n_idle = function(data, unit = "1 min", ensure_all_time = TRUE) {
   ENMO = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "ENMO"))
   data = acti_standardize_data(
@@ -348,21 +350,21 @@ calculate_n_idle = function(data, unit = "1 min", ensure_all_time = TRUE) {
 }
 
 #' @export
-#' @rdname calculate_measures
-calculate_enmo = function(...) {
+#' @rdname acti_calculate_measures
+acti_calculate_enmo = function(...) {
   ENMO_t = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
-  out = calculate_mad(...)
+  out = acti_calculate_mad(...)
   out %>%
     dplyr::select(HEADER_TIME_STAMP, ENMO_t)
 }
 
 #' @export
-#' @rdname calculate_measures
-calculate_ai_defined = function(...) {
+#' @rdname acti_calculate_measures
+acti_calculate_ai_defined = function(...) {
   AI_DEFINED = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "AI_DEFINED"))
-  out = calculate_mad(...)
+  out = acti_calculate_mad(...)
   out %>%
     dplyr::select(HEADER_TIME_STAMP, AI_DEFINED)
 }
@@ -381,8 +383,8 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 }
 
 #' @export
-#' @rdname calculate_measures
-calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
+#' @rdname acti_calculate_measures
+acti_calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
                          verbose = FALSE) {
   ENMO_t = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
@@ -462,10 +464,10 @@ calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
 }
 
 #' @export
-#' @rdname calculate_measures
+#' @rdname acti_calculate_measures
 #' @param sample_rate sample rate of data, if not specified in header of object
 #' @param allow_truncation truncate small values
-calculate_auc = function(data, unit = "1 min",
+acti_calculate_auc = function(data, unit = "1 min",
                          sample_rate = NULL,
                          allow_truncation = FALSE,
                          ensure_all_time = TRUE,
@@ -610,8 +612,8 @@ calculate_activity_counts = function(data,
 }
 
 #' @export
-#' @rdname calculate_measures
-calculate_fast_mims = function(
+#' @rdname acti_calculate_measures
+acti_calculate_fast_mims = function(
   data,
   unit = "1 min",
   dynamic_range = NULL,
@@ -630,7 +632,7 @@ calculate_fast_mims = function(
     args$output_mims_per_axis = NULL
   }
   data = do.call(mims_default_processing, args = args)
-  data = calculate_auc(
+  data = acti_calculate_auc(
     data, unit = unit,
     sample_rate = sample_rate,
     allow_truncation = allow_truncation,
@@ -645,8 +647,8 @@ calculate_fast_mims = function(
 }
 
 #' @export
-#' @rdname calculate_measures
-calculate_mims = function(
+#' @rdname acti_calculate_measures
+acti_calculate_mims = function(
   data,
   unit = "1 min",
   dynamic_range = c(-6, 6),

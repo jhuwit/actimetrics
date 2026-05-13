@@ -38,7 +38,7 @@ test_that("MIMS processors and shortcuts return expected shapes", {
   expect_true(all(c("HEADER_TIME_STAMP", "X", "Y", "Z") %in% names(processed)))
   expect_true(all(abs(processed$X * 1000 - round(processed$X * 1000)) < 1e-8))
 
-  fast = calculate_fast_mims(
+  fast = acti_calculate_fast_mims(
     data,
     dynamic_range = c(-2, 2),
     output_mims_per_axis = TRUE,
@@ -46,7 +46,7 @@ test_that("MIMS processors and shortcuts return expected shapes", {
   )
   expect_true(any(grepl("MIMS_UNIT", names(fast))))
 
-  mims = calculate_mims(data, dynamic_range = c(-10, 10), ensure_all_time = FALSE)
+  mims = acti_calculate_mims(data, dynamic_range = c(-10, 10), ensure_all_time = FALSE)
   expect_true(any(grepl("MIMS", names(mims))))
 })
 
@@ -55,7 +55,7 @@ test_that("wear helpers rename time columns and run algorithms", {
     skip("agcounts or actigraph.sleepr is not runnable in this session")
   }
   data = make_sleepr_epochs()
-  expect_error(suppressWarnings(acti_calculate_wear(data)))
+  expect_named(acti_calculate_wear(data), c("time", "wear"))
 })
 
 test_that("activity count and calibration helpers work on example data", {

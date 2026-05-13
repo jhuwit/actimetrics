@@ -21,7 +21,6 @@ Suggests:
     knitr,
     httr,
     rmarkdown,
-    ggplot2,
     MIMSunit,
     data.table,
     stepcount,

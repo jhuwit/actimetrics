@@ -42,16 +42,53 @@ remotes::install_github("jhuwit/actimetrics")
 ## Quick Start
 
 ```{r example}
+library(actibase)
+library(actiread)
 library(actimetrics)
 path <- actiread::acti_example_gt3x()
 data <- actiread::acti_read_gt3x(path, verbose = FALSE)
+```
 
+
+We can calculate minute-level Activity Counts using the `agcounts` package.
+
+```{r counts}
 counts <- acti_calculate_counts(data)
-summary <- calculate_measures(
+counts
+get_transformations(counts)
+```
+
+From this, we can calculate wear flags for each minute according to the Choi or Troiano methods.
+
+```{r wear}
+wear = acti_calculate_nonwear(counts)
+get_transformations(wear)
+```
+
+We can then merge them so the counts have the wear flags:
+
+```{r join}
+result = dplyr::full_join(counts, wear, by = "time") %>%
+  dplyr::mutate(wear = ifelse(is.na(wear), FALSE, wear))
+get_transformations(result)
+```
+
+
+These functions are combined in `acti_process`, but the transformations are retained correctly:
+```{r acti_process}
+processed = acti_process(data)
+processed
+get_transformations(processed)
+```
+
+
+```{r}
+summary <- acti_calculate_measures(
   data,
   calculate_mims = FALSE,
-  calculate_ac = FALSE,
+  calculate_ac = TRUE,
   flag_data = FALSE
 )
 processed <- mims_default_processing(data[1:6000, ])
 ```
+

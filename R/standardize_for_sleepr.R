@@ -27,6 +27,6 @@ acti_standardize_actigraph.sleepr = function(data) {
       )
   }
   # data = data[!is.na(data$timestamp) & !is.na(data$vector.magnitude), ]
-  data = dplyr::select(data, timestamp, vector.magnitude)
+  # data = dplyr::select(data, timestamp, vector.magnitude)
   data
 }

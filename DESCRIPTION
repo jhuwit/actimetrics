@@ -39,7 +39,8 @@ Imports:
     assertthat,
     purrr,
     tibble,
-    rlang
+    rlang,
+    stats
 Remotes: muschellij2/stepcount, dipetkov/actigraph.sleepr
 URL: https://github.com/jhuwit/actimetrics
 BugReports: https://github.com/jhuwit/actimetrics/issues

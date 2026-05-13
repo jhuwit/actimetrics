@@ -18,9 +18,6 @@ calculate_measures(
   df,
   unit = "1 min",
   fix_zeros = TRUE,
-  fill_in = TRUE,
-  by_second = FALSE,
-  trim = FALSE,
   dynamic_range = NULL,
   calculate_mims = TRUE,
   calculate_ac = TRUE,
@@ -90,19 +87,8 @@ Valid base units are `second`, `minute`, `hour`, `day`, `week`, `month`,
 Arbitrary unique English abbreviations as in the \code{\link{period}}
 constructor are allowed.}
 
-\item{fix_zeros}{Should \code{\link{fix_zeros}} be run before calculating
+\item{fix_zeros}{Should [actibase::acti_fill_zeros] be run before calculating
 the measures?}
-
-\item{fill_in}{if \code{fix_zeros = TRUE}, should the zeros be
-filled in with the last}
-
-\item{by_second}{Should the last observation carried forward be done
-only within the same second?}
-
-\item{trim}{if \code{fix_zeros = TRUE},
-should the time course be trimmed for zero values at
-the beginning and the end of the time course?
-observation carried forward?}
 
 \item{dynamic_range}{Dynamic range of the device, in gravity units}
 
@@ -129,6 +115,17 @@ in the input}
 \item{...}{additional arguments to pass to [MIMSunit::mims_unit]}
 
 \item{allow_truncation}{truncate small values}
+
+\item{fill_in}{if \code{fix_zeros = TRUE}, should the zeros be
+filled in with the last}
+
+\item{by_second}{Should the last observation carried forward be done
+only within the same second?}
+
+\item{trim}{if \code{fix_zeros = TRUE},
+should the time course be trimmed for zero values at
+the beginning and the end of the time course?
+observation carried forward?}
 }
 \value{
 A data set with the calculated features
@@ -137,11 +134,10 @@ A data set with the calculated features
 Calculate Summary Measures from Raw Accelerometer Data
 }
 \examples{
-file = system.file("extdata", "TAS1H30182785_2019-09-17.gt3x.gz",
-                   package = "actibase")
-res = acti_read_gt3x(file, verbose = FALSE)
+file = acti_example_gt3x()
+res = actiread::acti_read_gt3x(file, verbose = FALSE)
 measures = calculate_measures(res, dynamic_range = NULL,
-calculate_mims = FALSE)
+    calculate_mims = FALSE)
 auc = calculate_auc(res)
 \donttest{
 mims = calculate_mims(res, dynamic_range = NULL)

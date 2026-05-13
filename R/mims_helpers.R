@@ -8,9 +8,9 @@
 #' Default MIMS worker functions
 #'
 #' @param df data set of data, usually time and X/Y/Z.  Usually from
-#' \code{\link{ab_read_gt3x}}
+#' [actiread::acti_read_gt3x]
 #' @param dynamic_range dynamic range of the data.  Will be passed to
-#' \code{\link{get_dynamic_range}}
+#' [actibase::get_dynamic_range]
 #'
 #' @return A data set of data
 #' @export
@@ -114,7 +114,7 @@ mims_default_filtering = function(df) {
 #' Default MIMS Pre-processing
 #'
 #' @param df Data set of raw accelerometry values, usually time and X/Y/Z.
-#' Usually from \code{\link{ab_read_gt3x}}
+#' Usually from [actiread::acti_read_gt3x]
 #' @param use_extrapolation If `TRUE` the function will apply extrapolation
 #' algorithm to the input signal, otherwise it will skip
 #' extrapolation but only linearly interpolate the signal to 100Hz.

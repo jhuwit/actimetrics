@@ -15,7 +15,7 @@
 #' constructor are allowed.
 #' @param dynamic_range Dynamic range of the device, in gravity units
 #' @param verbose print diagnostic messages
-#' @param fix_zeros Should \code{\link{fix_zeros}} be run before calculating
+#' @param fix_zeros Should [actibase::acti_fill_zeros] be run before calculating
 #' the measures?
 #' @param fill_in if \code{fix_zeros = TRUE}, should the zeros be
 #' filled in with the last
@@ -43,11 +43,10 @@
 #' @return A data set with the calculated features
 #' @export
 #' @examples
-#' file = system.file("extdata", "TAS1H30182785_2019-09-17.gt3x.gz",
-#'                    package = "actibase")
-#' res = acti_read_gt3x(file, verbose = FALSE)
+#' file = acti_example_gt3x()
+#' res = actiread::acti_read_gt3x(file, verbose = FALSE)
 #' measures = calculate_measures(res, dynamic_range = NULL,
-#' calculate_mims = FALSE)
+#'     calculate_mims = FALSE)
 #' auc = calculate_auc(res)
 #' \donttest{
 #' mims = calculate_mims(res, dynamic_range = NULL)
@@ -60,9 +59,6 @@
 calculate_measures = function(
   df, unit = "1 min",
   fix_zeros = TRUE,
-  fill_in = TRUE,
-  by_second = FALSE,
-  trim = FALSE,
   dynamic_range = NULL,
   calculate_mims = TRUE,
   calculate_ac = TRUE,
@@ -100,7 +96,7 @@ calculate_measures = function(
         paste0("Fixing Zeros with fix_zeros")
       )
     }
-    df = fix_zeros(df, fill_in = fill_in, trim = trim, by_second = by_second)
+    df = acti_fill_zeros(df)
   }
   if (flag_data) {
     if (verbose) {
@@ -332,7 +328,7 @@ calculate_n_idle = function(df, unit = "1 min", ensure_all_time = TRUE) {
   rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "ENMO"))
   df = ensure_header_timestamp(df)
 
-  df = fix_zeros(df, fill_in = FALSE, trim = FALSE)
+  # df = acti_fill_zeros(df)
 
 
   n_idle = r = all_zero = NULL

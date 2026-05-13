@@ -15,7 +15,7 @@ mims_default_processing(
 }
 \arguments{
 \item{df}{Data set of raw accelerometry values, usually time and X/Y/Z.
-Usually from \code{\link{ab_read_gt3x}}}
+Usually from [actiread::acti_read_gt3x]}
 
 \item{use_extrapolation}{If `TRUE` the function will apply extrapolation
 algorithm to the input signal, otherwise it will skip

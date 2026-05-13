@@ -13,9 +13,8 @@
 #' higher values are higher levels of verbosity.
 #' @export
 #' @examples
-#' path = system.file("extdata", "TAS1H30182785_2019-09-17.gt3x.gz",
-#'                    package = "actibase")
-#' ac = acti_read_gt3x(path, verbose = FALSE)
+#' path = acti_example_gt3x()
+#' ac = actiread::acti_read_gt3x(path, verbose = FALSE)
 #' out = acti_calculate_counts(ac)
 #'
 #' @param method Method for detecting non-wear, either "choi" or "troiano",

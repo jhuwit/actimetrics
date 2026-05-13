@@ -14,10 +14,10 @@ mims_default_filtering(df)
 }
 \arguments{
 \item{df}{data set of data, usually time and X/Y/Z.  Usually from
-\code{\link{ab_read_gt3x}}}
+[actiread::acti_read_gt3x]}
 
 \item{dynamic_range}{dynamic range of the data.  Will be passed to
-\code{\link{get_dynamic_range}}}
+[actibase::get_dynamic_range]}
 }
 \value{
 A data set of data

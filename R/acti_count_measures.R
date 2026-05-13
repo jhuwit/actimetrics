@@ -20,13 +20,19 @@
 #' otherwise the axis1 value is used.
 #' @export
 #' @rdname acti_calculate_counts
+#' @examples
+#' data = acti_count_data
+#' wear = acti_calculate_wear(data)
+#' tro_wear = acti_calculate_wear(data, method = "troiano")
+#' ck = acti_apply_cole_kripke(data)
+#' tl = acti_apply_tudor_locke(ck)
+#' sadeh = acti_apply_sadeh(ck)
 acti_calculate_wear = function(data,
-                             method = c("choi", "troiano"),
-                             use_magnitude = TRUE,
-                             ...) {
+                               method = c("choi", "troiano"),
+                               use_magnitude = TRUE,
+                               ...) {
   data = acti_standardize_actigraph.sleepr(data)
 
-  mode(data$timestamp) = "double"
   method = match.arg(method)
   func = switch(method,
                 choi = function(x, ...) actigraph.sleepr::apply_choi(
@@ -109,6 +115,22 @@ acti_apply_tudor_locke = function(data, ...) {
   tl = set_transformations(tl,
                            "tudor_locke_run",
                            prefix = "acti_apply_tudor_locke",
+                           add = TRUE)
+  tl
+}
+
+
+#' @export
+#' @rdname acti_calculate_counts
+acti_apply_sadeh = function(data, ...) {
+  data = acti_standardize_actigraph.sleepr(data)
+  tl = data %>%
+    actigraph.sleepr::apply_sadeh(...)
+  trans = get_transformations(data)
+  tl = set_transformations(tl, trans)
+  tl = set_transformations(tl,
+                           "apply_sadeh_run",
+                           prefix = "acti_apply_apply_sadeh",
                            add = TRUE)
   tl
 }

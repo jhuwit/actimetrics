@@ -36,7 +36,8 @@ remotes::install_github("jhuwit/actimetrics")
 
 ## Quick Start
 
-```{r example, eval = FALSE}
+```{r example}
+library(actimetrics)
 path <- actiread::acti_example_gt3x()
 data <- actiread::acti_read_gt3x(path, verbose = FALSE)
 

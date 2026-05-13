@@ -2,6 +2,7 @@
 
 export("%>%")
 export(acti_apply_cole_kripke)
+export(acti_apply_sadeh)
 export(acti_apply_tudor_locke)
 export(acti_calculate_counts)
 export(acti_calculate_nonwear)

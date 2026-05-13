@@ -6,6 +6,7 @@
 \alias{acti_calculate_nonwear}
 \alias{acti_apply_cole_kripke}
 \alias{acti_apply_tudor_locke}
+\alias{acti_apply_sadeh}
 \title{Process Count Data}
 \usage{
 acti_calculate_counts(data, epoch = 60L, lfe_select = FALSE, verbose = TRUE)
@@ -27,6 +28,8 @@ acti_calculate_nonwear(
 acti_apply_cole_kripke(data)
 
 acti_apply_tudor_locke(data, ...)
+
+acti_apply_sadeh(data, ...)
 }
 \arguments{
 \item{data}{A `data.frame` from `acti_calculate_counts` that has
@@ -71,4 +74,10 @@ path = actiread::acti_example_gt3x()
 ac = actiread::acti_read_gt3x(path)
 out = acti_calculate_counts(ac)
 }
+data = acti_count_data
+wear = acti_calculate_wear(data)
+tro_wear = acti_calculate_wear(data, method = "troiano")
+ck = acti_apply_cole_kripke(data)
+tl = acti_apply_tudor_locke(ck)
+sadeh = acti_apply_sadeh(ck)
 }

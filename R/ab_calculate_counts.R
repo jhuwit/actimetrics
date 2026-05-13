@@ -8,6 +8,11 @@
 #' @param lfe_select Apply the Actigraph Low Frequency Extension filter.
 #' See [agcounts::calculate_counts]
 #' higher values are higher levels of verbosity.
+#' @param resample (recommended) resample the data to 30Hz using
+#' [actibase::resample] vs. using the resampling method from
+#' [agcounts::calculate_counts].
+#'
+#'
 #' @export
 #' @examples
 #' \dontrun{
@@ -18,6 +23,7 @@
 acti_calculate_counts = function(
     data,
     epoch = 60L,
+    resample = TRUE,
     lfe_select = FALSE,
     verbose = TRUE
 ) {
@@ -25,8 +31,13 @@ acti_calculate_counts = function(
   vector.magnitude = NULL
   rm(list = c("vector.magnitude"))
   stopifnot(!is.null(attr(data, "sample_rate")))
+
+  if (resample) {
+    data = actibase::acti_resample(data, sample_rate = 30L)
+  }
   tz = lubridate::tz(data$time)
   trans = get_transformations(data)
+
   counts = agcounts::calculate_counts(
     raw = data,
     epoch = epoch,

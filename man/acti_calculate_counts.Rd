@@ -9,7 +9,13 @@
 \alias{acti_apply_sadeh}
 \title{Process Count Data}
 \usage{
-acti_calculate_counts(data, epoch = 60L, lfe_select = FALSE, verbose = TRUE)
+acti_calculate_counts(
+  data,
+  epoch = 60L,
+  resample = TRUE,
+  lfe_select = FALSE,
+  verbose = TRUE
+)
 
 acti_calculate_wear(
   data,
@@ -37,6 +43,10 @@ columns `axis1-3` and `counts`}
 
 \item{epoch}{epoch length in seconds.  Default is 60 seconds.
 See `agcounts::calculate_counts()`}
+
+\item{resample}{(recommended) resample the data to 30Hz using
+[actibase::resample] vs. using the resampling method from
+[agcounts::calculate_counts].}
 
 \item{lfe_select}{Apply the Actigraph Low Frequency Extension filter.
 See `agcounts::calculate_counts()`

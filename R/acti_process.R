@@ -17,12 +17,13 @@ acti_process = function(data,
   }
 
 
-  #!!! need to att sample_rate to the result
-  data = acti_resample(data, sample_rate = 30)
+  data = acti_resample(data, sample_rate = 30L)
 
   counts = acti_calculate_counts(
     data,
     lfe_select = lfe_select,
+    # already done
+    resample = FALSE,
     verbose = verbose)
 
   # Process the data

@@ -18,11 +18,12 @@ acti_process(
 columns `axis1-3` and `counts`}
 
 \item{lfe_select}{Apply the Actigraph Low Frequency Extension filter.
-See [agcounts::calculate_counts]
+See `agcounts::calculate_counts()`
 higher values are higher levels of verbosity.}
 
 \item{method}{Method for detecting non-wear, either "choi" or "troiano",
-corresponding to [actigraph.sleepr::apply_choi] or [actigraph.sleepr::apply_troiano]}
+corresponding to `actigraph.sleepr::apply_choi()` or
+`actigraph.sleepr::apply_troiano()`}
 
 \item{use_magnitude}{If `TRUE`, the magnitude of the vector
 (axis1, axis2, axis3) is used to measure activity;
@@ -37,5 +38,5 @@ Process Count Data
 }
 \note{
 For `acti_process_gt3x`, the `...` argument are passed to
-[acti_read_gt3x]
+`actiread::acti_read_gt3x()`
 }

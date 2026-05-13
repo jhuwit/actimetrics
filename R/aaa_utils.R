@@ -7,11 +7,19 @@ rename_timestamp = function(data) {
   data
 }
 
-remake_acc = function(df, hdr) {
-  df <- list(
-    data = df,
-    freq = attr(df, "sample_rate"),
+rename_time_stamp = function(data, colname_time = "HEADER_TIME_STAMP") {
+  if ("time" %in% colnames(data) && !colname_time %in% colnames(data)) {
+    colnames(data)[colnames(data) == "time"] = colname_time
+  }
+  data
+}
+
+remake_acc = function(data, hdr) {
+  data <- list(
+    data = data,
+    freq = attr(data, "sample_rate"),
     header = hdr,
-    missingness = attr(df, "missingness"))
-  class(df) = "AccData"
+    missingness = attr(data, "missingness"))
+  class(data) = "AccData"
+  data
 }

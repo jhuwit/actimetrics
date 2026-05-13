@@ -5,51 +5,56 @@
 
 #' Calculate Summary Measures from Raw Accelerometer Data
 #'
-#' @param df An object with columns `X`, `Y`, and `Z` or an
+#' @param data An object with columns `X`, `Y`, and `Z` or an
 #' object of class `AccData`
 #' @param unit length of time to calculate measures over.  a character string
 #' specifying a time unit or a multiple of a unit to be rounded to.
 #' Valid base units are `second`, `minute`, `hour`, `day`, `week`, `month`,
 #' `bimonth`, `quarter`, `season`, `halfyear`, and `year`.
-#' Arbitrary unique English abbreviations as in the \code{\link{period}}
+#' Arbitrary unique English abbreviations as in the `lubridate::period()`
 #' constructor are allowed.
 #' @param dynamic_range Dynamic range of the device, in gravity units
 #' @param verbose print diagnostic messages
-#' @param fix_zeros Should [actibase::acti_fill_zeros] be run before calculating
-#' the measures?
+#' @param fix_zeros Should `actibase::acti_fill_zeros()` be run before
+#' calculating the measures?
 #' @param calculate_mims Should MIMS units be calculated?
-#' @param calculate_ac Should Activity Counts from the \code{activityCounts}
-#' package be calculated?
+#' @param calculate_ac Should Activity Counts from the `agcounts` package be
+#' calculated?
 #' @param flag_data Should the downstream overlay `flag_qc()` be run?
-#' It will be executed after \code{fix_zeros} before any measure
-#' calculation
+#' It will be executed after `fix_zeros` before any measure calculation
 #' @param flags the flags to calculate,
 #' passed to the downstream overlay `flag_qc()`
-#' @param ensure_all_time if \code{TRUE}, then all times from the first to
+#' @param ensure_all_time if `TRUE`, then all times from the first to
 #' last times will be in the output, even if data during that time was not
 #' in the input
 #' @param sample_rate Sample rate of the data, only used if
 #' `calculcate_ac = TRUE`
-#' @param ... additional arguments to pass to [MIMSunit::mims_unit]
+#' @param ... additional arguments to pass to `MIMSunit::mims_unit()`
 #'
 #' @return A data set with the calculated features
 #' @export
 #' @examples
 #' file = actiread::acti_example_gt3x()
 #' res = actiread::acti_read_gt3x(file, verbose = FALSE)
-#' measures = calculate_measures(res, dynamic_range = NULL,
-#'     calculate_mims = FALSE)
+#' res = res[1:12000, ]
+#' measures = calculate_measures(
+#'   res,
+#'   dynamic_range = NULL,
+#'   calculate_mims = FALSE,
+#'   calculate_ac = FALSE,
+#'   flag_data = FALSE
+#' )
 #' auc = calculate_auc(res)
 #' \donttest{
 #' mims = calculate_mims(res, dynamic_range = NULL)
 #' }
 #' if (requireNamespace("data.table", quietly = TRUE)) {
-#'    dt = data.table::as.data.table(res$data)
-#'    out = calculate_measures(dt, calculate_mims = FALSE, flag_data = FALSE)
+#'    dt = data.table::as.data.table(res)
+#'    out = calculate_measures(dt, calculate_mims = FALSE, flag_data = FALSE,
+#'      calculate_ac = FALSE)
 #' }
-#'
 calculate_measures = function(
-  df, unit = "1 min",
+  data, unit = "1 min",
   fix_zeros = TRUE,
   dynamic_range = NULL,
   calculate_mims = TRUE,
@@ -60,8 +65,6 @@ calculate_measures = function(
   verbose = TRUE,
   sample_rate = NULL,
   ...) {
-
-
   if (calculate_ac && !requireNamespace("agcounts", quietly = TRUE)) {
     stop("agcounts package required for calculating AC")
   }
@@ -71,75 +74,79 @@ calculate_measures = function(
   }
 
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   if (calculate_mims || flag_data) {
-    dynamic_range = get_dynamic_range(df, dynamic_range)
+    dynamic_range = get_dynamic_range(data, dynamic_range)
   }
-  # keep flag here - so can calculate by epoch
-  is_data_table = is_dt(df)
-  df = ensure_header_timestamp(df)
+  is_data_table = is_dt(data)
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
   if (calculate_ac) {
-    sample_rate = get_sample_rate(df, sample_rate = sample_rate)
+    sample_rate = get_sample_rate(data, sample_rate = sample_rate)
   }
-  # or do flag_qc(verbose) if flag-dat = TRUE
   if (fix_zeros) {
     if (verbose) {
-      message(
-        paste0("Fixing Zeros with fix_zeros")
-      )
+      message("Fixing Zeros with fix_zeros")
     }
-    df = acti_fill_zeros(df)
+    data = acti_fill_zeros(data)
   }
   if (flag_data) {
     if (verbose) {
       message("Flagging data")
     }
-    df = flag_qc_all(df, dynamic_range = dynamic_range, verbose = verbose,
-                     flags = flags)
-    df$flags = rowSums(
-      df %>%
+    data = flag_qc_all(data, dynamic_range = dynamic_range, verbose = verbose,
+                       flags = flags)
+    data$flags = rowSums(
+      data %>%
         dplyr::select(dplyr::starts_with("flag_")) > 0
     )
-    flags = calculate_flags(df, unit = unit)
-    df = df %>%
+    flags = calculate_flags(data, unit = unit)
+    data = data %>%
       dplyr::select(-dplyr::starts_with("flag"))
   }
-  transformations = get_transformations(df)
+  transformations = get_transformations(data)
 
-  df = remake_dt(df, is_data_table = is_data_table)
+  data = remake_dt(data, is_data_table = is_data_table)
 
   if (verbose) {
     message("Calculating ai0")
   }
-  res = calculate_ai(df, unit = unit, verbose = verbose > 1)
+  res = calculate_ai(data, unit = unit, verbose = verbose > 1)
   if (verbose) {
     message("Calculating MAD")
   }
-  mad = calculate_mad(df, unit = unit, verbose = verbose > 1)
+  mad = calculate_mad(data, unit = unit, verbose = verbose > 1)
   if (verbose) {
     message("Joining AI and MAD")
   }
 
-  df = as.data.frame(df)
-  # ai0 is res
+  data = as.data.frame(data)
   res = dplyr::full_join(res, mad, by = "HEADER_TIME_STAMP")
   rm(mad)
   if (calculate_mims) {
     if (verbose) {
       message("Calculating MIMS")
     }
-    mims = calculate_mims(df, unit = unit,
-                          dynamic_range = dynamic_range,
-                          ...)
+    calculate_mims_fun = get("calculate_mims", mode = "function")
+    mims = calculate_mims_fun(data, unit = unit,
+                              dynamic_range = dynamic_range,
+                              ...)
   }
 
   if (calculate_ac) {
     if (verbose) {
       message("Calculating AC")
     }
-    ac = calculate_ac(df, unit = unit,
-                      sample_rate = sample_rate,
-                      verbose = verbose)
+    ac = calculate_activity_counts(
+      data,
+      unit = unit,
+      sample_rate = sample_rate,
+      verbose = verbose
+    )
     ac$X = ac$Y = ac$Z = NULL
     if (verbose) {
       message("Joining AC")
@@ -147,7 +154,7 @@ calculate_measures = function(
     res = dplyr::full_join(res, ac, by = "HEADER_TIME_STAMP")
     rm(ac)
   }
-  rm(df)
+  rm(data)
 
   if (calculate_mims) {
     if (verbose) {
@@ -182,84 +189,77 @@ floor_sec = function(x) {
   }
 }
 
-remake_dt = function(df, is_data_table = FALSE) {
+remake_dt = function(data, is_data_table = FALSE) {
   if (requireNamespace("data.table", quietly = TRUE) &&
       is_data_table) {
-    df = data.table::as.data.table(df)
+    data = data.table::as.data.table(data)
   }
-  df
+  data
 }
 is_dt = function(x) {
   inherits(x, "data.table")
 }
 
-.datatable.aware=TRUE
+.datatable.aware = TRUE
 
 #' @export
 #' @rdname calculate_measures
-calculate_ai = function(df, unit = "1 min", ensure_all_time = TRUE,
+calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
                         verbose = FALSE) {
-  # globals workup
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   AI = NULL
   rm(list = c("AI"))
 
-  is_data_table = is_dt(df)
-  df = ensure_header_timestamp(df)
+  is_data_table = is_dt(data)
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
   if (is_data_table &&
       requireNamespace("data.table", quietly = TRUE)) {
-    df = remake_dt(df, is_data_table = is_data_table)
-    df = df[, HEADER_TIME_STAMP := floor_sec(HEADER_TIME_STAMP)]
+    data = remake_dt(data, is_data_table = is_data_table)
+    data = data[, HEADER_TIME_STAMP := floor_sec(HEADER_TIME_STAMP)]
     if (verbose) {
       message("Summarizing the variance")
     }
-    df = df[, .(X = var(X, na.rm = TRUE),
-                Y = var(Y, na.rm = TRUE),
-                Z = var(Z, na.rm = TRUE)),
-            by = .(HEADER_TIME_STAMP)]
-    df$AI = sqrt(1/3 * (df$X + df$Y + df$Z))
-    df = as.data.frame(df)[c("HEADER_TIME_STAMP", "AI")]
+    data = data[, .(X = var(X, na.rm = TRUE),
+                    Y = var(Y, na.rm = TRUE),
+                    Z = var(Z, na.rm = TRUE)),
+                by = .(HEADER_TIME_STAMP)]
+    data$AI = sqrt(1/3 * (data$X + data$Y + data$Z))
+    data = as.data.frame(data)[c("HEADER_TIME_STAMP", "AI")]
   } else {
     if (verbose) {
       message("Running floor_sec on time")
     }
-    # need tz because converting to integer for speed
-    df = df %>%
+    data = data %>%
       dplyr::mutate(HEADER_TIME_STAMP = floor_sec(HEADER_TIME_STAMP))
 
     if (verbose) {
       message("Summarizing the variance")
     }
-    df = df %>%
+    data = data %>%
       dplyr::group_by(HEADER_TIME_STAMP) %>%
       dplyr::summarise(
         AI = var(X, na.rm = TRUE) +
           var(Y, na.rm = TRUE) +
           var(Z, na.rm = TRUE)
       )
-    # removed this because running sqrt and / 3 in grouped setting
-    # is inefficient - ungrouping below and mutate
-    # dplyr::summarise(
-    #   AI = sqrt(
-    #     (
-    #       var(X, na.rm = TRUE) +
-    #         var(Y, na.rm = TRUE) +
-    #         var(Z, na.rm = TRUE)
-    #     ) / 3)
-    # )
     if (verbose) {
       message("Calculating AI")
     }
     if (!is_data_table) {
-      df = df %>%
+      data = data %>%
         dplyr::ungroup()
     }
-    df = df %>%
+    data = data %>%
       dplyr::mutate(AI = sqrt(AI/3))
   }
 
-  df = df %>%
+  data = data %>%
     dplyr::mutate(
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                                 unit)) %>%
@@ -267,38 +267,44 @@ calculate_ai = function(df, unit = "1 min", ensure_all_time = TRUE,
     dplyr::summarise(
       AI = sum(AI)
     )
-  df = df %>%
+  data = data %>%
     tibble::as_tibble() %>%
     dplyr::ungroup()
-  df = join_all_time(df, unit, ensure_all_time)
-  df = remake_dt(df, is_data_table = is_data_table)
-  df
+  data = join_all_time(data, unit, ensure_all_time)
+  data = remake_dt(data, is_data_table = is_data_table)
+  data
 }
 
-join_all_time = function(df, unit = "1 min", ensure_all_time) {
+join_all_time = function(data, unit = "1 min", ensure_all_time) {
   if (ensure_all_time) {
-    rtime = range(df$HEADER_TIME_STAMP)
+    rtime = range(data$HEADER_TIME_STAMP)
     time_df = tibble::tibble(HEADER_TIME_STAMP = seq(rtime[1], rtime[2],
                                                      by = unit))
-    df = dplyr::left_join(time_df, df, by = "HEADER_TIME_STAMP")
+    data = dplyr::left_join(time_df, data, by = "HEADER_TIME_STAMP")
   }
-  df
+  data
 }
+
 #' @export
 #' @rdname calculate_measures
 calculate_activity_index = calculate_ai
 
 #' @export
 #' @rdname calculate_measures
-calculate_flags = function(df, unit = "1 min", ensure_all_time = TRUE) {
+calculate_flags = function(data, unit = "1 min", ensure_all_time = TRUE) {
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
-  df = ensure_header_timestamp(df, subset = FALSE)
-  if (!any(grepl("^flag", colnames(df)))) {
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
+  if (!any(grepl("^flag", colnames(data)))) {
     stop("flag is not in the data, please run flag_qc")
   }
 
-  df = df %>%
+  data = data %>%
     dplyr::mutate(
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                                 unit)) %>%
@@ -308,28 +314,27 @@ calculate_flags = function(df, unit = "1 min", ensure_all_time = TRUE) {
       n_samples_in_unit = dplyr::n()
     ) %>%
     dplyr::ungroup()
-  df = join_all_time(df, unit, ensure_all_time)
-  df
+  data = join_all_time(data, unit, ensure_all_time)
+  data
 }
-
 
 #' @export
 #' @rdname calculate_measures
-calculate_n_idle = function(df, unit = "1 min", ensure_all_time = TRUE) {
+calculate_n_idle = function(data, unit = "1 min", ensure_all_time = TRUE) {
   ENMO = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "ENMO"))
-  df = ensure_header_timestamp(df)
-
-  # df = acti_fill_zeros(df)
-
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "ENMO"))
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
 
   n_idle = r = all_zero = NULL
-  rm(list= c("n_idle", "r", "all_zero"))
-  df = df %>%
+  rm(list = c("n_idle", "r", "all_zero"))
+  data = data %>%
     dplyr::mutate(
       r = sqrt(X^2+Y^2+Z^2),
-      # ENMO = r - 1,
-      # ENMO = dplyr::if_else(ENMO < 0, 0, ENMO),
       all_zero = X == 0 & Y == 0 & Z == 0,
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                                 unit)) %>%
@@ -338,15 +343,15 @@ calculate_n_idle = function(df, unit = "1 min", ensure_all_time = TRUE) {
       n_idle = sum(is.na(r) | all_zero)
     ) %>%
     dplyr::ungroup()
-  df = join_all_time(df, unit, ensure_all_time)
-  df
+  data = join_all_time(data, unit, ensure_all_time)
+  data
 }
 
 #' @export
 #' @rdname calculate_measures
 calculate_enmo = function(...) {
   ENMO_t = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   out = calculate_mad(...)
   out %>%
     dplyr::select(HEADER_TIME_STAMP, ENMO_t)
@@ -356,48 +361,59 @@ calculate_enmo = function(...) {
 #' @rdname calculate_measures
 calculate_ai_defined = function(...) {
   AI_DEFINED = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "AI_DEFINED"))
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "AI_DEFINED"))
   out = calculate_mad(...)
   out %>%
     dplyr::select(HEADER_TIME_STAMP, AI_DEFINED)
 }
 
-
 if (requireNamespace("data.table", quietly = TRUE)) {
   `:=` <- data.table::`:=`
-  utils::globalVariables(".")
+  utils::globalVariables(c(
+    ".",
+    "AC",
+    "HEADER_TIME_STAMP",
+    "count",
+    "counts",
+    "timestamp",
+    "vector.magnitude"
+  ))
 }
-
 
 #' @export
 #' @rdname calculate_measures
-calculate_mad = function(df, unit = "1 min", ensure_all_time = TRUE,
+calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
                          verbose = FALSE) {
   ENMO_t = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
-  is_data_table = is_dt(df)
-  df = ensure_header_timestamp(df)
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
+  is_data_table = is_dt(data)
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
 
   if (verbose) {
     message("Calculating r, ENMO, and flooring time")
   }
   if (is_data_table &&
       requireNamespace("data.table", quietly = TRUE)) {
-    df = remake_dt(df, is_data_table = is_data_table)
+    data = remake_dt(data, is_data_table = is_data_table)
     if (verbose) {
       message("Summarizing the variance")
     }
-    df = df[, r := sqrt(X^2 + Y^2 + Z^2)]
-    df = df[, HEADER_TIME_STAMP := lubridate::floor_date(
+    data = data[, r := sqrt(X^2 + Y^2 + Z^2)]
+    data = data[, HEADER_TIME_STAMP := lubridate::floor_date(
       HEADER_TIME_STAMP, unit)]
 
-    df = df[, ENMO_t := r - 1]
-    df = df[, ENMO_t := dplyr::if_else(ENMO_t < 0, 0, ENMO_t)]
+    data = data[, ENMO_t := r - 1]
+    data = data[, ENMO_t := dplyr::if_else(ENMO_t < 0, 0, ENMO_t)]
 
     if (verbose) {
       message("Calculating all MAD measures")
     }
-    df = df[, .(
+    data = data[, .(
       SD = sd(r, na.rm = TRUE),
       SD_t = sd(ENMO_t, na.rm = TRUE),
       AI_DEFINED = sqrt((
@@ -410,7 +426,7 @@ calculate_mad = function(df, unit = "1 min", ensure_all_time = TRUE,
       ENMO_t = mean(ENMO_t, na.rm = TRUE)
     ), by = .(HEADER_TIME_STAMP)]
   } else {
-    df = df %>%
+    data = data %>%
       dplyr::mutate(
         r = sqrt(X^2 + Y^2 + Z^2),
         ENMO_t = r - 1,
@@ -421,7 +437,7 @@ calculate_mad = function(df, unit = "1 min", ensure_all_time = TRUE,
     if (verbose) {
       message("Calculating all MAD measures")
     }
-    df = df %>%
+    data = data %>%
       dplyr::group_by(HEADER_TIME_STAMP) %>%
       dplyr::summarise(
         SD = sd(r, na.rm = TRUE),
@@ -437,21 +453,19 @@ calculate_mad = function(df, unit = "1 min", ensure_all_time = TRUE,
       ) %>%
       dplyr::ungroup()
   }
-  df = df %>%
+  data = data %>%
     tibble::as_tibble() %>%
     dplyr::ungroup()
-  df = join_all_time(df, unit, ensure_all_time)
-  df = remake_dt(df, is_data_table = is_data_table)
-  df
+  data = join_all_time(data, unit, ensure_all_time)
+  data = remake_dt(data, is_data_table = is_data_table)
+  data
 }
-
-
 
 #' @export
 #' @rdname calculate_measures
 #' @param sample_rate sample rate of data, if not specified in header of object
 #' @param allow_truncation truncate small values
-calculate_auc = function(df, unit = "1 min",
+calculate_auc = function(data, unit = "1 min",
                          sample_rate = NULL,
                          allow_truncation = FALSE,
                          ensure_all_time = TRUE,
@@ -460,11 +474,16 @@ calculate_auc = function(df, unit = "1 min",
   dtime = good = NULL
   rm(list = c("good", "dtime"))
   dtime = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "dtime"))
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "dtime"))
   AUC_X = AUC_Y = AUC_Z = NULL
-  rm(list= c("AUC_X", "AUC_Z", "AUC_Y"))
-  df = ensure_header_timestamp(df)
-  sample_rate = get_sample_rate(df, sample_rate)
+  rm(list = c("AUC_X", "AUC_Z", "AUC_Y"))
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
+  sample_rate = get_sample_rate(data, sample_rate)
 
   n_total = n_in_interval(unit, sample_rate)
   max_values <- 16 * n_total
@@ -472,7 +491,7 @@ calculate_auc = function(df, unit = "1 min",
   if (verbose) {
     message("Absolute values")
   }
-  df = df %>%
+  data = data %>%
     dplyr::mutate(
       X = abs(X),
       Y = abs(Y),
@@ -480,8 +499,7 @@ calculate_auc = function(df, unit = "1 min",
   if (verbose) {
     message("Calculting trapezoids")
   }
-  df = df %>%
-    # trapezoidal
+  data = data %>%
     dplyr::mutate(
       dtime = difftime(HEADER_TIME_STAMP,
                        dplyr::lag(HEADER_TIME_STAMP, n = 1),
@@ -499,20 +517,18 @@ calculate_auc = function(df, unit = "1 min",
     x[1] = NA
     x
   }
-  df = df %>%
+  data = data %>%
     dplyr::mutate(
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                                 unit)
     ) %>%
     dplyr::group_by(HEADER_TIME_STAMP) %>%
-    # trapezoidal
     dplyr::mutate(
       X = replace_first_na(X),
       Y = replace_first_na(Y),
       Z = replace_first_na(Z)
     )
-  df = df %>%
-    # ungroup for speed
+  data = data %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
       good = !(is.na(X) | is.na(Y) | is.na(Z))
@@ -521,7 +537,7 @@ calculate_auc = function(df, unit = "1 min",
   if (verbose) {
     message("Calculating AUCs")
   }
-  df = df %>%
+  data = data %>%
     dplyr::group_by(HEADER_TIME_STAMP) %>%
     dplyr::summarise(
       good = sum(good),
@@ -531,7 +547,7 @@ calculate_auc = function(df, unit = "1 min",
     ) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(good = good >= (0.9 * n_total))
-  df = df %>%
+  data = data %>%
     dplyr::mutate(
       AUC_X = ifelse(good, AUC_X, NA),
       AUC_Y = ifelse(good, AUC_Y, NA),
@@ -542,32 +558,61 @@ calculate_auc = function(df, unit = "1 min",
       message("Truncating Small AUCs")
     }
     minimum = 1e-04 * n_total
-    df = df %>%
+    data = data %>%
       dplyr::mutate(
         AUC_X = ifelse(AUC_X <= minimum, 0, AUC_X),
         AUC_Y = ifelse(AUC_Y <= minimum, 0, AUC_Y),
         AUC_Z = ifelse(AUC_Z <= minimum, 0, AUC_Z)
       )
-    df = df %>%
+    data = data %>%
       dplyr::mutate(
         AUC_X = ifelse(AUC_X < 0 | AUC_X >= max_values, -1, AUC_X),
         AUC_Y = ifelse(AUC_Y < 0 | AUC_Y >= max_values, -1, AUC_Y),
         AUC_Z = ifelse(AUC_Z < 0 | AUC_Z >= max_values, -1, AUC_Z)
       )
   }
-  df = df %>%
+  data = data %>%
     dplyr::mutate(
       AUC = AUC_X + AUC_Y + AUC_Z
     ) %>%
     dplyr::select(-good)
-  df = join_all_time(df, unit, ensure_all_time)
-  df
+  data = join_all_time(data, unit, ensure_all_time)
+  data
+}
+
+calculate_activity_counts = function(data,
+                                     unit = "1 min",
+                                     sample_rate = NULL,
+                                     verbose = TRUE) {
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
+  if ("HEADER_TIME_STAMP" %in% names(data) && !"time" %in% names(data)) {
+    names(data)[names(data) == "HEADER_TIME_STAMP"] = "time"
+  }
+  sample_rate = get_sample_rate(data, sample_rate = sample_rate)
+  if (is.null(sample_rate)) {
+    stop("sample_rate is required for calculating AC")
+  }
+  epoch = as.integer(n_in_interval(unit, sample_rate = 1))
+  counts = acti_calculate_counts(
+    data,
+    epoch = epoch,
+    verbose = verbose
+  )
+  counts = counts %>%
+    dplyr::rename(HEADER_TIME_STAMP = time, AC = counts) %>%
+    dplyr::select(HEADER_TIME_STAMP, AC)
+  counts
 }
 
 #' @export
 #' @rdname calculate_measures
 calculate_fast_mims = function(
-  df,
+  data,
   unit = "1 min",
   dynamic_range = NULL,
   sample_rate = NULL,
@@ -575,7 +620,7 @@ calculate_fast_mims = function(
   ensure_all_time = TRUE,
   verbose = TRUE,
   ...) {
-  args = list(df,
+  args = list(data,
               ...,
               verbose = verbose,
               dynamic_range = dynamic_range)
@@ -584,73 +629,74 @@ calculate_fast_mims = function(
     output_mims_per_axis = args$output_mims_per_axis
     args$output_mims_per_axis = NULL
   }
-  df = do.call(mims_default_processing, args = args)
-  df = calculate_auc(
-    df, unit = unit,
+  data = do.call(mims_default_processing, args = args)
+  data = calculate_auc(
+    data, unit = unit,
     sample_rate = sample_rate,
     allow_truncation = allow_truncation,
     ensure_all_time = ensure_all_time,
     verbose = verbose
   )
-  colnames(df) = sub("AUC", "MIMS_UNIT", colnames(df))
+  colnames(data) = sub("AUC", "MIMS_UNIT", colnames(data))
   if (!output_mims_per_axis) {
-    df = df[, c("HEADER_TIME_STAMP", "MIMS_UNIT")]
+    data = data[, c("HEADER_TIME_STAMP", "MIMS_UNIT")]
   }
-  df
+  data
 }
-
 
 #' @export
 #' @rdname calculate_measures
 calculate_mims = function(
-  df,
+  data,
   unit = "1 min",
   dynamic_range = c(-6, 6),
   ensure_all_time = TRUE,
   ...) {
   HEADER_TIME_STAMP = NULL
-  rm(list= "HEADER_TIME_STAMP")
+  rm(list = "HEADER_TIME_STAMP")
 
-  dynamic_range = get_dynamic_range(df, dynamic_range = dynamic_range)
-  check = check_dynamic_range(df, dynamic_range = dynamic_range)
+  dynamic_range = get_dynamic_range(data, dynamic_range = dynamic_range)
+  check = check_dynamic_range(data, dynamic_range = dynamic_range)
   if (!check) {
-    msg = paste0("Dynamic range does not cover all the data in df",
+    msg = paste0("Dynamic range does not cover all the data in data",
                  ", please check data")
     warning(msg)
   }
-  df = ensure_header_timestamp(df)
+  data = acti_standardize_data(
+    data,
+    subset_xyz = FALSE,
+    colname_time = "HEADER_TIME_STAMP"
+  )
+  data = rename_time_stamp(data)
   if (!requireNamespace("MIMSunit", quietly = TRUE)) {
     stop("MIMSunit package required for calculating MIMS")
   }
-  df = MIMSunit::mims_unit(
-    df,
+  data = MIMSunit::mims_unit(
+    data,
     epoch = unit,
     dynamic_range = dynamic_range,
     ...)
-  df = df %>% dplyr::mutate(
+  data = data %>% dplyr::mutate(
     HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                               unit = unit))
-  df = join_all_time(df, unit, ensure_all_time)
+  data = join_all_time(data, unit, ensure_all_time)
 
-  df
-
+  data
 }
 
-
-
-check_dynamic_range = function(df, dynamic_range = c(-6, 6)) {
+check_dynamic_range = function(data, dynamic_range = c(-6, 6)) {
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
-  rm(list= c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
+  rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   hdr = NULL
 
-  dynamic_range = get_dynamic_range(df, dynamic_range)
-  if (is.AccData(df)) {
-    df = df$data
+  dynamic_range = get_dynamic_range(data, dynamic_range)
+  if (is.AccData(data)) {
+    data = data$data
   }
   stopifnot(length(dynamic_range) == 2,
             is.numeric(dynamic_range))
 
-  r = range(df[actibase::xyz], na.rm = TRUE)
+  r = range(data[actibase::xyz], na.rm = TRUE)
   all(r >= dynamic_range[1] & r <= dynamic_range[2])
 }
 

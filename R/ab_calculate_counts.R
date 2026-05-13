@@ -10,9 +10,11 @@
 #' higher values are higher levels of verbosity.
 #' @export
 #' @examples
+#' \dontrun{
 #' path = actiread::acti_example_gt3x()
 #' ac = actiread::acti_read_gt3x(path)
 #' out = acti_calculate_counts(ac)
+#' }
 acti_calculate_counts = function(
     data,
     epoch = 60L,
@@ -55,4 +57,3 @@ acti_calculate_counts = function(
                                add = TRUE)
   counts = counts %>% dplyr::as_tibble()
 }
-

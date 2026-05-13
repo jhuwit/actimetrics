@@ -4,11 +4,9 @@
 #' `X/Y/Z` and `time`
 #' @param verbose print diagnostic messages, higher number result in higher verbosity
 #' @param ... Additional arguments to pass to [agcounts::agcalibrate]
-#' @param fill_zeroes Should [locf_zeros] be run before calculating
-#' the measures?
-#' should the time course be trimmed for zero values at
-#' the beginning and the end of the time course?
-#' observation carried forward?
+#' @param fill_zeroes Should `actibase::acti_fill_zeros()` be run before
+#' calculating the measures? This trims zero values from the beginning and the
+#' end of the time course using last observation carried forward behavior.
 #' @param round_after_calibration Should the data be rounded after calibration?
 #' Will round to 3 digits
 #'
@@ -16,7 +14,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #'   res = acti_calibrate(actiread::acti_example_gt3x())
+#' }
 acti_calibrate = function(
     file,
     verbose = TRUE,

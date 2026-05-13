@@ -15,7 +15,7 @@
 \title{Calculate Summary Measures from Raw Accelerometer Data}
 \usage{
 calculate_measures(
-  df,
+  data,
   unit = "1 min",
   fix_zeros = TRUE,
   dynamic_range = NULL,
@@ -29,27 +29,27 @@ calculate_measures(
   ...
 )
 
-calculate_ai(df, unit = "1 min", ensure_all_time = TRUE, verbose = FALSE)
+calculate_ai(data, unit = "1 min", ensure_all_time = TRUE, verbose = FALSE)
 
 calculate_activity_index(
-  df,
+  data,
   unit = "1 min",
   ensure_all_time = TRUE,
   verbose = FALSE
 )
 
-calculate_flags(df, unit = "1 min", ensure_all_time = TRUE)
+calculate_flags(data, unit = "1 min", ensure_all_time = TRUE)
 
-calculate_n_idle(df, unit = "1 min", ensure_all_time = TRUE)
+calculate_n_idle(data, unit = "1 min", ensure_all_time = TRUE)
 
 calculate_enmo(...)
 
 calculate_ai_defined(...)
 
-calculate_mad(df, unit = "1 min", ensure_all_time = TRUE, verbose = FALSE)
+calculate_mad(data, unit = "1 min", ensure_all_time = TRUE, verbose = FALSE)
 
 calculate_auc(
-  df,
+  data,
   unit = "1 min",
   sample_rate = NULL,
   allow_truncation = FALSE,
@@ -58,7 +58,7 @@ calculate_auc(
 )
 
 calculate_fast_mims(
-  df,
+  data,
   unit = "1 min",
   dynamic_range = NULL,
   sample_rate = NULL,
@@ -69,7 +69,7 @@ calculate_fast_mims(
 )
 
 calculate_mims(
-  df,
+  data,
   unit = "1 min",
   dynamic_range = c(-6, 6),
   ensure_all_time = TRUE,
@@ -77,34 +77,33 @@ calculate_mims(
 )
 }
 \arguments{
-\item{df}{An object with columns `X`, `Y`, and `Z` or an
+\item{data}{An object with columns `X`, `Y`, and `Z` or an
 object of class `AccData`}
 
 \item{unit}{length of time to calculate measures over.  a character string
 specifying a time unit or a multiple of a unit to be rounded to.
 Valid base units are `second`, `minute`, `hour`, `day`, `week`, `month`,
 `bimonth`, `quarter`, `season`, `halfyear`, and `year`.
-Arbitrary unique English abbreviations as in the \code{\link{period}}
+Arbitrary unique English abbreviations as in the `lubridate::period()`
 constructor are allowed.}
 
-\item{fix_zeros}{Should [actibase::acti_fill_zeros] be run before calculating
-the measures?}
+\item{fix_zeros}{Should `actibase::acti_fill_zeros()` be run before
+calculating the measures?}
 
 \item{dynamic_range}{Dynamic range of the device, in gravity units}
 
 \item{calculate_mims}{Should MIMS units be calculated?}
 
-\item{calculate_ac}{Should Activity Counts from the \code{activityCounts}
-package be calculated?}
+\item{calculate_ac}{Should Activity Counts from the `agcounts` package be
+calculated?}
 
 \item{flag_data}{Should the downstream overlay `flag_qc()` be run?
-It will be executed after \code{fix_zeros} before any measure
-calculation}
+It will be executed after `fix_zeros` before any measure calculation}
 
 \item{flags}{the flags to calculate,
 passed to the downstream overlay `flag_qc()`}
 
-\item{ensure_all_time}{if \code{TRUE}, then all times from the first to
+\item{ensure_all_time}{if `TRUE`, then all times from the first to
 last times will be in the output, even if data during that time was not
 in the input}
 
@@ -112,7 +111,7 @@ in the input}
 
 \item{sample_rate}{sample rate of data, if not specified in header of object}
 
-\item{...}{additional arguments to pass to [MIMSunit::mims_unit]}
+\item{...}{additional arguments to pass to `MIMSunit::mims_unit()`}
 
 \item{allow_truncation}{truncate small values}
 }
@@ -125,15 +124,21 @@ Calculate Summary Measures from Raw Accelerometer Data
 \examples{
 file = actiread::acti_example_gt3x()
 res = actiread::acti_read_gt3x(file, verbose = FALSE)
-measures = calculate_measures(res, dynamic_range = NULL,
-    calculate_mims = FALSE)
+res = res[1:12000, ]
+measures = calculate_measures(
+  res,
+  dynamic_range = NULL,
+  calculate_mims = FALSE,
+  calculate_ac = FALSE,
+  flag_data = FALSE
+)
 auc = calculate_auc(res)
 \donttest{
 mims = calculate_mims(res, dynamic_range = NULL)
 }
 if (requireNamespace("data.table", quietly = TRUE)) {
-   dt = data.table::as.data.table(res$data)
-   out = calculate_measures(dt, calculate_mims = FALSE, flag_data = FALSE)
+   dt = data.table::as.data.table(res)
+   out = calculate_measures(dt, calculate_mims = FALSE, flag_data = FALSE,
+     calculate_ac = FALSE)
 }
-
 }

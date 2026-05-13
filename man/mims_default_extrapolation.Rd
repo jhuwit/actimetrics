@@ -6,18 +6,18 @@
 \alias{mims_default_filtering}
 \title{Default MIMS worker functions}
 \usage{
-mims_default_extrapolation(df, dynamic_range = NULL)
+mims_default_extrapolation(data, dynamic_range = NULL)
 
-mims_default_interpolation(df)
+mims_default_interpolation(data)
 
-mims_default_filtering(df)
+mims_default_filtering(data)
 }
 \arguments{
-\item{df}{data set of data, usually time and X/Y/Z.  Usually from
-[actiread::acti_read_gt3x]}
+\item{data}{data set of data, usually time and X/Y/Z.  Usually from
+`actiread::acti_read_gt3x()`}
 
 \item{dynamic_range}{dynamic range of the data.  Will be passed to
-[actibase::get_dynamic_range]}
+`actibase::get_dynamic_range()`}
 }
 \value{
 A data set of data

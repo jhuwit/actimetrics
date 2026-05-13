@@ -33,16 +33,17 @@ acti_apply_tudor_locke(data, ...)
 columns `axis1-3` and `counts`}
 
 \item{epoch}{epoch length in seconds.  Default is 60 seconds.
-See [agcounts::calculate_counts]}
+See `agcounts::calculate_counts()`}
 
 \item{lfe_select}{Apply the Actigraph Low Frequency Extension filter.
-See [agcounts::calculate_counts]
+See `agcounts::calculate_counts()`
 higher values are higher levels of verbosity.}
 
 \item{verbose}{print diagnostic messages.  Either logical or integer, where}
 
 \item{method}{Method for detecting non-wear, either "choi" or "troiano",
-corresponding to [actigraph.sleepr::apply_choi] or [actigraph.sleepr::apply_troiano]}
+corresponding to `actigraph.sleepr::apply_choi()` or
+`actigraph.sleepr::apply_troiano()`}
 
 \item{use_magnitude}{If `TRUE`, the magnitude of the vector
 (axis1, axis2, axis3) is used to measure activity;
@@ -58,18 +59,16 @@ A `data.frame` of transformed data
 \description{
 Process Count Data
 
-Process Count Daa
+Process Count Data
 }
 \note{
-This calls [acti_check_data], [acti_calculate_distance], and
-[acti_process_time]
+This calls the downstream wear-processing helpers used by
+`actigraph.sleepr`
 }
 \examples{
+\dontrun{
 path = actiread::acti_example_gt3x()
 ac = actiread::acti_read_gt3x(path)
 out = acti_calculate_counts(ac)
-path = actiread::acti_example_gt3x()
-ac = actiread::acti_read_gt3x(path, verbose = FALSE)
-out = acti_calculate_counts(ac)
-
+}
 }

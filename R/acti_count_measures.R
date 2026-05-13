@@ -1,24 +1,19 @@
-#' Process Count Daa
+#' Process Count Data
 #'
 #' @param data A `data.frame` from `acti_calculate_counts` that has
 #' columns `axis1-3` and `counts`
 #' @return A `data.frame` of transformed data
-#' @note This calls [acti_check_data], [acti_calculate_distance], and
-#' [acti_process_time]
+#' @note This calls the downstream wear-processing helpers used by
+#' `actigraph.sleepr`
 #' @param verbose print diagnostic messages.  Either logical or integer, where
 #' @param epoch epoch length in seconds.  Default is 60 seconds.
-#' See [agcounts::calculate_counts]
+#' See `agcounts::calculate_counts()`
 #' @param lfe_select Apply the Actigraph Low Frequency Extension filter.
-#' See [agcounts::calculate_counts]
+#' See `agcounts::calculate_counts()`
 #' higher values are higher levels of verbosity.
-#' @export
-#' @examples
-#' path = actiread::acti_example_gt3x()
-#' ac = actiread::acti_read_gt3x(path, verbose = FALSE)
-#' out = acti_calculate_counts(ac)
-#'
 #' @param method Method for detecting non-wear, either "choi" or "troiano",
-#' corresponding to [actigraph.sleepr::apply_choi] or [actigraph.sleepr::apply_troiano]
+#' corresponding to `actigraph.sleepr::apply_choi()` or
+#' `actigraph.sleepr::apply_troiano()`
 #' @param ... additional arguments to pass to `actigraph.sleepr` function
 #' @param use_magnitude  If `TRUE`, the magnitude of the vector
 #' (axis1, axis2, axis3) is used to measure activity;
@@ -29,10 +24,8 @@ acti_calculate_wear = function(data,
                              method = c("choi", "troiano"),
                              use_magnitude = TRUE,
                              ...) {
-  time = timestamp = NULL
-  rm(list = c("time", "timestamp"))
-  data = data %>%
-    dplyr::rename(timestamp = time)
+  data = acti_standardize_actigraph.sleepr(data)
+
   mode(data$timestamp) = "double"
   method = match.arg(method)
   func = switch(method,
@@ -88,7 +81,8 @@ acti_calculate_nonwear = acti_calculate_wear
 acti_apply_cole_kripke = function(data) {
   timestamp = NULL
   rm(list = c("timestamp"))
-  data = data %>% rename_timestamp()
+  data = acti_standardize_actigraph.sleepr(data)
+
 
   # https://actigraphcorp.my.site.com/support/s/article/What-does-the-Detect-Sleep-Periods-button-do-and-how-does-it-work
   ck = data %>%
@@ -107,7 +101,7 @@ acti_apply_cole_kripke = function(data) {
 #' @export
 #' @rdname acti_calculate_counts
 acti_apply_tudor_locke = function(data, ...) {
-  data = data %>% rename_timestamp()
+  data = acti_standardize_actigraph.sleepr(data)
   tl = data %>%
     actigraph.sleepr::apply_tudor_locke(...)
   trans = get_transformations(data)
@@ -118,4 +112,3 @@ acti_apply_tudor_locke = function(data, ...) {
                            add = TRUE)
   tl
 }
-

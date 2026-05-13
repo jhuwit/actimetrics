@@ -5,7 +5,7 @@
 \title{Default MIMS Pre-processing}
 \usage{
 mims_default_processing(
-  df,
+  data,
   use_extrapolation = TRUE,
   use_filtering = TRUE,
   verbose = TRUE,
@@ -14,8 +14,8 @@ mims_default_processing(
 )
 }
 \arguments{
-\item{df}{Data set of raw accelerometry values, usually time and X/Y/Z.
-Usually from [actiread::acti_read_gt3x]}
+\item{data}{Data set of raw accelerometry values, usually time and X/Y/Z.
+Usually from `actiread::acti_read_gt3x()`}
 
 \item{use_extrapolation}{If `TRUE` the function will apply extrapolation
 algorithm to the input signal, otherwise it will skip
@@ -27,8 +27,8 @@ filtering to the input signal, otherwise it will skip the filtering.}
 \item{verbose}{print diagnostic messages}
 
 \item{dynamic_range}{the dynamic ranges of the input signal.  Passed to
-\code{\link{mims_default_extrapolation}}.  Only needed if
-\code{use_extrapolation = TRUE}}
+`actimetrics::mims_default_extrapolation()`.  Only needed if
+`use_extrapolation = TRUE`}
 
 \item{round_after_processing}{Should the result be rounded to 3
 decimal values after processing, to make similar to standard accelerometry?}

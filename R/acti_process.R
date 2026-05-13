@@ -3,7 +3,7 @@
 #' @inheritParams acti_calculate_counts
 #' @export
 #' @note For `acti_process_gt3x`, the `...` argument are passed to
-#' [acti_read_gt3x]
+#' `actiread::acti_read_gt3x()`
 acti_process = function(data,
                         lfe_select = FALSE,
                         method = c("choi", "troiano"),
@@ -30,9 +30,6 @@ acti_process = function(data,
     counts,
     method = method,
     use_magnitude = use_magnitude)
-
-  result = dplyr::full_join(counts, wear, by = "time") %>%
-    dplyr::mutate(wear = ifelse(is.na(wear), FALSE, wear))
 
   result = dplyr::full_join(counts, wear, by = "time") %>%
     dplyr::mutate(wear = ifelse(is.na(wear), FALSE, wear))

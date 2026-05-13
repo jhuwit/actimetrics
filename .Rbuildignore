@@ -4,6 +4,7 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^README\.Rmd$
+^README\.html$
 ^LICENSE\.md$
 ^limmi\.Rproj$
 ^\.Rproj\.user$
@@ -12,6 +13,11 @@
 ^pkgdown$
 ^SummarizedActigraphy\.Rproj$
 ^README_cache$
+^\.DS_Store$
+^\.git$
+^\.Rhistory$
+^\.\.Rcheck$
+^actimetrics\.Rcheck$
 ^\.github$
 ^cran-comments\.md$
 ^CRAN-RELEASE$

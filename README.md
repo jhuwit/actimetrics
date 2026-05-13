@@ -1,27 +1,41 @@
 
-<!-- badges: start -->
-
-[![R-CMD-check](https://github.com/jhuwit/actimetrics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/actimetrics/actions/workflows/R-CMD-check.yaml)
-[![Codecov test
-coverage](https://codecov.io/gh/jhuwit/actimetrics/branch/master/graph/badge.svg)](https://codecov.io/gh/jhuwit/actimetrics?branch=master)
-[![Codecov test
-coverage](https://codecov.io/gh/jhuwit/actimetrics/graph/badge.svg)](https://app.codecov.io/gh/jhuwit/actimetrics)
-<!-- badges: end -->
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# actibase Package
+# actimetrics
 
-`actibase` is a baseline package for raw actigraphy and activity
-workflows. It provides readers and core preprocessing helpers that
-downstream packages can build on, such as step-count or summarization
-overlays.
+`actimetrics` provides helpers for actigraphy preprocessing, summary
+statistics, count-based overlays, and MIMS-oriented processing.
+
+Core entry points:
+
+- `calculate_measures()` for summary metrics such as AI, MAD, MIMS, and
+  AC
+- `acti_calculate_counts()` and `acti_process()` for count and wear
+  overlays
+- `mims_default_processing()` for the default MIMS preprocessing chain
+- `acti_calibrate()` for calibration through `agcounts`
 
 ## Installation
 
-You can install `actibase` from GitHub with:
+You can install `actimetrics` from GitHub with:
 
 ``` r
 # install.packages("remotes")
 remotes::install_github("jhuwit/actimetrics")
+```
+
+## Quick Start
+
+``` r
+path <- actiread::acti_example_gt3x()
+data <- actiread::acti_read_gt3x(path, verbose = FALSE)
+
+counts <- acti_calculate_counts(data)
+summary <- calculate_measures(
+  data,
+  calculate_mims = FALSE,
+  calculate_ac = FALSE,
+  flag_data = FALSE
+)
+processed <- mims_default_processing(data[1:6000, ])
 ```

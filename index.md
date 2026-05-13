@@ -1,0 +1,217 @@
+# actimetrics
+
+`actimetrics` provides helpers for actigraphy preprocessing, summary
+statistics, count-based overlays, and MIMS-oriented processing.
+
+Core entry points:
+
+- `calculate_measures()` for summary metrics such as AI, MAD, MIMS, and
+  AC
+- [`acti_calculate_counts()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_counts.md)
+  and
+  [`acti_process()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_process.md)
+  for count and wear overlays
+- [`mims_default_processing()`](http://johnmuschelli.com/SummarizedActigraphy/reference/mims_default_processing.md)
+  for the default MIMS preprocessing chain
+- [`acti_calibrate()`](http://johnmuschelli.com/SummarizedActigraphy/reference/calibrate.md)
+  for calibration through `agcounts` using the van Hees method commonly
+  implemented in `GGIR`
+
+## Installation
+
+You can install `actimetrics` from GitHub with:
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("jhuwit/actimetrics")
+```
+
+## Quick Start
+
+``` r
+
+library(actibase)
+library(actiread)
+library(actimetrics)
+path <- actiread::acti_example_gt3x()
+data <- actiread::acti_read_gt3x(path, verbose = FALSE)
+```
+
+We can calculate minute-level Activity Counts using the `agcounts`
+package.
+
+``` r
+
+counts <- acti_calculate_counts(data)
+#> [1] "Creating Downsampled Data"
+#> [1] "Filtering Data"
+#> [1] "Trimming Data"
+#> [1] "Getting data back to 10Hz for accumulation"
+#> [1] "Summing epochs"
+counts
+#> # A tibble: 280 × 5
+#>    time                axis1 axis2 axis3 counts
+#>    <dttm>              <dbl> <dbl> <dbl>  <dbl>
+#>  1 2019-09-17 18:40:00     0     0     0      0
+#>  2 2019-09-17 18:41:00     0     0     0      0
+#>  3 2019-09-17 18:42:00     0     0     0      0
+#>  4 2019-09-17 18:43:00     0     0     0      0
+#>  5 2019-09-17 18:44:00     0     0     0      0
+#>  6 2019-09-17 18:45:00     0     0     0      0
+#>  7 2019-09-17 18:46:00     0     0     0      0
+#>  8 2019-09-17 18:47:00     0     0     0      0
+#>  9 2019-09-17 18:48:00     0     0     0      0
+#> 10 2019-09-17 18:49:00     0     0     0      0
+#> # ℹ 270 more rows
+get_transformations(counts)
+#> [1] "acti_calculate_counts:sample_rate_attribute_changed_to_1"
+#> [2] "acti_calculate_counts:counts_created_at_60s_epoch"       
+#> [3] "acti_read_gt3x:timezone_GMT_forced"                      
+#> [4] "acti_read_gt3x:timezone_Etc/GMT-4_applied"               
+#> [5] "acti_read_gt3x:attributes_set"                           
+#> [6] "acti_fill_zeros:filled_zeros"                            
+#> [7] "acti_read_gt3x:data_read"
+```
+
+From this, we can calculate wear flags for each minute according to the
+Choi or Troiano methods.
+
+``` r
+
+wear = acti_calculate_nonwear(counts)
+#> Joining with `by = join_by(timestamp)`
+get_transformations(wear)
+#>  [1] "acti_calculate_wear:choi_wear_algorithm_run_using_magnitude"
+#>  [2] "acti_calculate_counts:sample_rate_attribute_changed_to_1"   
+#>  [3] "acti_calculate_counts:counts_created_at_60s_epoch"          
+#>  [4] "acti_read_gt3x:timezone_GMT_forced"                         
+#>  [5] "acti_read_gt3x:timezone_Etc/GMT-4_applied"                  
+#>  [6] "acti_read_gt3x:attributes_set"                              
+#>  [7] "acti_fill_zeros:filled_zeros"                               
+#>  [8] "acti_read_gt3x:data_read"                                   
+#>  [9] "acti_calculate_counts:sample_rate_attribute_changed_to_1"   
+#> [10] "acti_calculate_counts:counts_created_at_60s_epoch"          
+#> [11] "acti_read_gt3x:timezone_GMT_forced"                         
+#> [12] "acti_read_gt3x:timezone_Etc/GMT-4_applied"                  
+#> [13] "acti_read_gt3x:attributes_set"                              
+#> [14] "acti_fill_zeros:filled_zeros"                               
+#> [15] "acti_read_gt3x:data_read"
+```
+
+We can then merge them so the counts have the wear flags:
+
+``` r
+
+result = dplyr::full_join(counts, wear, by = "time") %>%
+  dplyr::mutate(wear = ifelse(is.na(wear), FALSE, wear))
+get_transformations(result)
+#> [1] "acti_calculate_counts:sample_rate_attribute_changed_to_1"
+#> [2] "acti_calculate_counts:counts_created_at_60s_epoch"       
+#> [3] "acti_read_gt3x:timezone_GMT_forced"                      
+#> [4] "acti_read_gt3x:timezone_Etc/GMT-4_applied"               
+#> [5] "acti_read_gt3x:attributes_set"                           
+#> [6] "acti_fill_zeros:filled_zeros"                            
+#> [7] "acti_read_gt3x:data_read"
+```
+
+These functions are combined in `acti_process`, but the transformations
+are retained correctly:
+
+``` r
+
+processed = acti_process(data)
+#> [1] "Creating Downsampled Data"
+#> [1] "Filtering Data"
+#> [1] "Trimming Data"
+#> [1] "Getting data back to 10Hz for accumulation"
+#> [1] "Summing epochs"
+processed
+#> # A tibble: 40 × 6
+#>    time                axis1 axis2 axis3 counts wear 
+#>    <dttm>              <dbl> <dbl> <dbl>  <dbl> <lgl>
+#>  1 2019-09-17 22:40:00  5223  9743  8142  13729 TRUE 
+#>  2 2019-09-17 22:41:00  9298  9061  4099  13615 TRUE 
+#>  3 2019-09-17 22:42:00  4382  4371  3495   7108 TRUE 
+#>  4 2019-09-17 22:43:00  3265  3153  2540   5201 TRUE 
+#>  5 2019-09-17 22:44:00  1415   874   900   1891 TRUE 
+#>  6 2019-09-17 22:45:00     0     0     0      0 TRUE 
+#>  7 2019-09-17 22:46:00   115   218   140    283 TRUE 
+#>  8 2019-09-17 22:47:00     0     0     0      0 TRUE 
+#>  9 2019-09-17 22:48:00     0     0     0      0 TRUE 
+#> 10 2019-09-17 22:49:00     0     0     0      0 TRUE 
+#> # ℹ 30 more rows
+get_transformations(processed)
+#>  [1] "acti_process:counts_wear_merge"                          
+#>  [2] "acti_calculate_counts:sample_rate_attribute_changed_to_1"
+#>  [3] "acti_calculate_counts:counts_created_at_60s_epoch"       
+#>  [4] "acti_resample:sample_rate_attribute_changed_to_30"       
+#>  [5] "acti_resample:linear_resampled_to_30Hz"                  
+#>  [6] "acti_read_gt3x:timezone_GMT_forced"                      
+#>  [7] "acti_read_gt3x:timezone_Etc/GMT-4_applied"               
+#>  [8] "acti_read_gt3x:attributes_set"                           
+#>  [9] "acti_fill_zeros:filled_zeros"                            
+#> [10] "acti_read_gt3x:data_read"
+```
+
+``` r
+
+summary <- acti_calculate_measures(
+  data,
+  calculate_mims = FALSE,
+  calculate_ac = TRUE,
+  flag_data = FALSE
+)
+#> Fixing Zeros with fix_zeros
+#> Calculating ai0
+#> Calculating MAD
+#> Joining AI and MAD
+#> Calculating AC
+#> [1] "Creating Downsampled Data"
+#> [1] "Filtering Data"
+#> [1] "Trimming Data"
+#> [1] "Getting data back to 10Hz for accumulation"
+#> [1] "Summing epochs"
+#> Joining AC
+processed <- mims_default_processing(data[1:6000, ])
+#> Warning in get_dynamic_range(data, dynamic_range): No dynamic range found in
+#> header, using data estimate
+#> Running extrapolation
+#> Running filtering
+#> Registered S3 methods overwritten by 'signal':
+#>   method         from   
+#>   print.freqs    gsignal
+#>   print.freqz    gsignal
+#>   print.grpdelay gsignal
+#>   plot.grpdelay  gsignal
+#>   print.impz     gsignal
+#>   print.specgram gsignal
+#>   plot.specgram  gsignal
+```
+
+Calibration uses the van Hees method as implemented by `agcounts`, which
+is the same approach typically exposed through `GGIR`.
+
+``` r
+
+calibrated <- acti_calibrate(data)
+#> Filling Zeros
+#> Running agcounts::agcalibrate
+#> Loading chunk: 1
+#> 
+#>  There is not enough data to perform the GGIR calibration method. Returning data as read by read.gt3x.
+get_transformations(calibrated)
+#>  [1] "acti_calibrate:agcounts_calibrated"       
+#>  [2] "acti_fill_zeros:filled_zeros"             
+#>  [3] "acti_read_gt3x:timezone_GMT_forced"       
+#>  [4] "acti_read_gt3x:timezone_Etc/GMT-4_applied"
+#>  [5] "acti_read_gt3x:attributes_set"            
+#>  [6] "acti_fill_zeros:filled_zeros"             
+#>  [7] "acti_read_gt3x:data_read"                 
+#>  [8] "acti_fill_zeros:filled_zeros"             
+#>  [9] "acti_read_gt3x:timezone_GMT_forced"       
+#> [10] "acti_read_gt3x:timezone_Etc/GMT-4_applied"
+#> [11] "acti_read_gt3x:attributes_set"            
+#> [12] "acti_fill_zeros:filled_zeros"             
+#> [13] "acti_read_gt3x:data_read"
+```

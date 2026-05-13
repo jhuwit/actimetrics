@@ -1,0 +1,47 @@
+Type: Package
+Package: actimetrics
+Title: Create Metrics Actigraphy and Activity Analysis
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = "John",
+           family = "Muschelli",
+           role = c("aut", "cre"),
+           email = "muschellij2@gmail.com",
+           comment = c(ORCID = "0000-0001-6469-1750"))
+    )
+Description: Provides functions for calibrating, counting, and summarizing 
+    actigraphy and activity data into specific metrics and sleep measures.
+License: GPL-3
+Depends: 
+    R (>= 2.10)
+Suggests:
+    testthat,
+    utils,
+    covr,
+    knitr,
+    httr,
+    rmarkdown,
+    ggplot2,
+    MIMSunit,
+    data.table,
+    stepcount,
+    actigraph.sleepr,
+    agcounts
+Encoding: UTF-8
+LazyData: true
+VignetteBuilder: knitr
+Imports: 
+    actibase,
+    actiread,
+    magrittr,
+    dplyr,
+    lubridate,
+    assertthat,
+    purrr,
+    tibble,
+    rlang
+Remotes: muschellij2/stepcount, dipetkov/actigraph.sleepr
+URL: https://github.com/jhuwit/actimetrics
+BugReports: https://github.com/jhuwit/actimetrics/issues
+biocViews: Infrastructure
+RoxygenNote: 7.3.3

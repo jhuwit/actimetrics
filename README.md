@@ -1,0 +1,60 @@
+
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/muschellij2/actibase/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/muschellij2/actibase/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/muschellij2/actibase/branch/master/graph/badge.svg)](https://codecov.io/gh/muschellij2/actibase?branch=master)
+[![Codecov test
+coverage](https://codecov.io/gh/muschellij2/actibase/graph/badge.svg)](https://app.codecov.io/gh/muschellij2/actibase)
+<!-- badges: end -->
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# actibase Package
+
+`actibase` is a baseline package for raw actigraphy and activity workflows.
+It provides readers and core preprocessing helpers that downstream packages
+can build on, such as step-count or summarization overlays.
+
+## Installation
+
+You can install `actibase` from GitHub with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("muschellij2/actibase")
+```
+
+## Quick start
+
+``` r
+library(actibase)
+gt3x_file = system.file(
+  "extdata",
+  "TAS1H30182785_2019-09-17.gt3x.gz",
+  package = "actibase"
+)
+res = ab_read_gt3x(gt3x_file, verbose = FALSE)
+res = ab_calibrate(res, verbose = FALSE)
+res = ab_standardize_data(res)
+resampled = ab_resample(res, sample_rate = 30L)
+counts = ab_calculate_counts(resampled, 60L)
+wear = ab_calculate_nonwear(counts)
+
+head(counts)
+head(wear)
+```
+
+## What lives here
+
+`actibase` keeps the primitives that other packages can build on:
+
+* file readers for GT3X and CWA input
+* calibration and zero-filling helpers
+* standardization and reshaping helpers
+* resampling
+* activity-count and non-wear calculation
+* transformation bookkeeping
+
+Higher-level summarization, step-count mapping, and downstream analysis
+should live in overlay packages.

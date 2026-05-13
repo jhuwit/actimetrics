@@ -7,7 +7,13 @@ Process Count Data
 ## Usage
 
 ``` r
-acti_calculate_counts(data, epoch = 60L, lfe_select = FALSE, verbose = TRUE)
+acti_calculate_counts(
+  data,
+  epoch = 60L,
+  resample = TRUE,
+  lfe_select = FALSE,
+  verbose = TRUE
+)
 
 acti_calculate_wear(
   data,
@@ -41,6 +47,11 @@ acti_apply_sadeh(data, ...)
 
   epoch length in seconds. Default is 60 seconds. See
   \`agcounts::calculate_counts()\`
+
+- resample:
+
+  (recommended) resample the data to 30Hz using \[actibase::resample\]
+  vs. using the resampling method from \[agcounts::calculate_counts\].
 
 - lfe_select:
 

@@ -20,7 +20,8 @@ Core entry points:
 - `acti_calculate_counts()` and `acti_process()` for count and wear
   overlays
 - `mims_default_processing()` for the default MIMS preprocessing chain
-- `acti_calibrate()` for calibration through `agcounts`
+- `acti_calibrate()` for calibration through `agcounts` using the van
+  Hees method commonly implemented in `GGIR`
 
 ## Installation
 
@@ -185,4 +186,30 @@ processed <- mims_default_processing(data[1:6000, ])
 #>   print.impz     gsignal
 #>   print.specgram gsignal
 #>   plot.specgram  gsignal
+```
+
+Calibration uses the van Hees method as implemented by `agcounts`, which
+is the same approach typically exposed through `GGIR`.
+
+``` r
+calibrated <- acti_calibrate(data)
+#> Filling Zeros
+#> Running agcounts::agcalibrate
+#> Loading chunk: 1
+#> 
+#>  There is not enough data to perform the GGIR calibration method. Returning data as read by read.gt3x.
+get_transformations(calibrated)
+#>  [1] "acti_calibrate:agcounts_calibrated"       
+#>  [2] "acti_fill_zeros:filled_zeros"             
+#>  [3] "acti_read_gt3x:timezone_GMT_forced"       
+#>  [4] "acti_read_gt3x:timezone_Etc/GMT-4_applied"
+#>  [5] "acti_read_gt3x:attributes_set"            
+#>  [6] "acti_fill_zeros:filled_zeros"             
+#>  [7] "acti_read_gt3x:data_read"                 
+#>  [8] "acti_fill_zeros:filled_zeros"             
+#>  [9] "acti_read_gt3x:timezone_GMT_forced"       
+#> [10] "acti_read_gt3x:timezone_Etc/GMT-4_applied"
+#> [11] "acti_read_gt3x:attributes_set"            
+#> [12] "acti_fill_zeros:filled_zeros"             
+#> [13] "acti_read_gt3x:data_read"
 ```

@@ -5,7 +5,7 @@
 \title{Calibrate Accelerometer Data using `agcounts`}
 \usage{
 acti_calibrate(
-  file,
+  data,
   verbose = TRUE,
   fill_zeroes = TRUE,
   round_after_calibration = TRUE,
@@ -13,7 +13,7 @@ acti_calibrate(
 )
 }
 \arguments{
-\item{file}{Either a GT3X file, `AccData` object, or `data.frame` with
+\item{data}{Either a GT3X file, `AccData` object, or `data.frame` with
 `X/Y/Z` and `time`}
 
 \item{verbose}{print diagnostic messages, higher number result in higher verbosity}
@@ -25,13 +25,14 @@ end of the time course using last observation carried forward behavior.}
 \item{round_after_calibration}{Should the data be rounded after calibration?
 Will round to 3 digits}
 
-\item{...}{Additional arguments to pass to [agcounts::agcalibrate]}
+\item{...}{Additional arguments to pass to `agcounts::agcalibrate()`}
 }
 \description{
-Calibrate Accelerometer Data using `agcounts`
+This uses the van Hees calibration method typically exposed through GGIR,
+implemented here via `agcounts::agcalibrate()`.
 }
 \examples{
 \dontrun{
-  res = acti_calibrate(actiread::acti_example_gt3x())
+  res = acti_calibrate(data = actiread::acti_example_gt3x())
 }
 }

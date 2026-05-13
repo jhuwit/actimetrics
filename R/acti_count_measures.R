@@ -31,6 +31,7 @@ acti_calculate_wear = function(data,
                                method = c("choi", "troiano"),
                                use_magnitude = TRUE,
                                ...) {
+  rlang::check_installed("actigraph.sleepr")
   data = acti_standardize_actigraph.sleepr(data)
 
   method = match.arg(method)
@@ -85,6 +86,7 @@ acti_calculate_nonwear = acti_calculate_wear
 #' @export
 #' @rdname acti_calculate_counts
 acti_apply_cole_kripke = function(data) {
+  rlang::check_installed("actigraph.sleepr")
   timestamp = NULL
   rm(list = c("timestamp"))
   data = acti_standardize_actigraph.sleepr(data)
@@ -107,6 +109,7 @@ acti_apply_cole_kripke = function(data) {
 #' @export
 #' @rdname acti_calculate_counts
 acti_apply_tudor_locke = function(data, ...) {
+  rlang::check_installed("actigraph.sleepr")
   data = acti_standardize_actigraph.sleepr(data)
   tl = data %>%
     actigraph.sleepr::apply_tudor_locke(...)
@@ -123,6 +126,7 @@ acti_apply_tudor_locke = function(data, ...) {
 #' @export
 #' @rdname acti_calculate_counts
 acti_apply_sadeh = function(data, ...) {
+  rlang::check_installed("actigraph.sleepr")
   data = acti_standardize_actigraph.sleepr(data)
   tl = data %>%
     actigraph.sleepr::apply_sadeh(...)

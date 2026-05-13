@@ -1,9 +1,12 @@
 #' Calibrate Accelerometer Data using `agcounts`
 #'
-#' @param file Either a GT3X file, `AccData` object, or `data.frame` with
+#' This uses the van Hees calibration method typically exposed through GGIR,
+#' implemented here via `agcounts::agcalibrate()`.
+#'
+#' @param data Either a GT3X file, `AccData` object, or `data.frame` with
 #' `X/Y/Z` and `time`
 #' @param verbose print diagnostic messages, higher number result in higher verbosity
-#' @param ... Additional arguments to pass to [agcounts::agcalibrate]
+#' @param ... Additional arguments to pass to `agcounts::agcalibrate()`
 #' @param fill_zeroes Should `actibase::acti_fill_zeros()` be run before
 #' calculating the measures? This trims zero values from the beginning and the
 #' end of the time course using last observation carried forward behavior.
@@ -15,38 +18,38 @@
 #'
 #' @examples
 #' \dontrun{
-#'   res = acti_calibrate(actiread::acti_example_gt3x())
+#'   res = acti_calibrate(data = actiread::acti_example_gt3x())
 #' }
 acti_calibrate = function(
-    file,
+    data,
     verbose = TRUE,
     fill_zeroes = TRUE,
     round_after_calibration = TRUE,
     ...) {
   rlang::check_installed("agcounts")
-  if (is.character(file) && grepl("[.]gt3x(|[.]gz)$", file)) {
+  if (is.character(data) && grepl("[.]gt3x(|[.]gz)$", data)) {
     if (verbose) {
       message("Detected gt3x file - reading in using acti_read_gt3x")
     }
-    file = acti_read_gt3x(file, verbose = verbose > 1)
+    data = acti_read_gt3x(data, verbose = verbose > 1)
   }
   # running it here because then we can add the transforms in there
   if (fill_zeroes) {
     if (verbose) {
       message("Filling Zeros")
     }
-    file = acti_fill_zeros(
-      file
+    data = acti_fill_zeros(
+      data
     )
   }
   # already done - don't want to add another transformations
-  transformations = get_transformations(file)
+  transformations = get_transformations(data)
 
   if (verbose) {
     message("Running agcounts::agcalibrate")
   }
   data = agcounts::agcalibrate(
-    file,
+    data,
     verbose = verbose > 1,
     ...)
 

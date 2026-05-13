@@ -1,3 +1,25 @@
+#' Calculate Step Counts via `stepcount`
+#'
+#' Use the `stepcount` package to estimate steps from raw accelerometer data
+#' and summarize them to minute-level epochs.
+#'
+#' @param data A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`,
+#' `Z`, and `time`
+#' @param sample_rate Sample rate in Hz. If omitted, it is taken from the
+#' input object when available.
+#' @param ... Additional arguments passed to [stepcount::stepcount()]
+#'
+#' @return A tibble with minute-level `time`, `steps`, and `walking`
+#' columns.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   reticulate::py_require("stepcount==3.11.0", python_version = "3.10", action = "add")
+#'   sc = reticulate::import("stepcount")
+#'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+#'   steps = acti_calculate_stepcount(data, sample_rate = 100)
+#' }
 acti_calculate_stepcount = function(data,
                                     sample_rate = NULL,
                                     ...
@@ -6,6 +28,10 @@ acti_calculate_stepcount = function(data,
   data = acti_standardize_data(data, check_xyz = TRUE)
   if (!is.null(sample_rate)) {
     attr(data, "sample_rate") = sample_rate
+  } else {
+    if (is.null(attr(data, "sample_rate"))) {
+      attr(data, "sample_rate") = get_sample_rate(data)
+    }
   }
   assertthat::assert_that(
     assertthat::is.count(attr(data, "sample_rate"))
@@ -22,7 +48,7 @@ acti_calculate_stepcount = function(data,
     dplyr::summarise(walking = any(walking, na.rm = TRUE))
   sdata = steps$steps
   sdata = set_transformations(sdata,
-                              c("ssl_stepcounts_created",
+                              c("stepcounts_created",
                                 get_transformations(data)
                               ),
                               prefix = "acti_stepcount",
@@ -51,4 +77,3 @@ acti_calculate_stepcount = function(data,
     dplyr::mutate(steps = ifelse(!is.finite(steps), NA_integer_, steps))
   sdata
 }
-

@@ -53,3 +53,13 @@ head(wear)
 processed <- mims_default_processing(data[1:6000, ], round_after_processing = TRUE)
 head(processed)
 ```
+
+## Calibration
+
+Calibration uses the van Hees method as implemented by `agcounts`, which is
+the same approach typically exposed through `GGIR`.
+
+```{r, eval = FALSE}
+calibrated <- acti_calibrate(data)
+get_transformations(calibrated)
+```

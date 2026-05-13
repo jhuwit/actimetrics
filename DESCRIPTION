@@ -25,7 +25,8 @@ Suggests:
     data.table,
     stepcount,
     actigraph.sleepr,
-    agcounts
+    agcounts,
+    reticulate
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 
@@ -45,5 +46,7 @@ RoxygenNote: 7.3.3
 Remotes: 
   jhuwit/actibase,
   jhuwit/actiread,
-  mHealthGroup/MIMSunit
+  mHealthGroup/MIMSunit,
+  jhuwit/stepcount,
+  dipetkov/actigraph.sleepr
 LazyData: true

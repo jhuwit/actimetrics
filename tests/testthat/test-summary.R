@@ -1,27 +1,39 @@
 test_that("summary helpers calculate and fill time correctly", {
   data = make_gap_signal()
 
-  ai_sparse = acti_calculate_ai(data, ensure_all_time = FALSE)
-  ai_full = acti_calculate_ai(data, ensure_all_time = TRUE)
+  ai_sparse = acti_calculate_ai(data, ensure_all_time = FALSE, verbose = TRUE)
+  ai_full = acti_calculate_ai(data, ensure_all_time = TRUE, verbose = TRUE)
   expect_equal(nrow(ai_sparse) + 1L, nrow(ai_full))
   expect_true("AI" %in% names(ai_full))
 
-  ai_index = acti_calculate_activity_index(data, ensure_all_time = FALSE)
+  ai_index = acti_calculate_activity_index(
+    data,
+    ensure_all_time = FALSE,
+    verbose = TRUE
+  )
   expect_equal(ai_sparse, ai_index)
 
   dt = data.table::as.data.table(data)
-  ai_dt = acti_calculate_ai(dt, ensure_all_time = FALSE)
+  ai_dt = acti_calculate_ai(dt, ensure_all_time = FALSE, verbose = TRUE)
   expect_true(data.table::is.data.table(ai_dt))
 
-  mad = acti_calculate_mad(data, ensure_all_time = FALSE)
+  mad = acti_calculate_mad(data, ensure_all_time = FALSE, verbose = TRUE)
   expect_true(all(c("MAD", "ENMO_t", "AI_DEFINED") %in% names(mad)))
-  expect_equal(nrow(acti_calculate_enmo(data, ensure_all_time = FALSE)), nrow(mad))
+  expect_equal(
+    nrow(acti_calculate_enmo(data, ensure_all_time = FALSE)),
+    nrow(mad)
+  )
   expect_equal(
     nrow(acti_calculate_ai_defined(data, ensure_all_time = FALSE)),
     nrow(mad)
   )
 
-  auc = acti_calculate_auc(data, allow_truncation = TRUE, ensure_all_time = FALSE)
+  auc = acti_calculate_auc(
+    data,
+    allow_truncation = TRUE,
+    ensure_all_time = FALSE,
+    verbose = TRUE
+  )
   expect_true(all(c("AUC_X", "AUC_Y", "AUC_Z", "AUC") %in% names(auc)))
 
   expect_error(acti_calculate_flags(data), "flag is not in the data")
@@ -51,7 +63,8 @@ test_that("calculate_measures combines summary outputs", {
     calculate_ac = TRUE,
     flag_data = TRUE,
     dynamic_range = c(-10, 10),
-    ensure_all_time = FALSE
+    ensure_all_time = FALSE,
+    verbose = TRUE
   )
 
   expect_true("time" %in% names(measures))
@@ -62,7 +75,7 @@ test_that("calculate_measures combines summary outputs", {
 
 test_that("data.table input stays data.table for summary branches", {
   data = data.table::as.data.table(make_gap_signal())
-  mad = acti_calculate_mad(data, ensure_all_time = FALSE)
+  mad = acti_calculate_mad(data, ensure_all_time = FALSE, verbose = TRUE)
   expect_true(data.table::is.data.table(mad))
 })
 

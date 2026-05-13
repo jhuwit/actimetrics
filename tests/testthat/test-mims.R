@@ -42,7 +42,8 @@ test_that("MIMS processors and shortcuts return expected shapes", {
     data,
     dynamic_range = c(-2, 2),
     output_mims_per_axis = TRUE,
-    ensure_all_time = FALSE
+    ensure_all_time = FALSE,
+    verbose = TRUE
   )
   expect_true(any(grepl("MIMS_UNIT", names(fast))))
 
@@ -55,19 +56,51 @@ test_that("wear helpers rename time columns and run algorithms", {
     skip("agcounts or actigraph.sleepr is not runnable in this session")
   }
   data = make_sleepr_epochs()
-  expect_named(acti_calculate_wear(data), c("time", "wear"))
+  wear = acti_calculate_wear(data)
+  expect_named(wear, c("time", "wear"))
+
+  cole_kripke = acti_apply_cole_kripke(data)
+  expect_true(all(c("time", "sleep") %in% names(cole_kripke)))
+  expect_true(any(grepl("cole_kripke_run", get_transformations(cole_kripke))))
+
+  tudor_locke = acti_apply_tudor_locke(cole_kripke)
+  expect_true(all(
+    c("in_bed_time", "out_bed_time", "sleep_fragmentation_index") %in%
+      names(tudor_locke)
+  ))
+  expect_true(any(grepl("tudor_locke_run", get_transformations(tudor_locke))))
+
+  sadeh = acti_apply_sadeh(cole_kripke)
+  expect_true(all(c("timestamp", "sleep") %in% names(sadeh)))
+  expect_true(any(grepl("apply_sadeh_run", get_transformations(sadeh))))
 })
 
-test_that("activity count and calibration helpers work on example data", {
-  if (!can_run_agcounts()) {
+test_that("activity count, processing, and calibration helpers work on example data", {
+  if (!can_run_agcounts() || !can_load_pkg("actigraph.sleepr")) {
     skip("agcounts is not runnable in this session")
   }
   data = make_regular_signal(12000)
-  counts = acti_calculate_counts(data)
+  counts = acti_calculate_counts(data, verbose = TRUE)
   expect_true(all(c("time", "counts") %in% names(counts)))
 
-  expect_error(acti_process(data), "missing values")
+  path = actiread::acti_example_gt3x()
+  processed = acti_process(path, verbose = FALSE)
+  expect_true(all(c("time", "counts", "wear") %in% names(processed)))
+  expect_true(any(grepl("counts_wear_merge", get_transformations(processed))))
 
-  calibrated = acti_calibrate(data[1:6000, ], verbose = FALSE)
+  calibrated = acti_calibrate(data = data[1:6000, ], verbose = FALSE)
   expect_true("time" %in% names(calibrated))
+})
+
+test_that("acti_calibrate emits verbose messages", {
+  if (!can_run_agcounts()) {
+    skip("agcounts is not runnable in this session")
+  }
+  expect_message(
+    acti_calibrate(
+      data = actiread::acti_example_gt3x(),
+      verbose = TRUE
+    ),
+    "Running agcounts::agcalibrate"
+  )
 })

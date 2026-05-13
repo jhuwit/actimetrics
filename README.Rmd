@@ -3,12 +3,11 @@ output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/jhuwit/actimetrics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jhuwit/actimetrics/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/jhuwit/actimetrics/branch/main/graph/badge.svg)](https://codecov.io/gh/jhuwit/actimetrics?branch=main)
 <!-- badges: end -->
-
+    
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -28,7 +27,8 @@ Core entry points:
 - `calculate_measures()` for summary metrics such as AI, MAD, MIMS, and AC
 - `acti_calculate_counts()` and `acti_process()` for count and wear overlays
 - `mims_default_processing()` for the default MIMS preprocessing chain
-- `acti_calibrate()` for calibration through `agcounts`
+- `acti_calibrate()` for calibration through `agcounts` using the van Hees
+  method commonly implemented in `GGIR`
 
 ## Installation
 
@@ -92,3 +92,10 @@ summary <- acti_calculate_measures(
 processed <- mims_default_processing(data[1:6000, ])
 ```
 
+Calibration uses the van Hees method as implemented by `agcounts`, which is
+the same approach typically exposed through `GGIR`.
+
+```{r calibration}
+calibrated <- acti_calibrate(data)
+get_transformations(calibrated)
+```

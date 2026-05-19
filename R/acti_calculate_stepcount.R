@@ -1,7 +1,7 @@
 #' Calculate Step Counts via `stepcount`
 #'
 #' Use the `stepcount` package to estimate steps from raw accelerometer data
-#' and summarize them to minute-level epochs.
+#' and summarize them to minute-level epochs (as opposed to 10s default)
 #'
 #' @param data A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`,
 #' `Z`, and `time`
@@ -54,6 +54,7 @@ acti_calculate_stepcount = function(data,
                               prefix = "acti_stepcount",
                               add = FALSE)
 
+  # Now do it at a minute level
   trans = get_transformations(sdata)
   sdata = sdata %>%
     dplyr::mutate(time = lubridate::floor_date(time, unit = "1 min")) %>%

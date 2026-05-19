@@ -21,7 +21,7 @@ columns.
 }
 \description{
 Use the `stepcount` package to estimate steps from raw accelerometer data
-and summarize them to minute-level epochs.
+and summarize them to minute-level epochs (as opposed to 10s default)
 }
 \examples{
 \dontrun{

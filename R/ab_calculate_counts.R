@@ -57,11 +57,16 @@ acti_calculate_counts = function(
     dplyr::group_by(time) %>%
     dplyr::summarise(dplyr::across(dplyr::everything(), \(x) sum(x, na.rm = TRUE))) %>%
     dplyr::ungroup()
+  # Log-transform accelerometer counts with a +1 offset so zeros stay finite.
+  counts <- counts %>%
+    dplyr::mutate(counts_log10 = log10(counts + 1))
+
   counts = set_transformations(counts, trans)
   counts = set_transformations(counts,
                                c(
                                  paste0("sample_rate_attribute_changed_to_",
                                         round(60/epoch, 2)),
+                                 paste0("log_10+1-counts_created_at_", epoch, "s_epoch"),
                                  paste0("counts_created_at_", epoch, "s_epoch")
                                ),
                                prefix = "acti_calculate_counts",

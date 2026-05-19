@@ -1,7 +1,8 @@
 # Calculate Step Counts via \`stepcount\`
 
 Use the \`stepcount\` package to estimate steps from raw accelerometer
-data and summarize them to minute-level epochs.
+data and summarize them to minute-level epochs (as opposed to 10s
+default)
 
 ## Usage
 

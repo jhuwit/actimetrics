@@ -40,9 +40,8 @@ Imports:
     tibble,
     rlang,
     stats,
-    tidyr
-biocViews: Infrastructure
-RoxygenNote: 7.3.3
+    tidyr,
+    walking
 Remotes: 
   jhuwit/actibase,
   jhuwit/actiread,
@@ -50,3 +49,4 @@ Remotes:
   jhuwit/stepcount,
   dipetkov/actigraph.sleepr
 LazyData: true
+Config/roxygen2/version: 8.0.0

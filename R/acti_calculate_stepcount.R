@@ -51,7 +51,7 @@ acti_calculate_stepcount = function(data,
                               c("stepcounts_created",
                                 get_transformations(data)
                               ),
-                              prefix = "acti_stepcount",
+                              prefix = "acti_calculate_stepcount",
                               add = FALSE)
 
   # Now do it at a minute level
@@ -64,14 +64,14 @@ acti_calculate_stepcount = function(data,
   sdata = set_transformations(sdata, trans)
   sdata = set_transformations(sdata,
                               "steps_summarized_per_60s_epoch",
-                              prefix = "acti_stepcount",
+                              prefix = "acti_calculate_stepcount",
                               add = TRUE)
 
   sdata = sdata %>%
     dplyr::left_join(walking, by = "time")
   sdata = set_transformations(sdata,
                               "walking_column_joined",
-                              prefix = "acti_stepcount",
+                              prefix = "acti_calculate_stepcount",
                               add = TRUE)
 
   sdata = sdata %>%

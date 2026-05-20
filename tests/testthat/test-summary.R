@@ -80,6 +80,13 @@ test_that("data.table input stays data.table for summary branches", {
 })
 
 test_that("dynamic range checks support AccData inputs", {
-  data = make_accdata()
-  expect_true(actimetrics:::check_dynamic_range(data, c(-2, 2)))
+  data = make_gap_signal()
+  expect_warning(
+    acti_calculate_mims(
+      data,
+      dynamic_range = c(-0.5, 0.5),
+      ensure_all_time = FALSE
+    ),
+    "Dynamic range does not cover all the data"
+  )
 })

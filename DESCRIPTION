@@ -25,7 +25,7 @@ Suggests:
     data.table,
     stepcount,
     actigraph.sleepr,
-    agcounts,
+    agcounts (>= 0.6.7),
     reticulate
 Encoding: UTF-8
 VignetteBuilder: knitr

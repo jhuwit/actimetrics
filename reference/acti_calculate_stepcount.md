@@ -38,5 +38,6 @@ if (FALSE) { # \dontrun{
   sc = reticulate::import("stepcount")
   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
   steps = acti_calculate_stepcount(data, sample_rate = 100)
+  steps = acti_calculate_stepcount(data, model_type = "rf")
 } # }
 ```

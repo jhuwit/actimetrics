@@ -9,6 +9,8 @@
   [`acti_apply_tudor_locke()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_counts.md)
   [`acti_apply_sadeh()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_counts.md)
   : Process Count Data
+- [`acti_calculate_forest()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_forest.md)
+  : Calculate Step Counts via Oak/Forest
 - [`acti_calculate_measures()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_measures.md)
   [`acti_calculate_ai()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_measures.md)
   [`acti_calculate_activity_index()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_measures.md)
@@ -21,8 +23,12 @@
   [`acti_calculate_fast_mims()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_measures.md)
   [`acti_calculate_mims()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_measures.md)
   : Calculate Summary Measures from Raw Accelerometer Data
+- [`acti_calculate_sdt()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_sdt.md)
+  : Calculate Step Counts via Oak/Forest
 - [`acti_calculate_stepcount()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_stepcount.md)
   : Calculate Step Counts via \`stepcount\`
+- [`acti_calculate_verisense()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_verisense.md)
+  : Calculate Step Counts via Verisense
 - [`acti_count_data`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_count_data.md)
   : Example Actigraphy/Activity Count Data
 - [`acti_process()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_process.md)

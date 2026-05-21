@@ -48,7 +48,7 @@ Remotes:
   cran/MIMSunit,
   jhuwit/stepcount,
   jhuwit/walking,
-  muschellij2/actigraph.sleepr,
+  dipetkov/actigraph.sleepr,
   bhelsel/agcounts
 LazyData: true
 Config/roxygen2/version: 8.0.0

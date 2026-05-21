@@ -55,7 +55,7 @@ acti_calculate_counts = function(
   counts = counts %>%
     dplyr::mutate(time = lubridate::floor_date(time, unit = paste0(epoch, " seconds"))) %>%
     dplyr::group_by(time) %>%
-    dplyr::summarise(dplyr::across(dplyr::everything(), \(x) sum(x, na.rm = TRUE))) %>%
+    dplyr::summarise(dplyr::across(dplyr::everything(), function(x) sum(x, na.rm = TRUE))) %>%
     dplyr::ungroup()
   # Log-transform accelerometer counts with a +1 offset so zeros stay finite.
   counts <- counts %>%

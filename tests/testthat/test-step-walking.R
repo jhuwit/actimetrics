@@ -86,10 +86,14 @@ test_that("stepcount and sdt infer sample rate when missing", {
     .package = "walking"
   )
 
-  out = acti_calculate_stepcount(data)
+  testthat::expect_warning({
+    out = acti_calculate_stepcount(data)
+  })
   expect_equal(out$steps, 5)
 
-  sdt = acti_calculate_sdt(data)
+  testthat::expect_warning({
+    sdt = acti_calculate_sdt(data)
+  })
   expect_equal(sdt$steps, 5)
 })
 
@@ -160,3 +164,4 @@ test_that("walking wrappers summarize mocked step outputs", {
   sdt = acti_calculate_sdt(data, sample_rate = 100)
   expect_equal(sdt$steps, 5)
 })
+

@@ -24,7 +24,7 @@ Suggests:
     MIMSunit,
     data.table,
     stepcount,
-    actigraph.sleepr,
+    actigraph.sleepr (>= 0.3.1),
     agcounts (>= 0.6.7),
     reticulate
 Encoding: UTF-8
@@ -48,7 +48,7 @@ Remotes:
   cran/MIMSunit,
   jhuwit/stepcount,
   jhuwit/walking,
-  dipetkov/actigraph.sleepr,
+  muschellij2/actigraph.sleepr,
   bhelsel/agcounts
 LazyData: true
 Config/roxygen2/version: 8.0.0

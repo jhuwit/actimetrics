@@ -129,8 +129,18 @@ acti_calculate_sdt = function(data,
     }
   }
 
-  walking::estimate_steps_sdt(
+  sdata = walking::estimate_steps_sdt(
     data,
     sample_rate = attr(data, "sample_rate"),
     ...)
+  sdata = sdata %>% dplyr::as_tibble()
+
+  sdata = set_transformations(sdata, get_transformations(data), add = FALSE)
+  sdata = set_transformations(sdata,
+                              paste0("sdt_steps_estimated"),
+                              prefix = "acti_calculate_sdt",
+                              add = TRUE)
+
+  sdata = summarize_to_minute(sdata, prefix = "acti_calculate_sdt")
+  sdata
 }

@@ -97,10 +97,10 @@ path = actiread::acti_example_gt3x()
 ac = actiread::acti_read_gt3x(path)
 out = acti_calculate_counts(ac)
 } # }
-data = acti_count_data
-wear = acti_calculate_wear(data)
-tro_wear = acti_calculate_wear(data, method = "troiano")
-ck = acti_apply_cole_kripke(data)
-tl = acti_apply_tudor_locke(ck)
-sadeh = acti_apply_sadeh(ck)
+data = actimetrics::acti_count_data
+wear = actimetrics::acti_calculate_wear(data)
+tro_wear = actimetrics::acti_calculate_wear(data, method = "troiano")
+ck = actimetrics::acti_apply_cole_kripke(data)
+tl = actimetrics::acti_apply_tudor_locke(ck)
+sadeh = actimetrics::acti_apply_sadeh(ck)
 ```

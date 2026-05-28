@@ -36,8 +36,5 @@ data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #> ✔ Filled zeros in data
 #> ℹ Timezone not applied to data
 steps = acti_calculate_sdt(data)
-#> Warning: Python version requirements cannot be changed after Python has been initialized.
-#> * Python version request: '3.11' (from package:walking)
-#> * Python version initialized: '3.12.13'
 #> sdt completed
 ```

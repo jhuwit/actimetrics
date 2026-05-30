@@ -8,7 +8,6 @@ Authors@R: c(
            role = c("aut", "cre"),
            email = "muschellij2@gmail.com")
     )
-Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Provides functions for calibrating, counting, and summarizing 
     actigraphy and activity data into specific metrics and sleep measures.
 License: GPL-3

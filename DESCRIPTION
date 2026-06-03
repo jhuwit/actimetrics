@@ -44,7 +44,6 @@ Imports:
 Remotes: 
   jhuwit/actibase,
   jhuwit/actiread,
-  cran/MIMSunit,
   jhuwit/stepcount,
   jhuwit/walking
 LazyData: true

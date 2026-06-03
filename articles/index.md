@@ -3,4 +3,4 @@
 ### All vignettes
 
 - [actimetrics
-  workflow](http://johnmuschelli.com/SummarizedActigraphy/articles/actimetrics.md):
+  workflow](https://jhuwit.github.io/actimetrics/articles/actimetrics.md):

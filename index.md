@@ -7,13 +7,13 @@ Core entry points:
 
 - `calculate_measures()` for summary metrics such as AI, MAD, MIMS, and
   AC
-- [`acti_calculate_counts()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_calculate_counts.md)
+- [`acti_calculate_counts()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
   and
-  [`acti_process()`](http://johnmuschelli.com/SummarizedActigraphy/reference/acti_process.md)
+  [`acti_process()`](https://jhuwit.github.io/actimetrics/reference/acti_process.md)
   for count and wear overlays
-- [`mims_default_processing()`](http://johnmuschelli.com/SummarizedActigraphy/reference/mims_default_processing.md)
+- [`mims_default_processing()`](https://jhuwit.github.io/actimetrics/reference/mims_default_processing.md)
   for the default MIMS preprocessing chain
-- [`acti_calibrate()`](http://johnmuschelli.com/SummarizedActigraphy/reference/calibrate.md)
+- [`acti_calibrate()`](https://jhuwit.github.io/actimetrics/reference/calibrate.md)
   for calibration through `agcounts` using the van Hees method commonly
   implemented in `GGIR`
 

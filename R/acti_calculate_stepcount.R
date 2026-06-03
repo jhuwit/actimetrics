@@ -26,7 +26,9 @@ acti_calculate_stepcount = function(data,
                                     ...
 ) {
   rlang::check_installed("stepcount")
-  data = acti_standardize_data(data, check_xyz = TRUE)
+  if (is.data.frame(data)) {
+    data = acti_standardize_data(data, check_xyz = TRUE)
+  }
   if (!is.null(sample_rate)) {
     attr(data, "sample_rate") = sample_rate
   } else {

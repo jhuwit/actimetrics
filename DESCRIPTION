@@ -46,9 +46,7 @@ Remotes:
   jhuwit/actiread,
   cran/MIMSunit,
   jhuwit/stepcount,
-  jhuwit/walking,
-  dipetkov/actigraph.sleepr,
-  bhelsel/agcounts
+  jhuwit/walking
 LazyData: true
 Config/roxygen2/version: 8.0.0
 URL: https://jhuwit.github.io/actimetrics/

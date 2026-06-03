@@ -50,8 +50,8 @@ head(wear)
 ``` r
 
 processed <- mims_default_processing(data[1:6000, ], round_after_processing = TRUE)
-#> Warning in get_dynamic_range(data, dynamic_range): No dynamic range found in
-#> header, using data estimate
+#> Warning in get_range_from_header(hdr, dynamic_range = dynamic_range): NAs
+#> introduced by coercion
 #> Running extrapolation
 #> Running filtering
 head(processed)

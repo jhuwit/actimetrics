@@ -207,8 +207,8 @@ in the input</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating AUCs</span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">mims</span> <span class="op">=</span> <span class="fu">acti_calculate_mims</span><span class="op">(</span><span class="va">res</span>, dynamic_range <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No dynamic range found in header, using data estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ================================================================================</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in check_dynamic_range(data, dynamic_range = dynamic_range):</span> length(dynamic_range) == 2 is not TRUE</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"data.table"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>   <span class="va">dt</span> <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>

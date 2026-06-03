@@ -169,8 +169,8 @@ auc = acti_calculate_auc(res)
 #> Calculating AUCs
 # \donttest{
 mims = acti_calculate_mims(res, dynamic_range = NULL)
-#> Warning: No dynamic range found in header, using data estimate
-#> ================================================================================
+#> Warning: NAs introduced by coercion
+#> Error in check_dynamic_range(data, dynamic_range = dynamic_range): length(dynamic_range) == 2 is not TRUE
 # }
 if (requireNamespace("data.table", quietly = TRUE)) {
    dt = data.table::as.data.table(res)

@@ -698,6 +698,7 @@ check_dynamic_range = function(data, dynamic_range = c(-6, 6)) {
   stopifnot(length(dynamic_range) == 2,
             is.numeric(dynamic_range))
 
+  data = acti_standardize_data(data, subset_xyz = TRUE)
   r = range(data[actibase::xyz], na.rm = TRUE)
   all(r >= dynamic_range[1] & r <= dynamic_range[2])
 }

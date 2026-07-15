@@ -83,6 +83,7 @@ acti_calculate_forest = function(data,
   steps = NULL
   rm(list = c("steps"))
   trans = get_transformations(data)
+  rlang::check_installed("walking")
 
   sdata = walking::estimate_steps_forest(
     data,
@@ -115,12 +116,11 @@ acti_calculate_forest = function(data,
 #' @examples
 #' \dontrun{
 #'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-#'   steps = acti_calculate_forest_pyenv(data, sample_rate = 100)
+#'   steps = py_acti_calculate_forest(data, sample_rate = 100)
 #' }
-acti_calculate_forest_pyenv = function(
+py_acti_calculate_forest = function(
     ...,
     pyenv_function = function() {
-      library(walking)
       reticulate::import("forest")
     }) {
   rlang::check_installed("callr")

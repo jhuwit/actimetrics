@@ -98,12 +98,11 @@ acti_calculate_stepcount = function(data,
 #' @examples
 #' \dontrun{
 #'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-#'   steps = acti_calculate_stepcount_pyenv(data, sample_rate = 100)
+#'   steps = py_acti_calculate_stepcount(data, sample_rate = 100)
 #' }
-acti_calculate_stepcount_pyenv = function(
+py_acti_calculate_stepcount = function(
     ...,
     pyenv_function = function() {
-      library(stepcount)
       reticulate::import("stepcount")
     }) {
   rlang::check_installed("callr")

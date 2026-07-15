@@ -102,6 +102,42 @@ acti_calculate_forest = function(data,
 }
 
 
+#' Perform step count calculation in a separate Python environment
+#'
+#' @param ... arguments passed to [acti_calculate_forest()]
+#' @param pyenv_function function that loads the `forest` Python package.
+#' By default, it uses `reticulate::py_import("forest")` to
+#' import the package.
+#'
+#' @returns The output from [acti_calculate_forest()].
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+#'   steps = acti_calculate_forest_pyenv(data, sample_rate = 100)
+#' }
+acti_calculate_forest_pyenv = function(
+    ...,
+    pyenv_function = function() {
+      library(walking)
+      reticulate::import("forest")
+    }) {
+  rlang::check_installed("callr")
+  steps <- callr::r(
+    func = function(..., pyenv_function) {
+      args = list(...)
+      pyenv_function()
+      res = do.call(actimetrics::acti_calculate_forest, args = args)
+    },
+    show = TRUE,
+    args = list(...,
+                pyenv_function = pyenv_function)
+  ) # Safely injects data into the process
+}
+
+
+
 #' Calculate Step Counts via Oak/Forest
 #'
 #'

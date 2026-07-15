@@ -22,10 +22,11 @@ Suggests:
     rmarkdown,
     MIMSunit,
     data.table,
+    reticulate,
     stepcount,
     actigraph.sleepr (>= 0.3.1),
     agcounts (>= 0.6.7),
-    reticulate
+    callr
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 
@@ -42,9 +43,6 @@ Imports:
     tidyr,
     walking
 Remotes: 
-  jhuwit/actibase,
-  jhuwit/actiread,
-  jhuwit/stepcount,
   jhuwit/walking
 LazyData: true
 Config/roxygen2/version: 8.0.0

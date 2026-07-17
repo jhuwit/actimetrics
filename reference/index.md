@@ -41,3 +41,7 @@
   : Default MIMS worker functions
 - [`mims_default_processing()`](https://jhuwit.github.io/actimetrics/reference/mims_default_processing.md)
   : Default MIMS Pre-processing
+- [`py_acti_calculate_forest()`](https://jhuwit.github.io/actimetrics/reference/py_acti_calculate_forest.md)
+  : Perform step count calculation in a separate Python environment
+- [`py_acti_calculate_stepcount()`](https://jhuwit.github.io/actimetrics/reference/py_acti_calculate_stepcount.md)
+  : Perform step count calculation in a separate Python environment

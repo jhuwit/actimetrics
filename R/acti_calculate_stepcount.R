@@ -90,6 +90,8 @@ acti_calculate_stepcount = function(data,
 #' @param pyenv_function function that loads the `stepcount` Python package.
 #' By default, it uses `reticulate::py_import("stepcount")` to
 #' import the package.
+#' @param show Logical, whether to show the standard output on the
+#' screen while the child process is running, passed to [callr::r()]
 #'
 #' @returns The output from [acti_calculate_stepcount()].
 #' A tibble with minute-level `time`, `steps`, and `walking` columns.
@@ -104,9 +106,11 @@ py_acti_calculate_stepcount = function(
     ...,
     pyenv_function = function() {
       reticulate::import("stepcount")
-    }) {
+    },
+    show = FALSE) {
   rlang::check_installed("callr")
   steps <- callr::r(
+    show = show,
     func = function(..., pyenv_function) {
       args = list(...)
       pyenv_function()

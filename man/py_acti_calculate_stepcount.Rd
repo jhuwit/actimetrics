@@ -8,7 +8,8 @@ py_acti_calculate_stepcount(
   ...,
   pyenv_function = function() {
      reticulate::import("stepcount")
- }
+ },
+  show = FALSE
 )
 }
 \arguments{
@@ -17,6 +18,9 @@ py_acti_calculate_stepcount(
 \item{pyenv_function}{function that loads the `stepcount` Python package.
 By default, it uses `reticulate::py_import("stepcount")` to
 import the package.}
+
+\item{show}{Logical, whether to show the standard output on the
+screen while the child process is running, passed to [callr::r()]}
 }
 \value{
 The output from [acti_calculate_stepcount()].

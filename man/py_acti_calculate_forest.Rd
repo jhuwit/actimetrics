@@ -8,7 +8,8 @@ py_acti_calculate_forest(
   ...,
   pyenv_function = function() {
      reticulate::import("forest")
- }
+ },
+  show = FALSE
 )
 }
 \arguments{
@@ -17,6 +18,9 @@ py_acti_calculate_forest(
 \item{pyenv_function}{function that loads the `forest` Python package.
 By default, it uses `reticulate::py_import("forest")` to
 import the package.}
+
+\item{show}{Logical, whether to show the standard output on the
+screen while the child process is running, passed to [callr::r()]}
 }
 \value{
 The output from [acti_calculate_forest()].

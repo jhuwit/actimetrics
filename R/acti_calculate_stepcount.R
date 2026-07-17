@@ -81,3 +81,39 @@ acti_calculate_stepcount = function(data,
     dplyr::mutate(steps = ifelse(!is.finite(steps), NA_integer_, steps))
   sdata
 }
+
+
+
+#' Perform step count calculation in a separate Python environment
+#'
+#' @param ... arguments passed to [acti_calculate_stepcount()]
+#' @param pyenv_function function that loads the `stepcount` Python package.
+#' By default, it uses `reticulate::py_import("stepcount")` to
+#' import the package.
+#'
+#' @returns The output from [acti_calculate_stepcount()].
+#' A tibble with minute-level `time`, `steps`, and `walking` columns.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+#'   steps = py_acti_calculate_stepcount(data, sample_rate = 100)
+#' }
+py_acti_calculate_stepcount = function(
+    ...,
+    pyenv_function = function() {
+      reticulate::import("stepcount")
+    }) {
+  rlang::check_installed("callr")
+  steps <- callr::r(
+    func = function(..., pyenv_function) {
+      args = list(...)
+      pyenv_function()
+      res = do.call(actimetrics::acti_calculate_stepcount, args = args)
+    },
+    show = TRUE,
+    args = list(...,
+                pyenv_function = pyenv_function)
+  ) # Safely injects data into the process
+}

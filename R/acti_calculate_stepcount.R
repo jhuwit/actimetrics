@@ -116,7 +116,6 @@ py_acti_calculate_stepcount = function(
       pyenv_function()
       res = do.call(actimetrics::acti_calculate_stepcount, args = args)
     },
-    show = TRUE,
     args = list(...,
                 pyenv_function = pyenv_function)
   ) # Safely injects data into the process

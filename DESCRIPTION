@@ -9,7 +9,12 @@ Authors@R: c(
            email = "muschellij2@gmail.com")
     )
 Description: Provides functions for calibrating, counting, and summarizing 
-    actigraphy and activity data into specific metrics and sleep measures.
+    actigraphy and activity data into specific metrics and sleep measures. 
+    The metrics include activity counts, step counts, activity index, 
+    Monitor Independent Movement Summary Unit (MIMS), mean amplitude 
+    deviation (MAD), and provides wrappers for sleep estimation from 
+    activity counts using Tudor-Locke (2014) <doi:10.1139/apnm-2013-0173> and
+    Sadeh (1994) <doi:10.1093/sleep/17.3.201>.
 License: GPL-3
 Depends: 
     R (>= 3.5)

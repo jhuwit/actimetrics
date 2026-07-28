@@ -89,7 +89,8 @@ acti_calculate_stepcount = function(data,
 #' @param ... arguments passed to [acti_calculate_stepcount()]
 #' @param pyenv_function function that loads the `stepcount` Python package.
 #' By default, it uses `reticulate::py_import("stepcount")` to
-#' import the package.
+#' import the package. If this function has an `args` argument, the output
+#' of `pyenv_function` will be re-assigned to `args`.
 #' @param show Logical, whether to show the standard output on the
 #' screen while the child process is running, passed to [callr::r()]
 #'
@@ -113,7 +114,11 @@ py_acti_calculate_stepcount = function(
     show = show,
     func = function(..., pyenv_function) {
       args = list(...)
-      pyenv_function()
+      if ("args" %in% formalArgs(pyenv_function)) {
+        args = pyenv_function(args)
+      } else {
+        pyenv_function()
+      }
       res = do.call(actimetrics::acti_calculate_stepcount, args = args)
     },
     args = list(...,

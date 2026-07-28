@@ -108,7 +108,8 @@ acti_calculate_forest = function(data,
 #' @param ... arguments passed to [acti_calculate_forest()]
 #' @param pyenv_function function that loads the `forest` Python package.
 #' By default, it uses `reticulate::py_import("forest")` to
-#' import the package.
+#' import the package.  If this function has an `args` argument, the output
+#' of `pyenv_function` will be re-assigned to `args`.
 #' @param show Logical, whether to show the standard output on the
 #' screen while the child process is running, passed to [callr::r()]
 #'
@@ -126,13 +127,17 @@ py_acti_calculate_forest = function(
       reticulate::import("forest")
     },
     show = FALSE
-    ) {
+) {
   rlang::check_installed("callr")
   steps <- callr::r(
     show = show,
     func = function(..., pyenv_function) {
       args = list(...)
-      pyenv_function()
+      if ("args" %in% formalArgs(pyenv_function)) {
+        args = pyenv_function(args)
+      } else {
+        pyenv_function()
+      }
       res = do.call(actimetrics::acti_calculate_forest, args = args)
     },
     args = list(...,

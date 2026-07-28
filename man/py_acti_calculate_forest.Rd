@@ -17,7 +17,8 @@ py_acti_calculate_forest(
 
 \item{pyenv_function}{function that loads the `forest` Python package.
 By default, it uses `reticulate::py_import("forest")` to
-import the package.}
+import the package.  If this function has an `args` argument, the output
+of `pyenv_function` will be re-assigned to `args`.}
 
 \item{show}{Logical, whether to show the standard output on the
 screen while the child process is running, passed to [callr::r()]}

@@ -23,7 +23,9 @@ py_acti_calculate_forest(
 - pyenv_function:
 
   function that loads the \`forest\` Python package. By default, it uses
-  \`reticulate::py_import("forest")\` to import the package.
+  \`reticulate::py_import("forest")\` to import the package. If this
+  function has an \`args\` argument, the output of \`pyenv_function\`
+  will be re-assigned to \`args\`.
 
 - show:
 

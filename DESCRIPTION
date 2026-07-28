@@ -46,7 +46,8 @@ Imports:
     rlang,
     stats,
     tidyr,
-    walking
+    walking,
+    methods
 Remotes: 
   jhuwit/walking
 LazyData: true

@@ -18,23 +18,26 @@ py_acti_calculate_forest(
 
 - ...:
 
-  arguments passed to \[acti_calculate_forest()\]
+  arguments passed to
+  [`acti_calculate_forest()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_forest.md)
 
 - pyenv_function:
 
-  function that loads the \`forest\` Python package. By default, it uses
-  \`reticulate::py_import("forest")\` to import the package. If this
-  function has an \`args\` argument, the output of \`pyenv_function\`
-  will be re-assigned to \`args\`.
+  function that loads the `forest` Python package. By default, it uses
+  `reticulate::py_import("forest")` to import the package. If this
+  function has an `args` argument, the output of `pyenv_function` will
+  be re-assigned to `args`.
 
 - show:
 
   Logical, whether to show the standard output on the screen while the
-  child process is running, passed to \[callr::r()\]
+  child process is running, passed to
+  [`callr::r()`](https://callr.r-lib.org/reference/r.html)
 
 ## Value
 
-The output from \[acti_calculate_forest()\].
+The output from
+[`acti_calculate_forest()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_forest.md).
 
 ## Examples
 

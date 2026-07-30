@@ -1,7 +1,8 @@
-# Calibrate Accelerometer Data using \`agcounts\`
+# Calibrate Accelerometer Data using `agcounts`
 
 This uses the van Hees calibration method typically exposed through
-GGIR, implemented here via \`agcounts::agcalibrate()\`.
+GGIR, implemented here via
+[`agcounts::agcalibrate()`](https://rdrr.io/pkg/agcounts/man/agcalibrate.html).
 
 ## Usage
 
@@ -19,8 +20,8 @@ acti_calibrate(
 
 - data:
 
-  Either a GT3X file, \`AccData\` object, or \`data.frame\` with
-  \`X/Y/Z\` and \`time\`
+  Either a GT3X file, `AccData` object, or `data.frame` with `X/Y/Z` and
+  `time`
 
 - verbose:
 
@@ -28,9 +29,11 @@ acti_calibrate(
 
 - fill_zeroes:
 
-  Should \`actibase::acti_fill_zeros()\` be run before calculating the
-  measures? This trims zero values from the beginning and the end of the
-  time course using last observation carried forward behavior.
+  Should
+  [`actibase::acti_fill_zeros()`](https://jhuwit.github.io/actibase/reference/acti_fill_zeros.html)
+  be run before calculating the measures? This trims zero values from
+  the beginning and the end of the time course using last observation
+  carried forward behavior.
 
 - round_after_calibration:
 
@@ -38,7 +41,8 @@ acti_calibrate(
 
 - ...:
 
-  Additional arguments to pass to \`agcounts::agcalibrate()\`
+  Additional arguments to pass to
+  [`agcounts::agcalibrate()`](https://rdrr.io/pkg/agcounts/man/agcalibrate.html)
 
 ## Examples
 

@@ -52,25 +52,25 @@
 
 
 <dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>arguments passed to [acti_calculate_stepcount()]</p></dd>
+<dd><p>arguments passed to <code><a href="acti_calculate_stepcount.html">acti_calculate_stepcount()</a></code></p></dd>
 
 
 <dt id="arg-pyenv-function">pyenv_function<a class="anchor" aria-label="anchor" href="#arg-pyenv-function"></a></dt>
-<dd><p>function that loads the `stepcount` Python package.
-By default, it uses `reticulate::py_import("stepcount")` to
-import the package. If this function has an `args` argument, the output
-of `pyenv_function` will be re-assigned to `args`.</p></dd>
+<dd><p>function that loads the <code>stepcount</code> Python package.
+By default, it uses <code>reticulate::py_import("stepcount")</code> to
+import the package. If this function has an <code>args</code> argument, the output
+of <code>pyenv_function</code> will be re-assigned to <code>args</code>.</p></dd>
 
 
 <dt id="arg-show">show<a class="anchor" aria-label="anchor" href="#arg-show"></a></dt>
 <dd><p>Logical, whether to show the standard output on the
-screen while the child process is running, passed to [callr::r()]</p></dd>
+screen while the child process is running, passed to <code><a href="https://callr.r-lib.org/reference/r.html" class="external-link">callr::r()</a></code></p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The output from [acti_calculate_stepcount()].
-A tibble with minute-level `time`, `steps`, and `walking` columns.</p>
+    <p>The output from <code><a href="acti_calculate_stepcount.html">acti_calculate_stepcount()</a></code>.
+A tibble with minute-level <code>time</code>, <code>steps</code>, and <code>walking</code> columns.</p>
     </div>
 
     <div class="section level2">

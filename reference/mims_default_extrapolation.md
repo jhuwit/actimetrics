@@ -17,12 +17,12 @@ mims_default_filtering(data)
 - data:
 
   data set of data, usually time and X/Y/Z. Usually from
-  \`actiread::acti_read_gt3x()\`
+  [`actiread::acti_read_gt3x()`](https://jhuwit.github.io/actiread/reference/acti_read_gt3x.html)
 
 - dynamic_range:
 
   dynamic range of the data. Will be passed to
-  \`actibase::get_dynamic_range()\`
+  [`actibase::get_dynamic_range()`](https://jhuwit.github.io/actibase/reference/get_dynamic_range.html)
 
 ## Value
 

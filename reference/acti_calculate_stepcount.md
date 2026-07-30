@@ -1,6 +1,6 @@
-# Calculate Step Counts via \`stepcount\`
+# Calculate Step Counts via `stepcount`
 
-Use the \`stepcount\` package to estimate steps from raw accelerometer
+Use the `stepcount` package to estimate steps from raw accelerometer
 data and summarize them to minute-level epochs (as opposed to 10s
 default)
 
@@ -14,8 +14,8 @@ acti_calculate_stepcount(data, sample_rate = NULL, ...)
 
 - data:
 
-  A \`data.frame\`, \`AccData\` object, or GT3X file with \`X\`, \`Y\`,
-  \`Z\`, and \`time\`
+  A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`, `Z`, and
+  `time`
 
 - sample_rate:
 
@@ -24,11 +24,12 @@ acti_calculate_stepcount(data, sample_rate = NULL, ...)
 
 - ...:
 
-  Additional arguments passed to \[stepcount::stepcount()\]
+  Additional arguments passed to
+  [`stepcount::stepcount()`](https://rdrr.io/pkg/stepcount/man/stepcount.html)
 
 ## Value
 
-A tibble with minute-level \`time\`, \`steps\`, and \`walking\` columns.
+A tibble with minute-level `time`, `steps`, and `walking` columns.
 
 ## Examples
 

@@ -10,7 +10,7 @@ acti_count_data
 
 ## Format
 
-A \`data.frame\` with the columns
+A `data.frame` with the columns
 
 - time:
 
@@ -32,5 +32,9 @@ A \`data.frame\` with the columns
 
   vector magnitude of all 3 axes column
 
-This data was taken from running \[agcounts::calculate_counts\] via
-\[acti_calculate_counts\] on \[actibase::acti_raw_data\].
+This data was taken from running
+[agcounts::calculate_counts](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
+via
+[acti_calculate_counts](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
+on
+[actibase::acti_raw_data](https://jhuwit.github.io/actibase/reference/acti_raw_data.html).

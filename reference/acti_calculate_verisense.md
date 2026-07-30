@@ -17,26 +17,27 @@ acti_calculate_verisense(
 
 - data:
 
-  A \`data.frame\`, \`AccData\` object, or GT3X file with \`X\`, \`Y\`,
-  \`Z\`, and \`time\`
+  A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`, `Z`, and
+  `time`
 
 - resample_to_15hz:
 
   resample data to 15Hz, passed to
-  \[walking::estimate_steps_verisense()\]
+  [`walking::estimate_steps_verisense()`](https://rdrr.io/pkg/walking/man/estimate_steps.html)
 
 - method:
 
   parameters to estimate wlaking, either original or revised, passed to
-  \[walking::estimate_steps_verisense()\]
+  [`walking::estimate_steps_verisense()`](https://rdrr.io/pkg/walking/man/estimate_steps.html)
 
 - ...:
 
-  Additional arguments passed to \[walking::estimate_steps_verisense()\]
+  Additional arguments passed to
+  [`walking::estimate_steps_verisense()`](https://rdrr.io/pkg/walking/man/estimate_steps.html)
 
 ## Value
 
-A tibble with minute-level \`time\`, \`steps\` columns.
+A tibble with minute-level `time`, `steps` columns.
 
 ## Examples
 

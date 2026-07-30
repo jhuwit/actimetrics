@@ -12,8 +12,8 @@ acti_calculate_sdt(data, sample_rate = NULL, ...)
 
 - data:
 
-  A \`data.frame\`, \`AccData\` object, or GT3X file with \`X\`, \`Y\`,
-  \`Z\`, and \`time\`
+  A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`, `Z`, and
+  `time`
 
 - sample_rate:
 
@@ -22,11 +22,12 @@ acti_calculate_sdt(data, sample_rate = NULL, ...)
 
 - ...:
 
-  Additional arguments passed to \[walking::sdt_count_steps()\]
+  Additional arguments passed to
+  [`walking::sdt_count_steps()`](https://rdrr.io/pkg/walking/man/sdt_count_steps.html)
 
 ## Value
 
-A tibble with minute-level \`time\`, \`steps\` columns.
+A tibble with minute-level `time`, `steps` columns.
 
 ## Examples
 

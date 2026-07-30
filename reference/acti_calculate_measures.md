@@ -82,22 +82,24 @@ acti_calculate_mims(
 
 - data:
 
-  An object with columns \`X\`, \`Y\`, and \`Z\` or an object of class
-  \`AccData\`
+  An object with columns `X`, `Y`, and `Z` or an object of class
+  `AccData`
 
 - unit:
 
   length of time to calculate measures over. a character string
   specifying a time unit or a multiple of a unit to be rounded to. Valid
-  base units are \`second\`, \`minute\`, \`hour\`, \`day\`, \`week\`,
-  \`month\`, \`bimonth\`, \`quarter\`, \`season\`, \`halfyear\`, and
-  \`year\`. Arbitrary unique English abbreviations as in the
-  \`lubridate::period()\` constructor are allowed.
+  base units are `second`, `minute`, `hour`, `day`, `week`, `month`,
+  `bimonth`, `quarter`, `season`, `halfyear`, and `year`. Arbitrary
+  unique English abbreviations as in the
+  [`lubridate::period()`](https://lubridate.tidyverse.org/reference/period.html)
+  constructor are allowed.
 
 - fix_zeros:
 
-  Should \`actibase::acti_fill_zeros()\` be run before calculating the
-  measures?
+  Should
+  [`actibase::acti_fill_zeros()`](https://jhuwit.github.io/actibase/reference/acti_fill_zeros.html)
+  be run before calculating the measures?
 
 - dynamic_range:
 
@@ -109,21 +111,24 @@ acti_calculate_mims(
 
 - calculate_ac:
 
-  Should Activity Counts from the \`agcounts\` package be calculated?
+  Should Activity Counts from the `agcounts` package be calculated?
 
 - flag_data:
 
-  Should the downstream overlay \`flag_qc()\` be run? It will be
-  executed after \`fix_zeros\` before any measure calculation
+  Should the downstream overlay
+  [`flag_qc()`](https://jhuwit.github.io/actibase/reference/flag_qc.html)
+  be run? It will be executed after `fix_zeros` before any measure
+  calculation
 
 - flags:
 
-  the flags to calculate, passed to the downstream overlay \`flag_qc()\`
+  the flags to calculate, passed to the downstream overlay
+  [`flag_qc()`](https://jhuwit.github.io/actibase/reference/flag_qc.html)
 
 - ensure_all_time:
 
-  if \`TRUE\`, then all times from the first to last times will be in
-  the output, even if data during that time was not in the input
+  if `TRUE`, then all times from the first to last times will be in the
+  output, even if data during that time was not in the input
 
 - verbose:
 
@@ -135,7 +140,8 @@ acti_calculate_mims(
 
 - ...:
 
-  additional arguments to pass to \`MIMSunit::mims_unit()\`
+  additional arguments to pass to
+  [`MIMSunit::mims_unit()`](https://rdrr.io/pkg/MIMSunit/man/mims_unit.html)
 
 - allow_truncation:
 
@@ -169,7 +175,17 @@ auc = acti_calculate_auc(res)
 #> Calculating AUCs
 # \donttest{
 mims = acti_calculate_mims(res, dynamic_range = NULL)
-#> ================================================================================
+#> ================================================
+#> Registered S3 methods overwritten by 'signal':
+#>   method         from   
+#>   print.freqs    gsignal
+#>   print.freqz    gsignal
+#>   print.grpdelay gsignal
+#>   plot.grpdelay  gsignal
+#>   print.impz     gsignal
+#>   print.specgram gsignal
+#>   plot.specgram  gsignal
+#> ================================
 # }
 if (requireNamespace("data.table", quietly = TRUE)) {
    dt = data.table::as.data.table(res)

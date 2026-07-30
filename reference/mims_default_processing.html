@@ -54,17 +54,17 @@
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>Data set of raw accelerometry values, usually time and X/Y/Z.
-Usually from `actiread::acti_read_gt3x()`</p></dd>
+Usually from <code><a href="https://jhuwit.github.io/actiread/reference/acti_read_gt3x.html" class="external-link">actiread::acti_read_gt3x()</a></code></p></dd>
 
 
 <dt id="arg-use-extrapolation">use_extrapolation<a class="anchor" aria-label="anchor" href="#arg-use-extrapolation"></a></dt>
-<dd><p>If `TRUE` the function will apply extrapolation
+<dd><p>If <code>TRUE</code> the function will apply extrapolation
 algorithm to the input signal, otherwise it will skip
 extrapolation but only linearly interpolate the signal to 100Hz.</p></dd>
 
 
 <dt id="arg-use-filtering">use_filtering<a class="anchor" aria-label="anchor" href="#arg-use-filtering"></a></dt>
-<dd><p>If `TRUE` the function will apply bandpass
+<dd><p>If <code>TRUE</code> the function will apply bandpass
 filtering to the input signal, otherwise it will skip the filtering.</p></dd>
 
 
@@ -74,8 +74,8 @@ filtering to the input signal, otherwise it will skip the filtering.</p></dd>
 
 <dt id="arg-dynamic-range">dynamic_range<a class="anchor" aria-label="anchor" href="#arg-dynamic-range"></a></dt>
 <dd><p>the dynamic ranges of the input signal.  Passed to
-`actimetrics::mims_default_extrapolation()`.  Only needed if
-`use_extrapolation = TRUE`</p></dd>
+<code><a href="mims_default_extrapolation.html">actimetrics::mims_default_extrapolation()</a></code>.  Only needed if
+<code>use_extrapolation = TRUE</code></p></dd>
 
 
 <dt id="arg-round-after-processing">round_after_processing<a class="anchor" aria-label="anchor" href="#arg-round-after-processing"></a></dt>

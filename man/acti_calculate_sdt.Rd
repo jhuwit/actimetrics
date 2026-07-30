@@ -7,16 +7,16 @@
 acti_calculate_sdt(data, sample_rate = NULL, ...)
 }
 \arguments{
-\item{data}{A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`,
-`Z`, and `time`}
+\item{data}{A \code{data.frame}, \code{AccData} object, or GT3X file with \code{X}, \code{Y},
+\code{Z}, and \code{time}}
 
 \item{sample_rate}{Sample rate in Hz. If omitted, it is taken from the
 input object when available.}
 
-\item{...}{Additional arguments passed to [walking::sdt_count_steps()]}
+\item{...}{Additional arguments passed to \code{\link[walking:sdt_count_steps]{walking::sdt_count_steps()}}}
 }
 \value{
-A tibble with minute-level `time`, `steps` columns.
+A tibble with minute-level \code{time}, \code{steps} columns.
 }
 \description{
 Calculate Step Counts via Oak/Forest

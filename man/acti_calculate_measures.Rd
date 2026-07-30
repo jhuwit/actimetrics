@@ -87,33 +87,33 @@ acti_calculate_mims(
 )
 }
 \arguments{
-\item{data}{An object with columns `X`, `Y`, and `Z` or an
-object of class `AccData`}
+\item{data}{An object with columns \code{X}, \code{Y}, and \code{Z} or an
+object of class \code{AccData}}
 
 \item{unit}{length of time to calculate measures over.  a character string
 specifying a time unit or a multiple of a unit to be rounded to.
-Valid base units are `second`, `minute`, `hour`, `day`, `week`, `month`,
-`bimonth`, `quarter`, `season`, `halfyear`, and `year`.
-Arbitrary unique English abbreviations as in the `lubridate::period()`
+Valid base units are \code{second}, \code{minute}, \code{hour}, \code{day}, \code{week}, \code{month},
+\code{bimonth}, \code{quarter}, \code{season}, \code{halfyear}, and \code{year}.
+Arbitrary unique English abbreviations as in the \code{lubridate::period()}
 constructor are allowed.}
 
-\item{fix_zeros}{Should `actibase::acti_fill_zeros()` be run before
+\item{fix_zeros}{Should \code{actibase::acti_fill_zeros()} be run before
 calculating the measures?}
 
 \item{dynamic_range}{Dynamic range of the device, in gravity units}
 
 \item{calculate_mims}{Should MIMS units be calculated?}
 
-\item{calculate_ac}{Should Activity Counts from the `agcounts` package be
+\item{calculate_ac}{Should Activity Counts from the \code{agcounts} package be
 calculated?}
 
-\item{flag_data}{Should the downstream overlay `flag_qc()` be run?
-It will be executed after `fix_zeros` before any measure calculation}
+\item{flag_data}{Should the downstream overlay \code{flag_qc()} be run?
+It will be executed after \code{fix_zeros} before any measure calculation}
 
 \item{flags}{the flags to calculate,
-passed to the downstream overlay `flag_qc()`}
+passed to the downstream overlay \code{flag_qc()}}
 
-\item{ensure_all_time}{if `TRUE`, then all times from the first to
+\item{ensure_all_time}{if \code{TRUE}, then all times from the first to
 last times will be in the output, even if data during that time was not
 in the input}
 
@@ -121,7 +121,7 @@ in the input}
 
 \item{sample_rate}{sample rate of data, if not specified in header of object}
 
-\item{...}{additional arguments to pass to `MIMSunit::mims_unit()`}
+\item{...}{additional arguments to pass to \code{MIMSunit::mims_unit()}}
 
 \item{allow_truncation}{truncate small values}
 }

@@ -15,6 +15,7 @@ Description: Provides functions for calibrating, counting, and summarizing
     deviation (MAD), and provides wrappers for sleep estimation from 
     activity counts using Tudor-Locke (2014) <doi:10.1139/apnm-2013-0173> and
     Sadeh (1994) <doi:10.1093/sleep/17.3.201>.
+Roxygen: list(markdown = TRUE)
 License: GPL-3
 Depends: 
     R (>= 3.5)

@@ -15,20 +15,20 @@ mims_default_processing(
 }
 \arguments{
 \item{data}{Data set of raw accelerometry values, usually time and X/Y/Z.
-Usually from `actiread::acti_read_gt3x()`}
+Usually from \code{actiread::acti_read_gt3x()}}
 
-\item{use_extrapolation}{If `TRUE` the function will apply extrapolation
+\item{use_extrapolation}{If \code{TRUE} the function will apply extrapolation
 algorithm to the input signal, otherwise it will skip
 extrapolation but only linearly interpolate the signal to 100Hz.}
 
-\item{use_filtering}{If `TRUE` the function will apply bandpass
+\item{use_filtering}{If \code{TRUE} the function will apply bandpass
 filtering to the input signal, otherwise it will skip the filtering.}
 
 \item{verbose}{print diagnostic messages}
 
 \item{dynamic_range}{the dynamic ranges of the input signal.  Passed to
-`actimetrics::mims_default_extrapolation()`.  Only needed if
-`use_extrapolation = TRUE`}
+\code{actimetrics::mims_default_extrapolation()}.  Only needed if
+\code{use_extrapolation = TRUE}}
 
 \item{round_after_processing}{Should the result be rounded to 3
 decimal values after processing, to make similar to standard accelerometry?}

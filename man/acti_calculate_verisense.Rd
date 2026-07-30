@@ -12,19 +12,19 @@ acti_calculate_verisense(
 )
 }
 \arguments{
-\item{data}{A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`,
-`Z`, and `time`}
+\item{data}{A \code{data.frame}, \code{AccData} object, or GT3X file with \code{X}, \code{Y},
+\code{Z}, and \code{time}}
 
 \item{resample_to_15hz}{resample data to 15Hz,
-passed to [walking::estimate_steps_verisense()]}
+passed to \code{\link[walking:estimate_steps_verisense]{walking::estimate_steps_verisense()}}}
 
 \item{method}{parameters to estimate wlaking, either original or revised,
-passed to [walking::estimate_steps_verisense()]}
+passed to \code{\link[walking:estimate_steps_verisense]{walking::estimate_steps_verisense()}}}
 
-\item{...}{Additional arguments passed to [walking::estimate_steps_verisense()]}
+\item{...}{Additional arguments passed to \code{\link[walking:estimate_steps_verisense]{walking::estimate_steps_verisense()}}}
 }
 \value{
-A tibble with minute-level `time`, `steps` columns.
+A tibble with minute-level \code{time}, \code{steps} columns.
 }
 \description{
 Calculate Step Counts via Verisense

@@ -7,13 +7,13 @@
 acti_calculate_forest(data, ...)
 }
 \arguments{
-\item{data}{A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`,
-`Z`, and `time`}
+\item{data}{A \code{data.frame}, \code{AccData} object, or GT3X file with \code{X}, \code{Y},
+\code{Z}, and \code{time}}
 
-\item{...}{Additional arguments passed to [walking::find_walking()]}
+\item{...}{Additional arguments passed to \code{\link[walking:find_walking]{walking::find_walking()}}}
 }
 \value{
-A tibble with minute-level `time`, `steps` columns.
+A tibble with minute-level \code{time}, \code{steps} columns.
 }
 \description{
 Calculate Step Counts via Oak/Forest

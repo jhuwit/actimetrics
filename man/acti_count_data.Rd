@@ -5,7 +5,7 @@
 \alias{acti_count_data}
 \title{Example Actigraphy/Activity Count Data}
 \format{
-A `data.frame` with the columns
+A \code{data.frame} with the columns
 \describe{
 \item{time}{time at the minute level}
 \item{axis1}{axis1 (Y) counts}
@@ -13,9 +13,9 @@ A `data.frame` with the columns
 \item{axis3}{axis3 (Z) counts}
 \item{counts}{vector magnitude of all 3 axes column}
 }
-This data was taken from running [agcounts::calculate_counts] via
-[acti_calculate_counts] on
-[actibase::acti_raw_data].
+This data was taken from running \link[agcounts:calculate_counts]{agcounts::calculate_counts} via
+\link{acti_calculate_counts} on
+\link[actibase:acti_raw_data]{actibase::acti_raw_data}.
 }
 \usage{
 acti_count_data

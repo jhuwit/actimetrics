@@ -13,18 +13,18 @@ py_acti_calculate_forest(
 )
 }
 \arguments{
-\item{...}{arguments passed to [acti_calculate_forest()]}
+\item{...}{arguments passed to \code{\link[=acti_calculate_forest]{acti_calculate_forest()}}}
 
-\item{pyenv_function}{function that loads the `forest` Python package.
-By default, it uses `reticulate::py_import("forest")` to
-import the package.  If this function has an `args` argument, the output
-of `pyenv_function` will be re-assigned to `args`.}
+\item{pyenv_function}{function that loads the \code{forest} Python package.
+By default, it uses \code{reticulate::py_import("forest")} to
+import the package.  If this function has an \code{args} argument, the output
+of \code{pyenv_function} will be re-assigned to \code{args}.}
 
 \item{show}{Logical, whether to show the standard output on the
-screen while the child process is running, passed to [callr::r()]}
+screen while the child process is running, passed to \code{\link[callr:r]{callr::r()}}}
 }
 \value{
-The output from [acti_calculate_forest()].
+The output from \code{\link[=acti_calculate_forest]{acti_calculate_forest()}}.
 }
 \description{
 Perform step count calculation in a separate Python environment

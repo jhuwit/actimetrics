@@ -9,7 +9,7 @@
 #' See [agcounts::calculate_counts]
 #' higher values are higher levels of verbosity.
 #' @param resample (recommended) resample the data to 30Hz using
-#' [actibase::resample] vs. using the resampling method from
+#' [actibase::acti_resample] vs. using the resampling method from
 #' [agcounts::calculate_counts].
 #'
 #'

@@ -2,25 +2,25 @@
 % Please edit documentation in R/acti_calculate_stepcount.R
 \name{acti_calculate_stepcount}
 \alias{acti_calculate_stepcount}
-\title{Calculate Step Counts via `stepcount`}
+\title{Calculate Step Counts via \code{stepcount}}
 \usage{
 acti_calculate_stepcount(data, sample_rate = NULL, ...)
 }
 \arguments{
-\item{data}{A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`,
-`Z`, and `time`}
+\item{data}{A \code{data.frame}, \code{AccData} object, or GT3X file with \code{X}, \code{Y},
+\code{Z}, and \code{time}}
 
 \item{sample_rate}{Sample rate in Hz. If omitted, it is taken from the
 input object when available.}
 
-\item{...}{Additional arguments passed to [stepcount::stepcount()]}
+\item{...}{Additional arguments passed to \code{\link[stepcount:stepcount]{stepcount::stepcount()}}}
 }
 \value{
-A tibble with minute-level `time`, `steps`, and `walking`
+A tibble with minute-level \code{time}, \code{steps}, and \code{walking}
 columns.
 }
 \description{
-Use the `stepcount` package to estimate steps from raw accelerometer data
+Use the \code{stepcount} package to estimate steps from raw accelerometer data
 and summarize them to minute-level epochs (as opposed to 10s default)
 }
 \examples{

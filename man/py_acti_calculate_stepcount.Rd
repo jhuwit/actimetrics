@@ -13,19 +13,19 @@ py_acti_calculate_stepcount(
 )
 }
 \arguments{
-\item{...}{arguments passed to [acti_calculate_stepcount()]}
+\item{...}{arguments passed to \code{\link[=acti_calculate_stepcount]{acti_calculate_stepcount()}}}
 
-\item{pyenv_function}{function that loads the `stepcount` Python package.
-By default, it uses `reticulate::py_import("stepcount")` to
-import the package. If this function has an `args` argument, the output
-of `pyenv_function` will be re-assigned to `args`.}
+\item{pyenv_function}{function that loads the \code{stepcount} Python package.
+By default, it uses \code{reticulate::py_import("stepcount")} to
+import the package. If this function has an \code{args} argument, the output
+of \code{pyenv_function} will be re-assigned to \code{args}.}
 
 \item{show}{Logical, whether to show the standard output on the
-screen while the child process is running, passed to [callr::r()]}
+screen while the child process is running, passed to \code{\link[callr:r]{callr::r()}}}
 }
 \value{
-The output from [acti_calculate_stepcount()].
-A tibble with minute-level `time`, `steps`, and `walking` columns.
+The output from \code{\link[=acti_calculate_stepcount]{acti_calculate_stepcount()}}.
+A tibble with minute-level \code{time}, \code{steps}, and \code{walking} columns.
 }
 \description{
 Perform step count calculation in a separate Python environment

@@ -14,29 +14,29 @@ acti_process(
 )
 }
 \arguments{
-\item{data}{A `data.frame` from `acti_calculate_counts` that has
-columns `axis1-3` and `counts`}
+\item{data}{A \code{data.frame} from \code{acti_calculate_counts} that has
+columns \code{axis1-3} and \code{counts}}
 
 \item{lfe_select}{Apply the Actigraph Low Frequency Extension filter.
-See `agcounts::calculate_counts()`
+See \code{agcounts::calculate_counts()}
 higher values are higher levels of verbosity.}
 
 \item{method}{Method for detecting non-wear, either "choi" or "troiano",
-corresponding to `actigraph.sleepr::apply_choi()` or
-`actigraph.sleepr::apply_troiano()`}
+corresponding to \code{actigraph.sleepr::apply_choi()} or
+\code{actigraph.sleepr::apply_troiano()}}
 
-\item{use_magnitude}{If `TRUE`, the magnitude of the vector
+\item{use_magnitude}{If \code{TRUE}, the magnitude of the vector
 (axis1, axis2, axis3) is used to measure activity;
 otherwise the axis1 value is used.}
 
 \item{verbose}{print diagnostic messages.  Either logical or integer, where}
 
-\item{...}{additional arguments to pass to `actigraph.sleepr` function}
+\item{...}{additional arguments to pass to \code{actigraph.sleepr} function}
 }
 \description{
 Process Count Data
 }
 \note{
-For `acti_process_gt3x`, the `...` argument are passed to
-`actiread::acti_read_gt3x()`
+For \code{acti_process_gt3x}, the \code{...} argument are passed to
+\code{actiread::acti_read_gt3x()}
 }

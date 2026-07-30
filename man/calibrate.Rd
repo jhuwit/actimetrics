@@ -2,7 +2,7 @@
 % Please edit documentation in R/calibrate.R
 \name{acti_calibrate}
 \alias{acti_calibrate}
-\title{Calibrate Accelerometer Data using `agcounts`}
+\title{Calibrate Accelerometer Data using \code{agcounts}}
 \usage{
 acti_calibrate(
   data,
@@ -13,23 +13,23 @@ acti_calibrate(
 )
 }
 \arguments{
-\item{data}{Either a GT3X file, `AccData` object, or `data.frame` with
-`X/Y/Z` and `time`}
+\item{data}{Either a GT3X file, \code{AccData} object, or \code{data.frame} with
+\code{X/Y/Z} and \code{time}}
 
 \item{verbose}{print diagnostic messages, higher number result in higher verbosity}
 
-\item{fill_zeroes}{Should `actibase::acti_fill_zeros()` be run before
+\item{fill_zeroes}{Should \code{actibase::acti_fill_zeros()} be run before
 calculating the measures? This trims zero values from the beginning and the
 end of the time course using last observation carried forward behavior.}
 
 \item{round_after_calibration}{Should the data be rounded after calibration?
 Will round to 3 digits}
 
-\item{...}{Additional arguments to pass to `agcounts::agcalibrate()`}
+\item{...}{Additional arguments to pass to \code{agcounts::agcalibrate()}}
 }
 \description{
 This uses the van Hees calibration method typically exposed through GGIR,
-implemented here via `agcounts::agcalibrate()`.
+implemented here via \code{agcounts::agcalibrate()}.
 }
 \examples{
 \dontrun{

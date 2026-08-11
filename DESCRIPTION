@@ -1,7 +1,7 @@
 Type: Package
 Package: actimetrics
-Title: Create Metrics Actigraphy and Activity Analysis
-Version: 0.2.0
+Title: Create Metrics of Actigraphy and Activity Analysis
+Version: 0.4.0
 Authors@R: c(
     person(given = "John",
            family = "Muschelli",
@@ -32,7 +32,8 @@ Suggests:
     stepcount,
     actigraph.sleepr (>= 0.3.1),
     agcounts (>= 0.6.7),
-    callr
+    callr,
+    GGIR
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 
@@ -49,8 +50,6 @@ Imports:
     tidyr,
     walking,
     methods
-Remotes: 
-  jhuwit/walking
 LazyData: true
 Config/roxygen2/version: 8.0.0
 URL: https://jhuwit.github.io/actimetrics/

@@ -4,10 +4,10 @@
 \alias{acti_sleep_diary}
 \title{Identify a diary-defined sleep window}
 \usage{
-acti_sleep_diary(time, onset, wakeup)
+acti_sleep_diary(data, onset, wakeup)
 }
 \arguments{
-\item{time}{POSIXct timestamps.}
+\item{data}{A data frame containing timestamps.}
 
 \item{onset, wakeup}{POSIXct values defining a diary sleep window.}
 }
@@ -17,4 +17,10 @@ window rather than imputing either boundary.
 }
 \description{
 Identify a diary-defined sleep window
+}
+\examples{
+data <- actimetrics::acti_count_data
+diary_window <- acti_sleep_diary(
+  data, onset = data$time[5], wakeup = data$time[30]
+)
 }

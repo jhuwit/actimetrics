@@ -5,26 +5,21 @@
 \title{Identify a sleep window with HDCZA}
 \usage{
 acti_sleep_hdcza(
-  angle,
-  time = NULL,
-  epoch_seconds = NULL,
+  data,
+  epoch = "5 seconds",
   threshold = 0.2,
-  invalid = NULL,
   ignore_invalid = FALSE,
   min_block_minutes = 30,
   max_gap_minutes = 60
 )
 }
 \arguments{
-\item{angle}{Numeric z-axis angle in degrees, at a regular epoch interval.}
+\item{data}{A data frame of raw accelerometer observations.}
 
-\item{time}{Optional POSIXct timestamps used to infer \code{epoch_seconds}.}
-
-\item{epoch_seconds}{Length of an epoch in seconds.}
+\item{epoch}{Epoch used to average raw angles, passed to
+\code{\link[lubridate:floor_date]{lubridate::floor_date()}}.}
 
 \item{threshold}{Maximum five-minute rolling median absolute angle change.}
-
-\item{invalid}{Optional logical/numeric invalid-data indicator.}
 
 \item{ignore_invalid}{Whether invalid observations are treated as movement;
 use \code{NA} to treat them as no movement.}
@@ -43,4 +38,11 @@ finds prolonged periods of little change in the supplied z-axis angle, joins
 interruptions shorter than an hour, and returns the longest resulting block.
 The default threshold is the 0.2 degrees specified in the GGIR guider
 documentation.
+}
+\examples{
+\donttest{
+# The bundled actiread recording contains raw X, Y, and Z acceleration.
+raw <- actiread::acti_read_gt3x(actiread::acti_example_gt3x(), verbose = FALSE)
+hdcza <- acti_sleep_hdcza(raw, epoch = "5 seconds")
+}
 }

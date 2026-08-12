@@ -2,22 +2,35 @@
 % Please edit documentation in R/acti_sleep_guiders.R
 \name{acti_sleep_guider}
 \alias{acti_sleep_guider}
-\title{Dispatch a sleep-period-time guider}
+\title{Dispatch a sleep-period-time guider from data}
 \usage{
 acti_sleep_guider(
+  data,
   method = c("HDCZA", "HorAngle", "L5", "setwindow", "HLRB", "NotWorn", "sleeplog"),
   ...
 )
 }
 \arguments{
+\item{data}{A raw or epoch-level data frame, according to \code{method}.}
+
 \item{method}{One of \code{"HDCZA"}, \code{"HorAngle"}, \code{"L5"}, \code{"setwindow"},
 \code{"HLRB"}, \code{"NotWorn"}, or \code{"sleeplog"}.}
 
-\item{...}{Arguments passed to the selected guider.}
+\item{...}{Method-specific arguments, such as \code{threshold}, \code{start_hour},
+\code{onset}, and \code{wakeup}.}
 }
 \value{
 An \code{acti_sleep_guider} object.
 }
 \description{
-Dispatch a sleep-period-time guider
+For \code{"HDCZA"} and \code{"HorAngle"}, supply raw triaxial acceleration; the
+selected function derives a regular epoch-level posture angle. The remaining
+methods use regular epoch-level activity, SIB, or timestamp data.
+Use \code{acti_sleep_guider_requirements()} for a method-by-method summary.
+}
+\examples{
+data <- actimetrics::acti_count_data
+data <- data[rep(seq_len(nrow(data)), length.out = 24 * 60), ]
+data$time <- data$time[1] + (seq_len(nrow(data)) - 1) * 60
+guider <- acti_sleep_guider(data, method = "L5")
 }

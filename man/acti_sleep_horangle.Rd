@@ -5,26 +5,25 @@
 \title{Identify a sleep window from horizontal posture}
 \usage{
 acti_sleep_horangle(
-  angle,
-  time = NULL,
-  epoch_seconds = NULL,
+  data,
+  epoch = "5 seconds",
+  longitudinal_axis = "Z",
   horizontal_threshold = 45,
-  invalid = NULL,
   ignore_invalid = FALSE,
   min_block_minutes = 30,
   max_gap_minutes = 60
 )
 }
 \arguments{
-\item{angle}{Numeric z-axis angle in degrees, at a regular epoch interval.}
+\item{data}{A data frame of raw accelerometer observations.}
 
-\item{time}{Optional POSIXct timestamps used to infer \code{epoch_seconds}.}
+\item{epoch}{Epoch used to average raw angles, passed to
+\code{\link[lubridate:floor_date]{lubridate::floor_date()}}.}
 
-\item{epoch_seconds}{Length of an epoch in seconds.}
+\item{longitudinal_axis}{Raw axis used as the longitudinal axis: \code{"X"},
+\code{"Y"}, or \code{"Z"}.}
 
 \item{horizontal_threshold}{Absolute-angle limit defining horizontal posture.}
-
-\item{invalid}{Optional logical/numeric invalid-data indicator.}
 
 \item{ignore_invalid}{Whether invalid observations are treated as movement;
 use \code{NA} to treat them as no movement.}
@@ -35,4 +34,10 @@ use \code{NA} to treat them as no movement.}
 }
 \description{
 Identify a sleep window from horizontal posture
+}
+\examples{
+\donttest{
+raw <- actiread::acti_read_gt3x(actiread::acti_example_gt3x(), verbose = FALSE)
+horizontal <- acti_sleep_horangle(raw, epoch = "5 seconds")
+}
 }

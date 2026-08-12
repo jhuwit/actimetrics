@@ -45,7 +45,7 @@ columns \code{axis1-3} and \code{counts}}
 See \code{agcounts::calculate_counts()}}
 
 \item{resample}{(recommended) resample the data to 30Hz using
-\link[actibase:resample]{actibase::resample} vs. using the resampling method from
+\link[actibase:acti_resample]{actibase::acti_resample} vs. using the resampling method from
 \link[agcounts:calculate_counts]{agcounts::calculate_counts}.}
 
 \item{lfe_select}{Apply the Actigraph Low Frequency Extension filter.

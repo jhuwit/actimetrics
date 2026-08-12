@@ -4,20 +4,10 @@
 \alias{acti_sleep_l5}
 \title{Identify a sleep window from the least-active five hours}
 \usage{
-acti_sleep_l5(
-  activity,
-  time = NULL,
-  epoch_seconds = NULL,
-  l5_hours = 5,
-  window_hours = 12
-)
+acti_sleep_l5(data, l5_hours = 5, window_hours = 12)
 }
 \arguments{
-\item{activity}{Numeric activity metric at a regular epoch interval.}
-
-\item{time}{Optional POSIXct timestamps used to infer \code{epoch_seconds}.}
-
-\item{epoch_seconds}{Length of an epoch in seconds.}
+\item{data}{A data frame of regular activity epochs.}
 
 \item{l5_hours}{Duration of the least-active period.}
 
@@ -25,4 +15,11 @@ acti_sleep_l5(
 }
 \description{
 Identify a sleep window from the least-active five hours
+}
+\examples{
+# Repeat the bundled minute-level count data to form a complete example day.
+data <- actimetrics::acti_count_data
+data <- data[rep(seq_len(nrow(data)), length.out = 24 * 60), ]
+data$time <- data$time[1] + (seq_len(nrow(data)) - 1) * 60
+l5 <- acti_sleep_l5(data)
 }

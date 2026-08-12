@@ -4,28 +4,22 @@
 \alias{acti_sleep_notworn}
 \title{Identify a low-activity window for no-night-wear protocols}
 \usage{
-acti_sleep_notworn(
-  activity,
-  time = NULL,
-  epoch_seconds = NULL,
-  invalid = NULL,
-  min_block_minutes = 30,
-  max_gap_minutes = 60
-)
+acti_sleep_notworn(data, min_block_minutes = 30, max_gap_minutes = 60)
 }
 \arguments{
-\item{activity}{Numeric acceleration metric or count data.}
+\item{data}{A data frame of regular activity epochs.}
 
-\item{time}{Optional POSIXct timestamps used to infer \code{epoch_seconds}.}
-
-\item{epoch_seconds}{Length of an epoch in seconds.}
-
-\item{invalid}{Optional logical/numeric invalid-data indicator.}
-
-\item{min_block_minutes}{Minimum low-movement block duration.}
+\item{min_block_minutes}{Minimum duration of a low-activity block.}
 
 \item{max_gap_minutes}{Maximum interruption bridged between blocks.}
 }
 \description{
 Identify a low-activity window for no-night-wear protocols
+}
+\examples{
+data <- actimetrics::acti_count_data
+data <- data[rep(seq_len(nrow(data)), length.out = 24 * 60), ]
+data$time <- data$time[1] + (seq_len(nrow(data)) - 1) * 60
+# `counts` is an epoch-level activity metric.
+no_night_wear <- acti_sleep_notworn(data)
 }

@@ -4,10 +4,10 @@
 \alias{acti_sleep_setwindow}
 \title{Identify a fixed daily sleep window}
 \usage{
-acti_sleep_setwindow(time, start_hour = 22, end_hour = 8)
+acti_sleep_setwindow(data, start_hour = 22, end_hour = 8)
 }
 \arguments{
-\item{time}{POSIXct timestamps.}
+\item{data}{A data frame containing timestamps.}
 
 \item{start_hour, end_hour}{Start and end clock hours (0--24).}
 }
@@ -16,4 +16,8 @@ An \code{acti_sleep_guider} object.
 }
 \description{
 Identify a fixed daily sleep window
+}
+\examples{
+data <- actimetrics::acti_count_data
+fixed_window <- acti_sleep_setwindow(data, start_hour = 22, end_hour = 8)
 }

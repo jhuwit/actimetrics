@@ -29,7 +29,7 @@ Suggests:
     MIMSunit,
     data.table,
     reticulate,
-    stepcount,
+    stepcount (>= 0.6.0),
     actigraph.sleepr (>= 0.3.1),
     agcounts (>= 0.6.7),
     callr,
@@ -53,3 +53,4 @@ Imports:
 LazyData: true
 Config/roxygen2/version: 8.0.0
 URL: https://jhuwit.github.io/actimetrics/
+BugReports: https://github.com/jhuwit/actimetrics/issues

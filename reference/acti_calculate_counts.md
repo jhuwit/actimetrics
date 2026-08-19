@@ -50,8 +50,9 @@ acti_apply_sadeh(data, ...)
 
 - resample:
 
-  (recommended) resample the data to 30Hz using actibase::resample vs.
-  using the resampling method from
+  (recommended) resample the data to 30Hz using
+  [actibase::acti_resample](https://jhuwit.github.io/actibase/reference/acti_resample.html)
+  vs. using the resampling method from
   [agcounts::calculate_counts](https://rdrr.io/pkg/agcounts/man/calculate_counts.html).
 
 - lfe_select:

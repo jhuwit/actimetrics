@@ -249,7 +249,7 @@ acti_threshold_enmo <- function(data,
 #'   doi:10.1249/MSS.0000000000000289.
 #' @export
 acti_threshold_hildebrand <- function(data,
-                                      placement = c("hip", "wrist"),
+                                      placement = c("wrist", "hip"),
                                       name = "hildebrand_intensity",
                                       enmo = "enmo") {
   placement <- match.arg(placement)
@@ -266,4 +266,21 @@ acti_threshold_hildebrand <- function(data,
     epoch = 1,
     enmo = enmo
   )
+}
+
+#' @rdname acti_threshold_hildebrand
+#' @param ... not used, but used to pass arguments to
+#' [acti_threshold_hildebrand] from
+#' [acti_threshold_hildebrand_wrist] and [acti_threshold_hildebrand_hip]
+#' @export
+acti_threshold_hildebrand_wrist <- function(...,
+                                      placement = "wrist") {
+  acti_threshold_hildebrand(..., placement = placement)
+}
+
+#' @rdname acti_threshold_hildebrand
+#' @export
+acti_threshold_hildebrand_hip <- function(...,
+                                      placement = "hip") {
+  acti_threshold_hildebrand(..., placement = placement)
 }

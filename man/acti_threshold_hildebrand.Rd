@@ -2,14 +2,20 @@
 % Please edit documentation in R/acti_threshold_counts.R
 \name{acti_threshold_hildebrand}
 \alias{acti_threshold_hildebrand}
+\alias{acti_threshold_hildebrand_wrist}
+\alias{acti_threshold_hildebrand_hip}
 \title{Classify adult ENMO with Hildebrand cut-points}
 \usage{
 acti_threshold_hildebrand(
   data,
-  placement = c("hip", "wrist"),
+  placement = c("wrist", "hip"),
   name = "hildebrand_intensity",
   enmo = "enmo"
 )
+
+acti_threshold_hildebrand_wrist(..., placement = "wrist")
+
+acti_threshold_hildebrand_hip(..., placement = "hip")
 }
 \arguments{
 \item{data}{A data frame with a \code{time} and an ENMO column.}
@@ -20,6 +26,10 @@ or \code{"wrist"}.}
 \item{name}{Name of the added ordered factor column.}
 
 \item{enmo}{Name of the ENMO column, in mg.}
+
+\item{...}{not used, but used to pass arguments to
+\link{acti_threshold_hildebrand} from
+\link{acti_threshold_hildebrand_wrist} and \link{acti_threshold_hildebrand_hip}}
 }
 \value{
 \code{data} with an ordered factor column named by \code{name}.

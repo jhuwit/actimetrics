@@ -7,7 +7,7 @@
 py_acti_calculate_stepcount(
   ...,
   pyenv_function = function() {
-     reticulate::import("stepcount")
+     stepcount::py_require_stepcount()
  },
   show = FALSE
 )

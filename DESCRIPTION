@@ -14,7 +14,11 @@ Description: Provides functions for calibrating, counting, and summarizing
     Monitor Independent Movement Summary Unit (MIMS), mean amplitude 
     deviation (MAD), and provides wrappers for sleep estimation from 
     activity counts using Tudor-Locke (2014) <doi:10.1139/apnm-2013-0173> and
-    Sadeh (1994) <doi:10.1093/sleep/17.3.201>.
+    Sadeh (1994) <doi:10.1093/sleep/17.3.201>. Count-intensity thresholds
+    include Montoye et al. (2020) <doi:10.1080/02640414.2020.1794244> and
+    Sasaki et al. (2011) <doi:10.1016/j.jsams.2011.04.003>. Raw-acceleration
+    ENMO thresholds include Hildebrand et al. (2014)
+    <doi:10.1249/MSS.0000000000000289>.
 Roxygen: list(markdown = TRUE)
 License: GPL-3
 Depends: 

@@ -25,3 +25,4 @@
 ^\.positai$
 ^\.claude$
 ^actimetrics\.Rproj$
+^R/helper_functions\.R$

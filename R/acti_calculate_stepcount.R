@@ -36,8 +36,11 @@ acti_calculate_stepcount = function(data,
       attr(data, "sample_rate") = get_sample_rate(data)
     }
   }
+  # assertthat::assert_that(
+  #   assertthat::is.count(attr(data, "sample_rate"))
+  # )
   assertthat::assert_that(
-    assertthat::is.count(attr(data, "sample_rate"))
+    assertthat::is.number(attr(data, "sample_rate"))
   )
   steps = stepcount::stepcount(data,
                                sample_rate = attr(data, "sample_rate"),

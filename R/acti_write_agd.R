@@ -8,7 +8,8 @@
 #'   Time may be called `time`, `timestamp`, or `HEADER_TIMESTAMP`; count
 #'   columns may be `axis1`--`axis3` or `X`--`Z`.
 #' @param file Path for the new `.agd` file.
-#' @param epoch_length Length of each epoch in seconds.
+#' @param epoch_length Length of each epoch in seconds.  Defaults to `NULL`,
+#'   in which case it is estimated as the median spacing between timestamps.
 #' @param original_sample_rate Sample rate of the signal used to derive the
 #'   counts.
 #' @param settings Optional named character vector of additional ActiLife
@@ -19,12 +20,12 @@
 #' @examples
 #' \dontrun{
 #' counts <- read.csv("72310_counts.csv.gz")
-#' acti_write_agd(counts, "7231060sec.agd", original_sample_rate = 80)
+#' acti_write_agd(counts, file, original_sample_rate = 80)
 #' actigraph.sleepr::read_agd("7231060sec.agd")
 #' }
 acti_write_agd <- function(data,
                            file,
-                           epoch_length = 60L,
+                           epoch_length = NULL,
                            original_sample_rate = NA_integer_,
                            settings = character(),
                            overwrite = FALSE) {
@@ -41,15 +42,16 @@ acti_write_agd <- function(data,
   if (file.exists(file) && !isTRUE(overwrite)) {
     rlang::abort("`file` already exists; set `overwrite = TRUE` to replace it.")
   }
-  if (!is.numeric(epoch_length) || length(epoch_length) != 1L ||
-      is.na(epoch_length) || epoch_length <= 0) {
-    rlang::abort("`epoch_length` must be one positive number of seconds.")
-  }
 
-  time_name <- intersect(c("time", "timestamp", "HEADER_TIMESTAMP"), names(data))
-  if (!length(time_name)) {
-    rlang::abort("`data` needs `time`, `timestamp`, or `HEADER_TIMESTAMP`.")
+  if (!is.data.frame(data)) {
+    rlang::abort("`data` must be a data frame.")
   }
+  # time is now time
+  data = actibase::acti_standardise_data(
+    data,
+    check_xyz = FALSE,
+    subset_xyz = FALSE
+  )
   axis_names <- if (all(paste0("axis", 1:3) %in% names(data))) {
     paste0("axis", 1:3)
   } else if (all(c("X", "Y", "Z") %in% names(data))) {
@@ -58,7 +60,7 @@ acti_write_agd <- function(data,
     rlang::abort("`data` needs either `axis1`--`axis3` or `X`--`Z` count columns.")
   }
 
-  time <- data[[time_name[[1]]]]
+  time <- data$time
   if (!inherits(time, "POSIXt")) {
     # ActiGraph CSV exports use ISO-8601 timestamps, including fractional
     # seconds and a trailing UTC marker.  `as.POSIXct()` without a format
@@ -70,6 +72,16 @@ acti_write_agd <- function(data,
   }
   if (anyDuplicated(time) || is.unsorted(as.numeric(time))) {
     rlang::abort("Timestamps must be unique and sorted ascending.")
+  }
+  if (is.null(epoch_length)) {
+    if (length(time) < 2L) {
+      rlang::abort("Cannot estimate `epoch_length` from fewer than two timestamps; supply it explicitly.")
+    }
+    epoch_length <- stats::median(diff(as.numeric(time)))
+  }
+  if (!is.numeric(epoch_length) || length(epoch_length) != 1L ||
+      is.na(epoch_length) || epoch_length <= 0) {
+    rlang::abort("`epoch_length` must be one positive number of seconds.")
   }
   axes <- data[axis_names]
   if (any(!vapply(axes, is.numeric, logical(1))) || anyNA(axes)) {

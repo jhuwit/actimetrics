@@ -28,4 +28,12 @@ test_that("acti_write_agd writes a reader-compatible AGD database", {
   expect_equal(attr(round_trip, "epochlength"), 60L)
   expect_equal(attr(round_trip, "original sample rate"), "80")
   expect_error(acti_write_agd(counts, file), "already exists")
+
+  half_minute <- counts
+  half_minute$HEADER_TIMESTAMP <- c("2020-01-01T00:00:00.000Z",
+                                    "2020-01-01T00:00:30.000Z")
+  short_file <- tempfile(fileext = ".agd")
+  on.exit(unlink(short_file), add = TRUE)
+  acti_write_agd(half_minute, short_file)
+  expect_equal(attr(actigraph.sleepr::read_agd(short_file), "epochlength"), 30L)
 })

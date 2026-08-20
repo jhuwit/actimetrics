@@ -7,7 +7,7 @@
 acti_write_agd(
   data,
   file,
-  epoch_length = 60L,
+  epoch_length = NULL,
   original_sample_rate = NA_integer_,
   settings = character(),
   overwrite = FALSE
@@ -20,7 +20,8 @@ columns may be \code{axis1}--\code{axis3} or \code{X}--\code{Z}.}
 
 \item{file}{Path for the new \code{.agd} file.}
 
-\item{epoch_length}{Length of each epoch in seconds.}
+\item{epoch_length}{Length of each epoch in seconds.  Defaults to \code{NULL},
+in which case it is estimated as the median spacing between timestamps.}
 
 \item{original_sample_rate}{Sample rate of the signal used to derive the
 counts.}
@@ -41,7 +42,7 @@ ticks (100 ns since 0001-01-01), rather than as Unix time.
 \examples{
 \dontrun{
 counts <- read.csv("72310_counts.csv.gz")
-acti_write_agd(counts, "7231060sec.agd", original_sample_rate = 80)
+acti_write_agd(counts, file, original_sample_rate = 80)
 actigraph.sleepr::read_agd("7231060sec.agd")
 }
 }

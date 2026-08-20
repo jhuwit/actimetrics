@@ -4,7 +4,7 @@
 \alias{acti_calculate_stepcount}
 \title{Calculate Step Counts via \code{stepcount}}
 \usage{
-acti_calculate_stepcount(data, sample_rate = NULL, ...)
+acti_calculate_stepcount(data, sample_rate = NULL, ..., epoch = "1 minute")
 }
 \arguments{
 \item{data}{A \code{data.frame}, \code{AccData} object, or GT3X file with \code{X}, \code{Y},
@@ -14,6 +14,9 @@ acti_calculate_stepcount(data, sample_rate = NULL, ...)
 input object when available.}
 
 \item{...}{Additional arguments passed to \code{\link[stepcount:stepcount]{stepcount::stepcount()}}}
+
+\item{epoch}{epoch unit to aggregate the data to, passed to
+\code{\link[lubridate:floor_date]{lubridate::floor_date()}}, original output is at 10-seconds}
 }
 \value{
 A tibble with minute-level \code{time}, \code{steps}, and \code{walking}

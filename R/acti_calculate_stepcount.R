@@ -8,6 +8,8 @@
 #' @param sample_rate Sample rate in Hz. If omitted, it is taken from the
 #' input object when available.
 #' @param ... Additional arguments passed to [stepcount::stepcount()]
+#' @param epoch epoch unit to aggregate the data to, passed to
+#' [lubridate::floor_date()], original output is at 10-seconds
 #'
 #' @return A tibble with minute-level `time`, `steps`, and `walking`
 #' columns.
@@ -23,7 +25,8 @@
 #' }
 acti_calculate_stepcount = function(data,
                                     sample_rate = NULL,
-                                    ...
+                                    ...,
+                                    epoch = "1 minute"
 ) {
   rlang::check_installed("stepcount")
   if (is.data.frame(data)) {
@@ -48,7 +51,7 @@ acti_calculate_stepcount = function(data,
   walking = steps$walking
   walking = walking %>%
     dplyr::mutate(
-      time = lubridate::floor_date(time, "1 minute"),
+      time = lubridate::floor_date(time, unit = epoch),
       walking = walking > 0) %>%
     dplyr::group_by(time) %>%
     dplyr::summarise(walking = any(walking, na.rm = TRUE))
@@ -63,7 +66,7 @@ acti_calculate_stepcount = function(data,
   # Now do it at a minute level
   trans = get_transformations(sdata)
   sdata = sdata %>%
-    dplyr::mutate(time = lubridate::floor_date(time, unit = "1 min")) %>%
+    dplyr::mutate(time = lubridate::floor_date(time, unit = epoch)) %>%
     dplyr::group_by(time) %>%
     dplyr::summarise(steps = sum(steps, na.rm = TRUE)) %>%
     dplyr::ungroup()

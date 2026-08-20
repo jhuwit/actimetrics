@@ -7,7 +7,7 @@ default)
 ## Usage
 
 ``` r
-acti_calculate_stepcount(data, sample_rate = NULL, ...)
+acti_calculate_stepcount(data, sample_rate = NULL, ..., epoch = "1 minute")
 ```
 
 ## Arguments
@@ -26,6 +26,12 @@ acti_calculate_stepcount(data, sample_rate = NULL, ...)
 
   Additional arguments passed to
   [`stepcount::stepcount()`](https://rdrr.io/pkg/stepcount/man/stepcount.html)
+
+- epoch:
+
+  epoch unit to aggregate the data to, passed to
+  [`lubridate::floor_date()`](https://lubridate.tidyverse.org/reference/round_date.html),
+  original output is at 10-seconds
 
 ## Value
 

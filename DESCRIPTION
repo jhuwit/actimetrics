@@ -32,7 +32,10 @@ Suggests:
     stepcount (>= 0.6.0),
     actigraph.sleepr (>= 0.3.1),
     agcounts (>= 0.6.7),
-    callr
+    callr,
+    DBI,
+    RSQLite,
+    bit64
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 

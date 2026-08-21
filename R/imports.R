@@ -1,6 +1,6 @@
 #' @import actibase
 #' @import actiread
-#' @importFrom magrittr `%>%`
+#' @importFrom dplyr .data
 #' @import stats
 NULL
 

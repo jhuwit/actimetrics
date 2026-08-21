@@ -169,7 +169,7 @@ mims_default_processing = function(
     data = mims_default_filtering(data)
   }
   if (round_after_processing) {
-    data = data %>%
+    data = data |>
       dplyr::mutate(
         X = round(X, 3),
         Y = round(Y, 3),

@@ -3,17 +3,17 @@ summarize_to_minute = function(sdata, prefix) {
   rm(list = c("steps"))
   # Now do it at a minute level
   trans = get_transformations(sdata)
-  sdata = sdata %>%
-    dplyr::mutate(time = lubridate::floor_date(time, unit = "1 min")) %>%
-    dplyr::group_by(time) %>%
-    dplyr::summarise(steps = sum(steps, na.rm = TRUE)) %>%
+  sdata = sdata |>
+    dplyr::mutate(time = lubridate::floor_date(time, unit = "1 min")) |>
+    dplyr::group_by(time) |>
+    dplyr::summarise(steps = sum(steps, na.rm = TRUE)) |>
     dplyr::ungroup()
   sdata = set_transformations(sdata, trans)
   sdata = set_transformations(sdata,
                               "steps_summarized_per_60s_epoch",
                               prefix = prefix,
                               add = TRUE)
-  sdata = sdata %>%
+  sdata = sdata |>
     dplyr::mutate(steps = ifelse(!is.finite(steps), NA_integer_, steps))
   sdata
 }
@@ -25,7 +25,7 @@ summarize_to_minute = function(sdata, prefix) {
 #' `Z`, and `time`
 #' @param resample_to_15hz resample data to 15Hz,
 #' passed to [walking::estimate_steps_verisense()]
-#' @param method parameters to estimate wlaking, either original or revised,
+#' @param method parameters to estimate walking, either original or revised,
 #' passed to [walking::estimate_steps_verisense()]
 #' @param ... Additional arguments passed to [walking::estimate_steps_verisense()]
 #'
@@ -48,7 +48,7 @@ acti_calculate_verisense = function(data,
     ...,
     method = method
   )
-  sdata = sdata %>% dplyr::as_tibble()
+  sdata = sdata |> dplyr::as_tibble()
 
   sdata = set_transformations(sdata, get_transformations(data), add = FALSE)
   sdata = set_transformations(sdata,
@@ -89,7 +89,7 @@ acti_calculate_forest = function(data,
     data,
     ...
   )
-  sdata = sdata %>% dplyr::as_tibble()
+  sdata = sdata |> dplyr::as_tibble()
 
   sdata = set_transformations(sdata, get_transformations(data), add = FALSE)
   sdata = set_transformations(sdata,
@@ -178,7 +178,7 @@ acti_calculate_sdt = function(data,
     data,
     sample_rate = attr(data, "sample_rate"),
     ...)
-  sdata = sdata %>% dplyr::as_tibble()
+  sdata = sdata |> dplyr::as_tibble()
 
   sdata = set_transformations(sdata, get_transformations(data), add = FALSE)
   sdata = set_transformations(sdata,

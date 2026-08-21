@@ -102,11 +102,11 @@ acti_calculate_measures = function(
     data = flag_qc_all(data, dynamic_range = dynamic_range, verbose = verbose,
                        flags = flags)
     data$flags = rowSums(
-      data %>%
+      data |>
         dplyr::select(dplyr::starts_with("flag_")) > 0
     )
     flags = acti_calculate_flags(data, unit = unit)
-    data = data %>%
+    data = data |>
       dplyr::select(-dplyr::starts_with("flag"))
   }
   transformations = get_transformations(data)
@@ -171,7 +171,7 @@ acti_calculate_measures = function(
     res = dplyr::full_join(res, flags, by = "HEADER_TIME_STAMP")
   }
   res = join_all_time(res, unit, ensure_all_time)
-  res = res %>%
+  res = res |>
     dplyr::rename(time = HEADER_TIME_STAMP)
   transforms = paste("aggregated_at_", paste(unit, collapse = "_"))
   transformations = c(transforms, transformations)
@@ -237,14 +237,14 @@ acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
     if (verbose) {
       message("Running floor_sec on time")
     }
-    data = data %>%
+    data = data |>
       dplyr::mutate(HEADER_TIME_STAMP = floor_sec(HEADER_TIME_STAMP))
 
     if (verbose) {
       message("Summarizing the variance")
     }
-    data = data %>%
-      dplyr::group_by(HEADER_TIME_STAMP) %>%
+    data = data |>
+      dplyr::group_by(HEADER_TIME_STAMP) |>
       dplyr::summarise(
         AI = var(X, na.rm = TRUE) +
           var(Y, na.rm = TRUE) +
@@ -254,23 +254,23 @@ acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
       message("Calculating AI")
     }
     if (!is_data_table) {
-      data = data %>%
+      data = data |>
         dplyr::ungroup()
     }
-    data = data %>%
+    data = data |>
       dplyr::mutate(AI = sqrt(AI/3))
   }
 
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
-                                                unit)) %>%
-    dplyr::group_by(HEADER_TIME_STAMP) %>%
+                                                unit)) |>
+    dplyr::group_by(HEADER_TIME_STAMP) |>
     dplyr::summarise(
       AI = sum(AI)
     )
-  data = data %>%
-    tibble::as_tibble() %>%
+  data = data |>
+    tibble::as_tibble() |>
     dplyr::ungroup()
   data = join_all_time(data, unit, ensure_all_time)
   data = remake_dt(data, is_data_table = is_data_table)
@@ -306,15 +306,15 @@ acti_calculate_flags = function(data, unit = "1 min", ensure_all_time = TRUE) {
     stop("flag is not in the data, please run flag_qc")
   }
 
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
-                                                unit)) %>%
-    dplyr::group_by(HEADER_TIME_STAMP) %>%
+                                                unit)) |>
+    dplyr::group_by(HEADER_TIME_STAMP) |>
     dplyr::summarise(
       dplyr::across(dplyr::starts_with("flag"), sum),
       n_samples_in_unit = dplyr::n()
-    ) %>%
+    ) |>
     dplyr::ungroup()
   data = join_all_time(data, unit, ensure_all_time)
   data
@@ -334,16 +334,16 @@ acti_calculate_n_idle = function(data, unit = "1 min", ensure_all_time = TRUE) {
 
   n_idle = r = all_zero = NULL
   rm(list = c("n_idle", "r", "all_zero"))
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       r = sqrt(X^2+Y^2+Z^2),
       all_zero = X == 0 & Y == 0 & Z == 0,
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
-                                                unit)) %>%
-    dplyr::group_by(HEADER_TIME_STAMP) %>%
+                                                unit)) |>
+    dplyr::group_by(HEADER_TIME_STAMP) |>
     dplyr::summarise(
       n_idle = sum(is.na(r) | all_zero)
-    ) %>%
+    ) |>
     dplyr::ungroup()
   data = join_all_time(data, unit, ensure_all_time)
   data
@@ -355,7 +355,7 @@ acti_calculate_enmo = function(...) {
   ENMO_t = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   out = acti_calculate_mad(...)
-  out %>%
+  out |>
     dplyr::select(HEADER_TIME_STAMP, ENMO_t)
 }
 
@@ -365,7 +365,7 @@ acti_calculate_ai_defined = function(...) {
   AI_DEFINED = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "AI_DEFINED"))
   out = acti_calculate_mad(...)
-  out %>%
+  out |>
     dplyr::select(HEADER_TIME_STAMP, AI_DEFINED)
 }
 
@@ -428,7 +428,7 @@ acti_calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
       ENMO_t = mean(ENMO_t, na.rm = TRUE)
     ), by = .(HEADER_TIME_STAMP)]
   } else {
-    data = data %>%
+    data = data |>
       dplyr::mutate(
         r = sqrt(X^2 + Y^2 + Z^2),
         ENMO_t = r - 1,
@@ -439,8 +439,8 @@ acti_calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
     if (verbose) {
       message("Calculating all MAD measures")
     }
-    data = data %>%
-      dplyr::group_by(HEADER_TIME_STAMP) %>%
+    data = data |>
+      dplyr::group_by(HEADER_TIME_STAMP) |>
       dplyr::summarise(
         SD = sd(r, na.rm = TRUE),
         SD_t = sd(ENMO_t, na.rm = TRUE),
@@ -452,11 +452,11 @@ acti_calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
         MEDAD = median(abs(r - mean(r, na.rm = TRUE)), na.rm = TRUE),
         mean_r = mean(r, na.rm = TRUE),
         ENMO_t = mean(ENMO_t, na.rm = TRUE)
-      ) %>%
+      ) |>
       dplyr::ungroup()
   }
-  data = data %>%
-    tibble::as_tibble() %>%
+  data = data |>
+    tibble::as_tibble() |>
     dplyr::ungroup()
   data = join_all_time(data, unit, ensure_all_time)
   data = remake_dt(data, is_data_table = is_data_table)
@@ -493,7 +493,7 @@ acti_calculate_auc = function(data, unit = "1 min",
   if (verbose) {
     message("Absolute values")
   }
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       X = abs(X),
       Y = abs(Y),
@@ -501,7 +501,7 @@ acti_calculate_auc = function(data, unit = "1 min",
   if (verbose) {
     message("Calculting trapezoids")
   }
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       dtime = difftime(HEADER_TIME_STAMP,
                        dplyr::lag(HEADER_TIME_STAMP, n = 1),
@@ -510,7 +510,7 @@ acti_calculate_auc = function(data, unit = "1 min",
       X = (X + dplyr::lag(X, n = 1)) / 2 * dtime,
       Y = (Y + dplyr::lag(Y, n = 1)) / 2 * dtime,
       Z = (Z + dplyr::lag(Z, n = 1)) / 2 * dtime
-    ) %>%
+    ) |>
     dplyr::select(-dtime)
   if (verbose) {
     message("Replacing first value as NA")
@@ -519,19 +519,19 @@ acti_calculate_auc = function(data, unit = "1 min",
     x[1] = NA
     x
   }
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                                 unit)
-    ) %>%
-    dplyr::group_by(HEADER_TIME_STAMP) %>%
+    ) |>
+    dplyr::group_by(HEADER_TIME_STAMP) |>
     dplyr::mutate(
       X = replace_first_na(X),
       Y = replace_first_na(Y),
       Z = replace_first_na(Z)
     )
-  data = data %>%
-    dplyr::ungroup() %>%
+  data = data |>
+    dplyr::ungroup() |>
     dplyr::mutate(
       good = !(is.na(X) | is.na(Y) | is.na(Z))
     )
@@ -539,17 +539,17 @@ acti_calculate_auc = function(data, unit = "1 min",
   if (verbose) {
     message("Calculating AUCs")
   }
-  data = data %>%
-    dplyr::group_by(HEADER_TIME_STAMP) %>%
+  data = data |>
+    dplyr::group_by(HEADER_TIME_STAMP) |>
     dplyr::summarise(
       good = sum(good),
       AUC_X = sum(X, na.rm = TRUE),
       AUC_Y = sum(Y, na.rm = TRUE),
       AUC_Z = sum(Z, na.rm = TRUE)
-    ) %>%
-    dplyr::ungroup() %>%
+    ) |>
+    dplyr::ungroup() |>
     dplyr::mutate(good = good >= (0.9 * n_total))
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       AUC_X = ifelse(good, AUC_X, NA),
       AUC_Y = ifelse(good, AUC_Y, NA),
@@ -560,23 +560,23 @@ acti_calculate_auc = function(data, unit = "1 min",
       message("Truncating Small AUCs")
     }
     minimum = 1e-04 * n_total
-    data = data %>%
+    data = data |>
       dplyr::mutate(
         AUC_X = ifelse(AUC_X <= minimum, 0, AUC_X),
         AUC_Y = ifelse(AUC_Y <= minimum, 0, AUC_Y),
         AUC_Z = ifelse(AUC_Z <= minimum, 0, AUC_Z)
       )
-    data = data %>%
+    data = data |>
       dplyr::mutate(
         AUC_X = ifelse(AUC_X < 0 | AUC_X >= max_values, -1, AUC_X),
         AUC_Y = ifelse(AUC_Y < 0 | AUC_Y >= max_values, -1, AUC_Y),
         AUC_Z = ifelse(AUC_Z < 0 | AUC_Z >= max_values, -1, AUC_Z)
       )
   }
-  data = data %>%
+  data = data |>
     dplyr::mutate(
       AUC = AUC_X + AUC_Y + AUC_Z
-    ) %>%
+    ) |>
     dplyr::select(-good)
   data = join_all_time(data, unit, ensure_all_time)
   data
@@ -605,8 +605,8 @@ calculate_activity_counts = function(data,
     epoch = epoch,
     verbose = verbose
   )
-  counts = counts %>%
-    dplyr::rename(HEADER_TIME_STAMP = time, AC = counts) %>%
+  counts = counts |>
+    dplyr::rename(HEADER_TIME_STAMP = time, AC = counts) |>
     dplyr::select(HEADER_TIME_STAMP, AC)
   counts
 }
@@ -678,7 +678,7 @@ acti_calculate_mims = function(
     epoch = unit,
     dynamic_range = dynamic_range,
     ...)
-  data = data %>% dplyr::mutate(
+  data = data |> dplyr::mutate(
     HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                               unit = unit))
   data = join_all_time(data, unit, ensure_all_time)

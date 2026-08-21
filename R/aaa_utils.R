@@ -2,7 +2,7 @@ rename_timestamp = function(data) {
   timestamp = time = NULL
   rm(list = c("timestamp", "time"))
   if ("time" %in% colnames(data) && !"timestamp" %in% colnames(data)) {
-    data = data %>% dplyr::rename(timestamp = time)
+    data = data |> dplyr::rename(timestamp = time)
   }
   data
 }

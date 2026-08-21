@@ -8,6 +8,8 @@
 #' @param sample_rate Sample rate in Hz. If omitted, it is taken from the
 #' input object when available.
 #' @param ... Additional arguments passed to [stepcount::stepcount()]
+#' @param epoch epoch unit to aggregate the data to, passed to
+#' [lubridate::floor_date()], original output is at 10-seconds
 #'
 #' @return A tibble with minute-level `time`, `steps`, and `walking`
 #' columns.
@@ -23,7 +25,8 @@
 #' }
 acti_calculate_stepcount = function(data,
                                     sample_rate = NULL,
-                                    ...
+                                    ...,
+                                    epoch = "1 minute"
 ) {
   rlang::check_installed("stepcount")
   if (is.data.frame(data)) {
@@ -36,18 +39,21 @@ acti_calculate_stepcount = function(data,
       attr(data, "sample_rate") = get_sample_rate(data)
     }
   }
+  # assertthat::assert_that(
+  #   assertthat::is.count(attr(data, "sample_rate"))
+  # )
   assertthat::assert_that(
-    assertthat::is.count(attr(data, "sample_rate"))
+    assertthat::is.number(attr(data, "sample_rate"))
   )
   steps = stepcount::stepcount(data,
                                sample_rate = attr(data, "sample_rate"),
                                ...)
   walking = steps$walking
-  walking = walking %>%
+  walking = walking |>
     dplyr::mutate(
-      time = lubridate::floor_date(time, "1 minute"),
-      walking = walking > 0) %>%
-    dplyr::group_by(time) %>%
+      time = lubridate::floor_date(time, unit = epoch),
+      walking = walking > 0) |>
+    dplyr::group_by(time) |>
     dplyr::summarise(walking = any(walking, na.rm = TRUE))
   sdata = steps$steps
   sdata = set_transformations(sdata,
@@ -59,10 +65,10 @@ acti_calculate_stepcount = function(data,
 
   # Now do it at a minute level
   trans = get_transformations(sdata)
-  sdata = sdata %>%
-    dplyr::mutate(time = lubridate::floor_date(time, unit = "1 min")) %>%
-    dplyr::group_by(time) %>%
-    dplyr::summarise(steps = sum(steps, na.rm = TRUE)) %>%
+  sdata = sdata |>
+    dplyr::mutate(time = lubridate::floor_date(time, unit = epoch)) |>
+    dplyr::group_by(time) |>
+    dplyr::summarise(steps = sum(steps, na.rm = TRUE)) |>
     dplyr::ungroup()
   sdata = set_transformations(sdata, trans)
   sdata = set_transformations(sdata,
@@ -70,14 +76,14 @@ acti_calculate_stepcount = function(data,
                               prefix = "acti_calculate_stepcount",
                               add = TRUE)
 
-  sdata = sdata %>%
+  sdata = sdata |>
     dplyr::left_join(walking, by = "time")
   sdata = set_transformations(sdata,
                               "walking_column_joined",
                               prefix = "acti_calculate_stepcount",
                               add = TRUE)
 
-  sdata = sdata %>%
+  sdata = sdata |>
     dplyr::mutate(steps = ifelse(!is.finite(steps), NA_integer_, steps))
   sdata
 }

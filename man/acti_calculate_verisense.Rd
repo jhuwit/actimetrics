@@ -18,7 +18,7 @@ acti_calculate_verisense(
 \item{resample_to_15hz}{resample data to 15Hz,
 passed to \code{\link[walking:estimate_steps_verisense]{walking::estimate_steps_verisense()}}}
 
-\item{method}{parameters to estimate wlaking, either original or revised,
+\item{method}{parameters to estimate walking, either original or revised,
 passed to \code{\link[walking:estimate_steps_verisense]{walking::estimate_steps_verisense()}}}
 
 \item{...}{Additional arguments passed to \code{\link[walking:estimate_steps_verisense]{walking::estimate_steps_verisense()}}}

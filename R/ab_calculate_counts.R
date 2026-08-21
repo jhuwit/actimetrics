@@ -47,18 +47,18 @@ acti_calculate_counts = function(
   )
   attr(counts, "sample_rate") = round(60/epoch, 2)
 
-  counts = counts %>%
+  counts = counts |>
     dplyr::rename_with(tolower)
-  counts = counts %>%
+  counts = counts |>
     dplyr::rename(counts = vector.magnitude)
   # to deal with https://github.com/bhelsel/agcounts/issues/42
-  counts = counts %>%
-    dplyr::mutate(time = lubridate::floor_date(time, unit = paste0(epoch, " seconds"))) %>%
-    dplyr::group_by(time) %>%
-    dplyr::summarise(dplyr::across(dplyr::everything(), function(x) sum(x, na.rm = TRUE))) %>%
+  counts = counts |>
+    dplyr::mutate(time = lubridate::floor_date(time, unit = paste0(epoch, " seconds"))) |>
+    dplyr::group_by(time) |>
+    dplyr::summarise(dplyr::across(dplyr::everything(), function(x) sum(x, na.rm = TRUE))) |>
     dplyr::ungroup()
   # Log-transform accelerometer counts with a +1 offset so zeros stay finite.
-  counts <- counts %>%
+  counts <- counts |>
     dplyr::mutate(counts_log10 = log10(counts + 1))
 
   counts = set_transformations(counts, trans)
@@ -71,5 +71,5 @@ acti_calculate_counts = function(
                                ),
                                prefix = "acti_calculate_counts",
                                add = TRUE)
-  counts = counts %>% dplyr::as_tibble()
+  counts = counts |> dplyr::as_tibble()
 }

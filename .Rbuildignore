@@ -13,7 +13,7 @@
 ^pkgdown$
 ^SummarizedActigraphy\.Rproj$
 ^README_cache$
-^\.DS_Store$
+^.*\.DS_Store$
 ^\.git$
 ^\.Rhistory$
 ^\.\.Rcheck$

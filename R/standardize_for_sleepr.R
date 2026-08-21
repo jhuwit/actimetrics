@@ -5,7 +5,7 @@ acti_standardize_actigraph.sleepr = function(data) {
   rm(list = c("timestamp", "vector.magnitude", "counts", "count"))
   data = actibase::acti_standardise_data(data, subset_xyz = FALSE, check_xyz = FALSE)
 
-  data = data %>% rename_timestamp()
+  data = data |> rename_timestamp()
   mode(data$timestamp) = "double"
 
   if (!"vector.magnitude" %in% names(data)) {
@@ -19,7 +19,7 @@ acti_standardize_actigraph.sleepr = function(data) {
   if ("vector.magnitude" %in% names(data) &&
       !any(axes %in% colnames(data))) {
     # the actigraph.sleepr:::add_magnitude will recreate it anyway
-    data = data %>%
+    data = data |>
       dplyr::mutate(
         axis1 = vector.magnitude/sqrt(3),
         axis2 = vector.magnitude/sqrt(3),

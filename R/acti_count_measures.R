@@ -56,16 +56,16 @@ acti_calculate_wear = function(data,
         data.frame(timestamp = seq(from, to, by = 60L),
                    wear = FALSE)
       })
-    choi_df = dplyr::left_join(data, choi_df) %>%
+    choi_df = dplyr::left_join(data, choi_df) |>
       tidyr::replace_na(list(wear = TRUE))
   } else {
     choi_df = data.frame(timestamp = unique(data$timestamp),
                          wear = TRUE)
   }
 
-  choi_df = choi_df %>%
-    dplyr::rename(time = timestamp) %>%
-    dplyr::select(time, dplyr::contains("wear")) %>%
+  choi_df = choi_df |>
+    dplyr::rename(time = timestamp) |>
+    dplyr::select(time, dplyr::contains("wear")) |>
     dplyr::as_tibble()
 
   trans = get_transformations(data)
@@ -95,9 +95,9 @@ acti_apply_cole_kripke = function(data) {
 
 
   # https://actigraphcorp.my.site.com/support/s/article/What-does-the-Detect-Sleep-Periods-button-do-and-how-does-it-work
-  ck = data %>%
+  ck = data |>
     actigraph.sleepr::apply_cole_kripke()
-  ck = ck %>%
+  ck = ck |>
     dplyr::rename(time = timestamp)
   trans = get_transformations(data)
   ck = set_transformations(ck, trans)
@@ -113,7 +113,7 @@ acti_apply_cole_kripke = function(data) {
 acti_apply_tudor_locke = function(data, ...) {
   rlang::check_installed("actigraph.sleepr")
   data = acti_standardize_actigraph.sleepr(data)
-  tl = data %>%
+  tl = data |>
     actigraph.sleepr::apply_tudor_locke(...)
   trans = get_transformations(data)
   tl = set_transformations(tl, trans)
@@ -130,7 +130,7 @@ acti_apply_tudor_locke = function(data, ...) {
 acti_apply_sadeh = function(data, ...) {
   rlang::check_installed("actigraph.sleepr")
   data = acti_standardize_actigraph.sleepr(data)
-  tl = data %>%
+  tl = data |>
     actigraph.sleepr::apply_sadeh(...)
   trans = get_transformations(data)
   tl = set_transformations(tl, trans)

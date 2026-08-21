@@ -25,7 +25,7 @@ summarize_to_minute = function(sdata, prefix) {
 #' `Z`, and `time`
 #' @param resample_to_15hz resample data to 15Hz,
 #' passed to [walking::estimate_steps_verisense()]
-#' @param method parameters to estimate wlaking, either original or revised,
+#' @param method parameters to estimate walking, either original or revised,
 #' passed to [walking::estimate_steps_verisense()]
 #' @param ... Additional arguments passed to [walking::estimate_steps_verisense()]
 #'

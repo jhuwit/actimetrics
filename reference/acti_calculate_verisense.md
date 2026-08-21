@@ -27,7 +27,7 @@ acti_calculate_verisense(
 
 - method:
 
-  parameters to estimate wlaking, either original or revised, passed to
+  parameters to estimate walking, either original or revised, passed to
   [`walking::estimate_steps_verisense()`](https://rdrr.io/pkg/walking/man/estimate_steps.html)
 
 - ...:

@@ -43,7 +43,7 @@ placement and do not apply these adult thresholds to children.
 \details{
 Hildebrand et al. report lower bounds of 69.1 and 258.7 mg at the hip, and
 100.6 and 428.8 mg at the wrist, for moderate and vigorous activity,
-respectively (doi:10.1249/MSS.0000000000000289).
+respectively \url{doi:10.1249/MSS.0000000000000289}.
 }
 \references{
 Hildebrand M, van Hees VT, Hansen BH, Ekelund U. Age group

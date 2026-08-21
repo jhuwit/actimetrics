@@ -82,7 +82,7 @@ acti_threshold_counts <- function(data,
 #'
 #' Montoye et al. recommend `<2860` counts/minute for sedentary activity,
 #' `2860`--`3940` for light activity, and `>=3941` for MVPA
-#' (doi:10.1080/02640414.2020.1794244).
+#' <doi:10.1080/02640414.2020.1794244>.
 #'
 #' @inheritParams acti_threshold_counts
 #' @param name Name of the added ordered factor column.
@@ -112,7 +112,7 @@ acti_threshold_montoye <- function(data, name = "montoye_intensity") {
 #'
 #' Sasaki et al. recommend `2690`--`6166` counts/minute for moderate,
 #' `6167`--`9642` for hard, and `>9642` for very hard activity
-#' (doi:10.1016/j.jsams.2011.04.003).
+#' <doi:10.1016/j.jsams.2011.04.003>.
 #'
 #' @inheritParams acti_threshold_counts
 #' @param name Name of the added ordered factor column.
@@ -139,7 +139,7 @@ acti_threshold_sasaki <- function(data, name = "sasaki_intensity") {
 #'
 #' Romanzini et al. recommend `<=180` counts/15 seconds for sedentary,
 #' `181`--`756` for light, `757`--`1111` for moderate, and `>=1112` for
-#' vigorous activity (doi:10.1080/17461391.2012.732614).
+#' vigorous activity <doi:10.1080/17461391.2012.732614>.
 #'
 #' @inheritParams acti_threshold_counts
 #' @param name Name of the added ordered factor column.
@@ -235,7 +235,7 @@ acti_threshold_enmo <- function(data,
 #'
 #' Hildebrand et al. report lower bounds of 69.1 and 258.7 mg at the hip, and
 #' 100.6 and 428.8 mg at the wrist, for moderate and vigorous activity,
-#' respectively (doi:10.1249/MSS.0000000000000289).
+#' respectively <doi:10.1249/MSS.0000000000000289>.
 #'
 #' @inheritParams acti_threshold_enmo
 #' @param placement Body placement used in the original calibration: `"hip"`

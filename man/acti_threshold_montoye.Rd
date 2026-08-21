@@ -23,7 +23,7 @@ a GT9X Link and should not be used for another placement, device, or epoch.
 \details{
 Montoye et al. recommend \verb{<2860} counts/minute for sedentary activity,
 \code{2860}--\code{3940} for light activity, and \verb{>=3941} for MVPA
-(doi:10.1080/02640414.2020.1794244).
+\url{doi:10.1080/02640414.2020.1794244}.
 }
 \references{
 Montoye AH, Clevenger KA, Pfeiffer KA, et al. Development of

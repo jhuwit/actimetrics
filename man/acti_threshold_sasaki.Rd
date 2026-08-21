@@ -24,7 +24,7 @@ cut-points for wrist data.
 \details{
 Sasaki et al. recommend \code{2690}--\code{6166} counts/minute for moderate,
 \code{6167}--\code{9642} for hard, and \verb{>9642} for very hard activity
-(doi:10.1016/j.jsams.2011.04.003).
+\url{doi:10.1016/j.jsams.2011.04.003}.
 }
 \references{
 Sasaki JE, John D, Freedson PS. Validation and comparison of

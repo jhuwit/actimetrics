@@ -22,7 +22,7 @@ activity.  The cut-points must not be rescaled to another epoch.
 \details{
 Romanzini et al. recommend \verb{<=180} counts/15 seconds for sedentary,
 \code{181}--\code{756} for light, \code{757}--\code{1111} for moderate, and \verb{>=1112} for
-vigorous activity (doi:10.1080/17461391.2012.732614).
+vigorous activity \url{doi:10.1080/17461391.2012.732614}.
 }
 \references{
 Romanzini M, Petroski EL, Ohara D, Dourado AC, Reichert FF.

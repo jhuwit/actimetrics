@@ -32,7 +32,7 @@ acti_process = function(data,
     method = method,
     use_magnitude = use_magnitude)
 
-  result = dplyr::full_join(counts, wear, by = "time") %>%
+  result = dplyr::full_join(counts, wear, by = "time") |>
     dplyr::mutate(wear = ifelse(is.na(wear), FALSE, wear))
   result = set_transformations(result,
                                "counts_wear_merge",

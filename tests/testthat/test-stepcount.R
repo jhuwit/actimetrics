@@ -8,6 +8,15 @@ test_that("stepcount works", {
   })
 
   testthat::skip_if_not(stepcount::stepcount_check())
-  steps = acti_calculate_stepcount(actibase::acti_raw_data)
+  tryCatch(
+    acti_calculate_stepcount(actibase::acti_raw_data),
+    error = function(error) {
+      message = conditionMessage(error)
+      if (grepl("rate limit exceeded", message, ignore.case = TRUE)) {
+        testthat::skip("Stepcount model download is rate limited")
+      }
+      stop(error)
+    }
+  )
 
 })

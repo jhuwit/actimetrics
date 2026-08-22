@@ -4,4 +4,4 @@
 
 * This is a new release.
 --- 
-Part of these activerse packages I've been submitting - processing actigraphy data.  Goal is modular packages.
+Parallezation issue is fixed in walking 0.6.0, which is now version dependency.

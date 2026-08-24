@@ -53,3 +53,4 @@ LazyData: true
 Config/roxygen2/version: 8.0.0
 URL: https://jhuwit.github.io/actimetrics/
 BugReports: https://github.com/jhuwit/actimetrics/issues
+

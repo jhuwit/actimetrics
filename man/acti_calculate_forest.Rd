@@ -19,8 +19,11 @@ A tibble with minute-level \code{time}, \code{steps} columns.
 Calculate Step Counts via Oak/Forest
 }
 \examples{
-if (reticulate::py_module_available("forest")) {
-  data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-  steps = acti_calculate_forest(data, sample_rate = 100)
+\donttest{
+  Sys.setenv("SSQ_PARALLEL" = 0)
+  if (reticulate::py_module_available("forest")) {
+    data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+    steps = acti_calculate_forest(data, sample_rate = 100)
+  }
 }
 }

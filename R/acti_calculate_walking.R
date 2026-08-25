@@ -73,9 +73,12 @@ acti_calculate_verisense = function(data,
 #' @export
 #'
 #' @examples
-#' if (reticulate::py_module_available("forest")) {
-#'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-#'   steps = acti_calculate_forest(data, sample_rate = 100)
+#' \donttest{
+#'   Sys.setenv("SSQ_PARALLEL" = 0)
+#'   if (reticulate::py_module_available("forest")) {
+#'     data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+#'     steps = acti_calculate_forest(data, sample_rate = 100)
+#'   }
 #' }
 acti_calculate_forest = function(data,
                                  ...
@@ -118,6 +121,7 @@ acti_calculate_forest = function(data,
 #'
 #' @examples
 #' \dontrun{
+#'   Sys.setenv("SSQ_PARALLEL" = 0)
 #'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #'   steps = py_acti_calculate_forest(data, sample_rate = 100)
 #' }

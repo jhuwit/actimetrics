@@ -5,6 +5,7 @@ if (rlang::is_installed("stepcount") && rlang::is_installed("reticulate")) {
     reticulate::import("stepcount")
   })
 }
+Sys.setenv(SSQ_PARALLEL = 0)
 library(testthat)
 library(actimetrics)
 

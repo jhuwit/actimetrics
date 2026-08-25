@@ -2,7 +2,7 @@
 
 ## actimetrics 0.4.0
 
-- Fixing parallelization with SSQ_PARALLEL=0 before import for forest.
+- Fixing multithreading with `SSQ_PARALLEL=0` before import for forest.
 
 ## actimetrics 0.3.0
 

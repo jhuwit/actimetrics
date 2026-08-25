@@ -1,5 +1,9 @@
 # Changelog
 
+## actimetrics 0.4.0
+
+- Fixing parallelization with SSQ_PARALLEL=0 before import for forest.
+
 ## actimetrics 0.3.0
 
 - Stepcount can now pass in an epoch.

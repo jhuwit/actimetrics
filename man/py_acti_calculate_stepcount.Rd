@@ -32,7 +32,9 @@ Perform step count calculation in a separate Python environment
 }
 \examples{
 \donttest{
-  data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-  steps = py_acti_calculate_stepcount(data, sample_rate = 100)
+  if (stepcount::have_stepcount()) {
+    data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+    steps = py_acti_calculate_stepcount(data, sample_rate = 100)
+  }
 }
 }

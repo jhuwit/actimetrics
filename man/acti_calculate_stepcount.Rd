@@ -28,10 +28,12 @@ and summarize them to minute-level epochs (as opposed to 10s default)
 }
 \examples{
 \donttest{
-  reticulate::py_require("stepcount==3.11.0", python_version = "3.10", action = "add")
-  sc = reticulate::import("stepcount")
-  data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-  steps = acti_calculate_stepcount(data, sample_rate = 100)
-  steps = acti_calculate_stepcount(data, model_type = "rf")
+  # reticulate::py_require("stepcount==3.11.0", python_version = "3.10", action = "add")
+  # sc = try({ reticulate::import("stepcount") })
+  if (stepcount::have_stepcount()) {
+    data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+    steps = acti_calculate_stepcount(data, sample_rate = 100)
+    steps = acti_calculate_stepcount(data, model_type = "rf")
+  }
 }
 }

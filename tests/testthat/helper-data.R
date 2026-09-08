@@ -82,15 +82,6 @@ can_run_agcounts = local({
     if (!is.null(value)) {
       return(value)
     }
-    cache_dir = file.path(
-      path.expand("~"),
-      "Library/Caches/org.R-project.R/R/reticulate"
-    )
-    dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
-    if (file.access(cache_dir, 2) != 0) {
-      value <<- FALSE
-      return(value)
-    }
     data = actiread::acti_read_gt3x(
       actiread::acti_example_gt3x(),
       verbose = FALSE

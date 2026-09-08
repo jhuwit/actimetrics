@@ -4,4 +4,4 @@
 
 * This is a new release.
 --- 
-Parallezation issue is fixed in walking 0.6.0, which is now version dependency.
+Fixing issues with \value and .GlobalEnv.

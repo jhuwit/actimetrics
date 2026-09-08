@@ -1,6 +1,7 @@
 #' Process Count Data
 #'
 #' @inheritParams acti_calculate_counts
+#' @return A data frame containing activity counts and wear-time indicators.
 #' @export
 #' @note For `acti_process_gt3x`, the `...` argument are passed to
 #' `actiread::acti_read_gt3x()`

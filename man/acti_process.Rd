@@ -33,6 +33,9 @@ otherwise the axis1 value is used.}
 
 \item{...}{additional arguments to pass to \code{actigraph.sleepr} function}
 }
+\value{
+A data frame containing activity counts and wear-time indicators.
+}
 \description{
 Process Count Data
 }

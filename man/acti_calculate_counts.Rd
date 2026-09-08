@@ -67,6 +67,9 @@ otherwise the axis1 value is used.}
 \value{
 A \code{data.frame} of transformed data
 
+A \code{data.frame} of transformed data with columns \code{axis1-3},
+\code{counts}, and \code{counts_log10}.
+
 A \code{data.frame} of transformed data
 }
 \description{
@@ -79,7 +82,8 @@ This calls the downstream wear-processing helpers used by
 \code{actigraph.sleepr}
 }
 \examples{
-\dontrun{
+
+\donttest{
 path = actiread::acti_example_gt3x()
 ac = actiread::acti_read_gt3x(path)
 out = acti_calculate_counts(ac)

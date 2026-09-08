@@ -15,9 +15,11 @@
 #'
 #' @rdname calibrate
 #' @export
+#' @returns A calibrated dataset with the same columns as the input data,
+#' but with the `X/Y/Z` values calibrated using the van Hees method.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'   res = acti_calibrate(data = actiread::acti_example_gt3x())
 #' }
 acti_calibrate = function(

@@ -14,8 +14,11 @@
 #'
 #'
 #' @export
+#' @returns A `data.frame` of transformed data with columns `axis1-3`,
+#' `counts`, and `counts_log10`.
 #' @examples
-#' \dontrun{
+#'
+#' \donttest{
 #' path = actiread::acti_example_gt3x()
 #' ac = actiread::acti_read_gt3x(path)
 #' out = acti_calculate_counts(ac)
@@ -72,4 +75,5 @@ acti_calculate_counts = function(
                                prefix = "acti_calculate_counts",
                                add = TRUE)
   counts = counts |> dplyr::as_tibble()
+  return(counts)
 }

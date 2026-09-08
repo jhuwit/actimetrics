@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'   reticulate::py_require("stepcount==3.11.0", python_version = "3.10", action = "add")
 #'   sc = reticulate::import("stepcount")
 #'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
@@ -105,7 +105,7 @@ acti_calculate_stepcount = function(data,
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #'   steps = py_acti_calculate_stepcount(data, sample_rate = 100)
 #' }

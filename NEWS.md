@@ -1,3 +1,7 @@
+# actimetrics 0.5.0
+
+* Fixing issues with CRAN.
+
 # actimetrics 0.4.0
 
 * Fixing multithreading with `SSQ_PARALLEL=0` before import for forest.

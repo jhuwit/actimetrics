@@ -27,7 +27,7 @@ Use the \code{stepcount} package to estimate steps from raw accelerometer data
 and summarize them to minute-level epochs (as opposed to 10s default)
 }
 \examples{
-\dontrun{
+\donttest{
   reticulate::py_require("stepcount==3.11.0", python_version = "3.10", action = "add")
   sc = reticulate::import("stepcount")
   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())

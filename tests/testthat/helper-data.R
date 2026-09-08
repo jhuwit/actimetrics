@@ -21,17 +21,10 @@ make_flagged_signal = function() {
 }
 
 make_example_signal = function(n = 12000L) {
-  if (!exists(".actimetrics_example_signal", envir = .GlobalEnv, inherits = FALSE)) {
-    assign(
-      ".actimetrics_example_signal",
-      actiread::acti_read_gt3x(
-        actiread::acti_example_gt3x(),
-        verbose = FALSE
-      ),
-      envir = .GlobalEnv
-    )
-  }
-  get(".actimetrics_example_signal", envir = .GlobalEnv)[seq_len(n), ]
+  actiread::acti_read_gt3x(
+    actiread::acti_example_gt3x(),
+    verbose = FALSE,
+  )[seq_len(n), ]
 }
 
 make_regular_signal = function(n = 12000L) {

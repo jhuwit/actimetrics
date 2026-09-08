@@ -27,12 +27,16 @@ Will round to 3 digits}
 
 \item{...}{Additional arguments to pass to \code{agcounts::agcalibrate()}}
 }
+\value{
+A calibrated dataset with the same columns as the input data,
+but with the \code{X/Y/Z} values calibrated using the van Hees method.
+}
 \description{
 This uses the van Hees calibration method typically exposed through GGIR,
 implemented here via \code{agcounts::agcalibrate()}.
 }
 \examples{
-\dontrun{
+\donttest{
   res = acti_calibrate(data = actiread::acti_example_gt3x())
 }
 }

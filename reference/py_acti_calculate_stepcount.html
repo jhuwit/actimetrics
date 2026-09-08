@@ -77,10 +77,14 @@ A tibble with minute-level <code>time</code>, <code>steps</code>, and <code>walk
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span>  <span class="va">data</span> <span class="op">=</span> <span class="fu">actiread</span><span class="fu">::</span><span class="fu"><a href="https://jhuwit.github.io/actiread/reference/acti_read_gt3x.html" class="external-link">acti_read_gt3x</a></span><span class="op">(</span><span class="fu">actiread</span><span class="fu">::</span><span class="fu"><a href="https://jhuwit.github.io/actiread/reference/acti_example_data.html" class="external-link">acti_example_gt3x</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Filling zeros in data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Filled zeros in data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Timezone not applied to data</span>
 <span class="r-in"><span>  <span class="va">steps</span> <span class="op">=</span> <span class="fu">py_acti_calculate_stepcount</span><span class="op">(</span><span class="va">data</span>, sample_rate <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "get_result(output = out, options)":</span> <span style="color: #BBBB00;">!</span> callr subprocess failed: could not start R, exited with non-zero status, has crashed or was killed</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

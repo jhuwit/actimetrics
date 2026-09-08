@@ -80,12 +80,23 @@ Will round to 3 digits</p></dd>
 <dd><p>Additional arguments to pass to <code><a href="https://rdrr.io/pkg/agcounts/man/agcalibrate.html" class="external-link">agcounts::agcalibrate()</a></code></p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A calibrated dataset with the same columns as the input data,
+but with the <code>X/Y/Z</code> values calibrated using the van Hees method.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span>  <span class="va">res</span> <span class="op">=</span> <span class="fu">acti_calibrate</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">actiread</span><span class="fu">::</span><span class="fu"><a href="https://jhuwit.github.io/actiread/reference/acti_example_data.html" class="external-link">acti_example_gt3x</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Detected gt3x file - reading in using acti_read_gt3x</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filling Zeros</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Running agcounts::agcalibrate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading chunk: 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  There is not enough data to perform the GGIR calibration method. Returning data as read by read.gt3x.</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

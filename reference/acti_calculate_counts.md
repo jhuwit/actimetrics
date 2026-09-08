@@ -86,6 +86,9 @@ acti_apply_sadeh(data, ...)
 
 A `data.frame` of transformed data
 
+A `data.frame` of transformed data with columns `axis1-3`, `counts`, and
+`counts_log10`.
+
 A `data.frame` of transformed data
 
 ## Note
@@ -96,11 +99,22 @@ This calls the downstream wear-processing helpers used by
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+
+# \donttest{
 path = actiread::acti_example_gt3x()
 ac = actiread::acti_read_gt3x(path)
+#> ℹ Filling zeros in data
+#> ✔ Filled zeros in data
+#> ℹ Timezone not applied to data
 out = acti_calculate_counts(ac)
-} # }
+#> Downloading uv...
+#> Done!
+#> [1] "Creating Downsampled Data"
+#> [1] "Filtering Data"
+#> [1] "Trimming Data"
+#> [1] "Getting data back to 10Hz for accumulation"
+#> [1] "Summing epochs"
+# }
 data = actimetrics::acti_count_data
 wear = actimetrics::acti_calculate_wear(data)
 tro_wear = actimetrics::acti_calculate_wear(data, method = "troiano")

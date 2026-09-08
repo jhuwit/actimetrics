@@ -44,10 +44,21 @@ acti_calibrate(
   Additional arguments to pass to
   [`agcounts::agcalibrate()`](https://rdrr.io/pkg/agcounts/man/agcalibrate.html)
 
+## Value
+
+A calibrated dataset with the same columns as the input data, but with
+the `X/Y/Z` values calibrated using the van Hees method.
+
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
   res = acti_calibrate(data = actiread::acti_example_gt3x())
-} # }
+#> Detected gt3x file - reading in using acti_read_gt3x
+#> Filling Zeros
+#> Running agcounts::agcalibrate
+#> Loading chunk: 1
+#> 
+#>  There is not enough data to perform the GGIR calibration method. Returning data as read by read.gt3x.
+# }
 ```

@@ -49,6 +49,10 @@ acti_process(
 
   additional arguments to pass to `actigraph.sleepr` function
 
+## Value
+
+A data frame containing activity counts and wear-time indicators.
+
 ## Note
 
 For `acti_process_gt3x`, the `...` argument are passed to

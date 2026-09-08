@@ -41,29 +41,15 @@ A tibble with minute-level `time`, `steps`, and `walking` columns.
 
 ``` r
 # \donttest{
-  reticulate::py_require("stepcount==3.11.0", python_version = "3.10", action = "add")
-#> Error in reticulate::py_require("stepcount==3.11.0", python_version = "3.10",     action = "add"): Python version requirements cannot be changed after Python has been initialized.
-#> * Python version request: '3.10'
-#> * Python version initialized: '3.12.14'
-  sc = reticulate::import("stepcount")
-#> Error in py_module_import(module, convert = convert): ModuleNotFoundError: No module named 'stepcount'
-#> Run `reticulate::py_last_error()` for details.
-  data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-#> ℹ Filling zeros in data
-#> ✔ Filled zeros in data
-#> ℹ Timezone not applied to data
-  steps = acti_calculate_stepcount(data, sample_rate = 100)
+  # reticulate::py_require("stepcount==3.11.0", python_version = "3.10", action = "add")
+  # sc = try({ reticulate::import("stepcount") })
+  if (stepcount::have_stepcount()) {
+    data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+    steps = acti_calculate_stepcount(data, sample_rate = 100)
+    steps = acti_calculate_stepcount(data, model_type = "rf")
+  }
 #> Warning: Python version requirements cannot be changed after Python has been initialized.
 #> * Python version request: '3.10' (from package:stepcount)
 #> * Python version initialized: '3.12.14'
-#> Warning: stepcount_check() indicates the stepcount functions may not be  available, may need to run reticulate::py_install('stepcount', pip = TRUE)
-#> Loading model...
-#> Error in py_module_import(module, convert = convert): ModuleNotFoundError: No module named 'stepcount'
-#> Run `reticulate::py_last_error()` for details.
-  steps = acti_calculate_stepcount(data, model_type = "rf")
-#> Warning: stepcount_check() indicates the stepcount functions may not be  available, may need to run reticulate::py_install('stepcount', pip = TRUE)
-#> Loading model...
-#> Error in py_module_import(module, convert = convert): ModuleNotFoundError: No module named 'stepcount'
-#> Run `reticulate::py_last_error()` for details.
 # }
 ```

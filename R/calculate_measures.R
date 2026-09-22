@@ -375,7 +375,6 @@ if (requireNamespace("data.table", quietly = TRUE)) {
     ".",
     "AC",
     "HEADER_TIME_STAMP",
-    "count",
     "counts",
     "timestamp",
     "vector.magnitude"

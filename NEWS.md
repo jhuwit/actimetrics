@@ -1,6 +1,7 @@
 # actimetrics 0.5.0
 
 * Fixing issues with CRAN.
+* Removing count from `globalVariables`.
 
 # actimetrics 0.4.0
 

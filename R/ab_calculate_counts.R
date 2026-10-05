@@ -74,7 +74,7 @@ acti_calculate_counts = function(
   trans = get_transformations(data)
 
   if (fix_first_second) {
-    fix_first_second_function()
+    data = fix_first_second_function(data = data, epoch = epoch)
   }
 
   counts = agcounts::calculate_counts(

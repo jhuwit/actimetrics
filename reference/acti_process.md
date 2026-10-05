@@ -11,7 +11,8 @@ acti_process(
   method = c("choi", "troiano"),
   use_magnitude = TRUE,
   verbose = TRUE,
-  ...
+  ...,
+  min_required = 1368L
 )
 ```
 
@@ -48,6 +49,10 @@ acti_process(
 - ...:
 
   additional arguments to pass to `actigraph.sleepr` function
+
+- min_required:
+
+  Number of minutes required in a day to be called `included`
 
 ## Value
 

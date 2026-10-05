@@ -14,7 +14,8 @@ acti_calculate_counts(
   epoch = 60L,
   resample = TRUE,
   lfe_select = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  fix_first_second = TRUE
 )
 
 acti_calculate_wear(
@@ -53,6 +54,10 @@ See \code{agcounts::calculate_counts()}
 higher values are higher levels of verbosity.}
 
 \item{verbose}{print diagnostic messages.  Either logical or integer, where}
+
+\item{fix_first_second}{Fix the first second bug in \code{agcounts}.  Appends
+replicated data of the first record if the first record is not an "even"
+epoch (e.g. 60 second epoch and data does not start at a 00 second).}
 
 \item{method}{Method for detecting non-wear, either "choi" or "troiano",
 corresponding to \code{actigraph.sleepr::apply_choi()} or

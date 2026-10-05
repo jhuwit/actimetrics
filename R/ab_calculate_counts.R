@@ -1,3 +1,31 @@
+fix_first_second_function = function(data, epoch = 60L) {
+  # Fix for https://github.com/bhelsel/agcounts/issues/50
+  t1 = data$time[1]
+  tz = lubridate::tz(t1)
+
+  data_start <- lubridate::floor_date(t1, paste(epoch, "secs"))
+  trans = get_transformations(data)
+
+  if (data_start != t1) {
+    add_times = seq(data_start, (t1-1/frequency), 1/frequency)
+    data_add = data.frame(
+      time = as.POSIXct(add_times, tz),
+      X = rep(data[["X"]][1], length(add_times)),
+      Y = rep(data[["Y"]][1], length(add_times)),
+      Z = rep(data[["Z"]][1], length(add_times))
+    )
+    data <- rbind(data_add, data)
+    data = set_transformations(data,
+                               c(
+                                 "first_second_data_appended",
+                                 trans
+                               ),
+                               prefix = "acti_calculate_counts",
+                               add = FALSE)
+  }
+  data
+}
+
 #' Process Count Data
 #'
 #' @param data A `data.frame` from [actiread::acti_read_gt3x]
@@ -11,6 +39,9 @@
 #' @param resample (recommended) resample the data to 30Hz using
 #' [actibase::acti_resample] vs. using the resampling method from
 #' [agcounts::calculate_counts].
+#' @param fix_first_second Fix the first second bug in `agcounts`.  Appends
+#' replicated data of the first record if the first record is not an "even"
+#' epoch (e.g. 60 second epoch and data does not start at a 00 second).
 #'
 #'
 #' @export
@@ -28,7 +59,8 @@ acti_calculate_counts = function(
     epoch = 60L,
     resample = TRUE,
     lfe_select = FALSE,
-    verbose = TRUE
+    verbose = TRUE,
+    fix_first_second = TRUE
 ) {
   rlang::check_installed("agcounts")
   vector.magnitude = NULL
@@ -40,6 +72,10 @@ acti_calculate_counts = function(
   stopifnot(!is.null(attr(data, "sample_rate")))
   tz = lubridate::tz(data$time)
   trans = get_transformations(data)
+
+  if (fix_first_second) {
+    fix_first_second_function()
+  }
 
   counts = agcounts::calculate_counts(
     raw = data,

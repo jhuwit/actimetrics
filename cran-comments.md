@@ -4,4 +4,4 @@
 
 * This is a new release.
 --- 
-Fixing issues with \value and .GlobalEnv.
+Bug fix for a small edge case.

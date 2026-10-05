@@ -1,4 +1,7 @@
-fix_first_second_function = function(data, epoch = 60L) {
+fix_first_second_function = function(data, sample_rate = NULL, epoch = 60L) {
+  if (is.null(sample_rate)) {
+    sample_rate = get_sample_rate(data)
+  }
   # Fix for https://github.com/bhelsel/agcounts/issues/50
   t1 = data$time[1]
   tz = lubridate::tz(t1)
@@ -69,12 +72,19 @@ acti_calculate_counts = function(
   if (resample) {
     data = actibase::acti_resample(data, sample_rate = 30L)
   }
+  sample_rate = actibase::get_sample_rate(data)
+  if (!is.null(attr(data, "sample_rate")) && !is.null(sample_rate)) {
+    attr(data, "sample_rate") = sample_rate
+  }
   stopifnot(!is.null(attr(data, "sample_rate")))
   tz = lubridate::tz(data$time)
   trans = get_transformations(data)
 
   if (fix_first_second) {
-    data = fix_first_second_function(data = data, epoch = epoch)
+    data = fix_first_second_function(
+      data = data,
+      sample_rate = attr(data, "sample_rate"),
+      epoch = epoch)
   }
 
   counts = agcounts::calculate_counts(

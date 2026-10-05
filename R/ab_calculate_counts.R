@@ -33,11 +33,11 @@ acti_calculate_counts = function(
   rlang::check_installed("agcounts")
   vector.magnitude = NULL
   rm(list = c("vector.magnitude"))
-  stopifnot(!is.null(attr(data, "sample_rate")))
 
   if (resample) {
     data = actibase::acti_resample(data, sample_rate = 30L)
   }
+  stopifnot(!is.null(attr(data, "sample_rate")))
   tz = lubridate::tz(data$time)
   trans = get_transformations(data)
 

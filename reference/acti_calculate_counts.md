@@ -116,7 +116,11 @@ ac = actiread::acti_read_gt3x(path)
 out = acti_calculate_counts(ac)
 #> Downloading uv...
 #> Done!
-#> Error in fix_first_second_function(): argument "data" is missing, with no default
+#> [1] "Creating Downsampled Data"
+#> [1] "Filtering Data"
+#> [1] "Trimming Data"
+#> [1] "Getting data back to 10Hz for accumulation"
+#> [1] "Summing epochs"
 # }
 data = actimetrics::acti_count_data
 wear = actimetrics::acti_calculate_wear(data)

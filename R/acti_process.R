@@ -2,6 +2,8 @@
 #'
 #' @inheritParams acti_calculate_counts
 #' @return A data frame containing activity counts and wear-time indicators.
+#' @param min_required Number of minutes required in a day to be called `included`. No
+#' day inclusion is run if `NULL`.
 #' @export
 #' @note For `acti_process_gt3x`, the `...` argument are passed to
 #' `actiread::acti_read_gt3x()`
@@ -10,7 +12,9 @@ acti_process = function(data,
                         method = c("choi", "troiano"),
                         use_magnitude = TRUE,
                         verbose = TRUE,
-                        ...) {
+                        ...,
+                        min_required = 1368L
+                        ) {
   if (assertthat::is.string(data) &&
       file.exists(data)) {
     data = acti_read_gt3x(data, ...,
@@ -39,6 +43,10 @@ acti_process = function(data,
                                "counts_wear_merge",
                                prefix = "acti_process",
                                add = TRUE)
+  if (!is.null(min_required)) {
+    result = actibase::add_day_inclusion(data = result,
+                                         min_required = min_required)
+  }
 
   return(result)
 }

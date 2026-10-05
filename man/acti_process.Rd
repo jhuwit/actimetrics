@@ -10,7 +10,8 @@ acti_process(
   method = c("choi", "troiano"),
   use_magnitude = TRUE,
   verbose = TRUE,
-  ...
+  ...,
+  min_required = 1368L
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ otherwise the axis1 value is used.}
 \item{verbose}{print diagnostic messages.  Either logical or integer, where}
 
 \item{...}{additional arguments to pass to \code{actigraph.sleepr} function}
+
+\item{min_required}{Number of minutes required in a day to be called \code{included}}
 }
 \value{
 A data frame containing activity counts and wear-time indicators.

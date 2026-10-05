@@ -10,7 +10,8 @@ fix_first_second_function = function(data, sample_rate = NULL, epoch = 60L) {
   trans = get_transformations(data)
 
   if (data_start != t1) {
-    add_times = seq(data_start, (t1-1/sample_rate), 1/sample_rate)
+    add_times = seq(data_start, t1, 1/sample_rate)
+    add_times = add_times[add_times < t1]
     data_add = data.frame(
       time = as.POSIXct(add_times, tz),
       X = rep(data[["X"]][1], length(add_times)),

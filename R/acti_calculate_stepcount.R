@@ -41,6 +41,11 @@ acti_calculate_stepcount = function(data,
       attr(data, "sample_rate") = get_sample_rate(data)
     }
   }
+  # This fixes where stepcount is done on rounded seconds for every 10 seconds,
+  # not just whatever the data started on
+  # if (is.data.frame(data)) {
+  # fix_first_second_function(data, sample_rate = attr(data, "sample_rate"), epoch = 10L)
+  # }
   # assertthat::assert_that(
   #   assertthat::is.count(attr(data, "sample_rate"))
   # )

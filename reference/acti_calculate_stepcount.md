@@ -50,6 +50,6 @@ A tibble with minute-level `time`, `steps`, and `walking` columns.
   }
 #> Warning: Python version requirements cannot be changed after Python has been initialized.
 #> * Python version request: '3.10' (from package:stepcount)
-#> * Python version initialized: '3.12.14'
+#> * Python version initialized: '3.12.15'
 # }
 ```

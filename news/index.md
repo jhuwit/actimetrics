@@ -1,5 +1,10 @@
 # Changelog
 
+## actimetrics 0.6.0
+
+- Fixing `agcounts` bug from
+  <https://github.com/bhelsel/agcounts/issues/50>.
+
 ## actimetrics 0.5.0
 
 - Fixing issues with CRAN.

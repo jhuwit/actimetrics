@@ -12,7 +12,8 @@ acti_calculate_counts(
   epoch = 60L,
   resample = TRUE,
   lfe_select = FALSE,
-  verbose = TRUE
+  verbose = TRUE,
+  fix_first_second = TRUE
 )
 
 acti_calculate_wear(
@@ -65,6 +66,12 @@ acti_apply_sadeh(data, ...)
 
   print diagnostic messages. Either logical or integer, where
 
+- fix_first_second:
+
+  Fix the first second bug in `agcounts`. Appends replicated data of the
+  first record if the first record is not an "even" epoch (e.g. 60
+  second epoch and data does not start at a 00 second).
+
 - method:
 
   Method for detecting non-wear, either "choi" or "troiano",
@@ -109,11 +116,7 @@ ac = actiread::acti_read_gt3x(path)
 out = acti_calculate_counts(ac)
 #> Downloading uv...
 #> Done!
-#> [1] "Creating Downsampled Data"
-#> [1] "Filtering Data"
-#> [1] "Trimming Data"
-#> [1] "Getting data back to 10Hz for accumulation"
-#> [1] "Summing epochs"
+#> Error in fix_first_second_function(): argument "data" is missing, with no default
 # }
 data = actimetrics::acti_count_data
 wear = actimetrics::acti_calculate_wear(data)

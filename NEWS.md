@@ -1,4 +1,9 @@
 
+# actimetrics 0.7.0
+
+* Fixing bug with `acti_calculate_mims` due to not subsetting `XYZ`.
+
+
 # actimetrics 0.6.0
 
 * Fixing `agcounts` bug from https://github.com/bhelsel/agcounts/issues/50.

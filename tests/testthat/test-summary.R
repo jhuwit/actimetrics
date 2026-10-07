@@ -73,6 +73,34 @@ test_that("calculate_measures combines summary outputs", {
   expect_true("flags" %in% names(measures))
 })
 
+test_that("MIMS and combined measures ignore additional sensor columns", {
+  skip_if_not_installed("MIMSunit")
+
+  data = make_regular_signal(12000)
+  with_sensors = data
+  with_sensors$light = rep(c(100, 200), length.out = nrow(data))
+  with_sensors$temperature = rep(c(20, 21), length.out = nrow(data))
+
+  mims_args = list(dynamic_range = c(-2, 2), ensure_all_time = FALSE)
+  expect_equal(
+    do.call(acti_calculate_mims, c(list(data = with_sensors), mims_args)),
+    do.call(acti_calculate_mims, c(list(data = data), mims_args))
+  )
+
+  measure_args = list(
+    calculate_ac = FALSE,
+    flag_data = FALSE,
+    fix_zeros = FALSE,
+    dynamic_range = c(-2, 2),
+    ensure_all_time = FALSE,
+    verbose = FALSE
+  )
+  expect_equal(
+    do.call(acti_calculate_measures, c(list(data = with_sensors), measure_args)),
+    do.call(acti_calculate_measures, c(list(data = data), measure_args))
+  )
+})
+
 test_that("data.table input stays data.table for summary branches", {
   data = data.table::as.data.table(make_gap_signal())
   mad = acti_calculate_mad(data, ensure_all_time = FALSE, verbose = TRUE)

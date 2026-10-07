@@ -34,7 +34,8 @@ otherwise the axis1 value is used.}
 
 \item{...}{additional arguments to pass to \code{actigraph.sleepr} function}
 
-\item{min_required}{Number of minutes required in a day to be called \code{included}}
+\item{min_required}{Number of minutes required in a day to be called \code{included}. No
+day inclusion is run if \code{NULL}.}
 }
 \value{
 A data frame containing activity counts and wear-time indicators.

@@ -665,7 +665,7 @@ acti_calculate_mims = function(
   }
   data = acti_standardize_data(
     data,
-    subset_xyz = FALSE,
+    subset_xyz = TRUE,
     colname_time = "HEADER_TIME_STAMP"
   )
   data = rename_time_stamp(data)

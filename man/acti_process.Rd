@@ -2,13 +2,14 @@
 % Please edit documentation in R/acti_process.R
 \name{acti_process}
 \alias{acti_process}
-\title{Process Count Data}
+\title{Process Raw data to Counts}
 \usage{
 acti_process(
   data,
   lfe_select = FALSE,
   method = c("choi", "troiano"),
   use_magnitude = TRUE,
+  calibrate = FALSE,
   verbose = TRUE,
   ...,
   min_required = 1368L
@@ -30,6 +31,8 @@ corresponding to \code{actigraph.sleepr::apply_choi()} or
 (axis1, axis2, axis3) is used to measure activity;
 otherwise the axis1 value is used.}
 
+\item{calibrate}{Logical. If \code{TRUE}, the data will be calibrated using \code{\link[=acti_calibrate]{acti_calibrate()}}}
+
 \item{verbose}{print diagnostic messages.  Either logical or integer, where}
 
 \item{...}{additional arguments to pass to \code{actigraph.sleepr} function}
@@ -41,7 +44,7 @@ day inclusion is run if \code{NULL}.}
 A data frame containing activity counts and wear-time indicators.
 }
 \description{
-Process Count Data
+Process Raw data to Counts
 }
 \note{
 For \code{acti_process_gt3x}, the \code{...} argument are passed to

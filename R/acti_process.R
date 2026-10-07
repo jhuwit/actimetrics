@@ -1,9 +1,10 @@
-#' Process Count Data
+#' Process Raw data to Counts
 #'
 #' @inheritParams acti_calculate_counts
 #' @return A data frame containing activity counts and wear-time indicators.
 #' @param min_required Number of minutes required in a day to be called `included`. No
 #' day inclusion is run if `NULL`.
+#' @param calibrate Logical. If `TRUE`, the data will be calibrated using [acti_calibrate()]
 #' @export
 #' @note For `acti_process_gt3x`, the `...` argument are passed to
 #' `actiread::acti_read_gt3x()`
@@ -11,16 +12,26 @@ acti_process = function(data,
                         lfe_select = FALSE,
                         method = c("choi", "troiano"),
                         use_magnitude = TRUE,
+                        calibrate = FALSE,
                         verbose = TRUE,
                         ...,
                         min_required = 1368L
-                        ) {
+) {
   if (assertthat::is.string(data) &&
       file.exists(data)) {
     data = acti_read_gt3x(data, ...,
                           verbose = verbose)
   }
 
+  data = acti_standardize_data(data, subset_xyz = FALSE)
+  if (calibrate) {
+    tz = lubridate::tz(data$time)
+    data = acti_calibrate(data,
+                          fill_zeroes = FALSE,
+                          round_after_calibration = FALSE,
+                          tz = tz,
+                          verbose = verbose)
+  }
 
   data = acti_resample(data, sample_rate = 30L)
 

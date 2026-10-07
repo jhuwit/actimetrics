@@ -60,7 +60,7 @@ acti_calibrate = function(
       data[[i]] = round(data[[i]], 3)
     }
   }
-  data = set_transformations(data, transformations)
+  data = set_transformations(data, transformations, add = FALSE)
   data = set_transformations(data,
                              transformations = "agcounts_calibrated",
                              prefix = "acti_calibrate",

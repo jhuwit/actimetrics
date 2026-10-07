@@ -52,7 +52,8 @@ acti_process(
 
 - min_required:
 
-  Number of minutes required in a day to be called `included`
+  Number of minutes required in a day to be called `included`. No day
+  inclusion is run if `NULL`.
 
 ## Value
 

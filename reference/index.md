@@ -41,7 +41,7 @@
   : Example Actigraphy/Activity Count Data
 
 - [`acti_process()`](https://jhuwit.github.io/actimetrics/reference/acti_process.md)
-  : Process Count Data
+  : Process Raw data to Counts
 
 - [`acti_calibrate()`](https://jhuwit.github.io/actimetrics/reference/calibrate.md)
   :

@@ -1,6 +1,6 @@
-# Process Count Data
+# Process Raw data to Counts
 
-Process Count Data
+Process Raw data to Counts
 
 ## Usage
 
@@ -10,6 +10,7 @@ acti_process(
   lfe_select = FALSE,
   method = c("choi", "troiano"),
   use_magnitude = TRUE,
+  calibrate = FALSE,
   verbose = TRUE,
   ...,
   min_required = 1368L
@@ -41,6 +42,11 @@ acti_process(
 
   If `TRUE`, the magnitude of the vector (axis1, axis2, axis3) is used
   to measure activity; otherwise the axis1 value is used.
+
+- calibrate:
+
+  Logical. If `TRUE`, the data will be calibrated using
+  [`acti_calibrate()`](https://jhuwit.github.io/actimetrics/reference/calibrate.md)
 
 - verbose:
 

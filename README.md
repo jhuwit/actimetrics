@@ -215,3 +215,8 @@ get_transformations(calibrated)
 #> [12] "acti_fill_zeros:filled_zeros"             
 #> [13] "acti_read_gt3x:data_read"
 ```
+
+## Funding
+
+This work was supported by NIH grant P30AG021334 and the Johns Hopkins
+Older Americans Independence Center (OAIC) Pepper Center grant.

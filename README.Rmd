@@ -100,3 +100,8 @@ the same approach typically exposed through `GGIR`.
 calibrated <- acti_calibrate(data)
 get_transformations(calibrated)
 ```
+
+## Funding
+
+This work was supported by NIH grant P30AG021334 and the Johns Hopkins Older
+Americans Independence Center (OAIC) Pepper Center grant.

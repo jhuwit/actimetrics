@@ -108,11 +108,24 @@ acti_apply_cole_kripke = function(data) {
   ck
 }
 
+#' Apply Tudor--Locke sleep period detection
+#'
+#' Delegates to `actigraph.sleepr::apply_tudor_locke()`. Input must be
+#' 60-second epoch data with activity counts and a `sleep` state. Data from
+#' [acti_apply_cole_kripke()] is accepted directly. Data labeled by
+#' [acti_apply_tudor_locke_diary()] is also accepted: its logical `sleep`
+#' column is converted to the `S`/`W` states expected downstream.
+#'
+#' @param data Epoch-level data containing activity counts and sleep state.
+#' @param ... Arguments passed to `actigraph.sleepr::apply_tudor_locke()`.
+#' @return A data frame summarizing detected sleep periods.
 #' @export
-#' @rdname acti_calculate_counts
 acti_apply_tudor_locke = function(data, ...) {
   rlang::check_installed("actigraph.sleepr")
   data = acti_standardize_actigraph.sleepr(data)
+  if (is.logical(data$sleep)) {
+    data$sleep = ifelse(data$sleep, "S", "W")
+  }
   tl = data |>
     actigraph.sleepr::apply_tudor_locke(...)
   trans = get_transformations(data)

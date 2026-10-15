@@ -31,7 +31,6 @@ Suggests:
     data.table,
     reticulate,
     stepcount (>= 0.6.0),
-    actigraph.sleepr (>= 0.3.1),
     agcounts (>= 0.6.7),
     callr
 Encoding: UTF-8
@@ -39,6 +38,7 @@ VignetteBuilder: knitr
 Imports: 
     actibase,
     actiread,
+    actigraph.sleepr (>= 0.3.1),
     dplyr,
     lubridate,
     assertthat,

@@ -3,6 +3,7 @@
 export(acti_apply_cole_kripke)
 export(acti_apply_sadeh)
 export(acti_apply_tudor_locke)
+export(acti_apply_tudor_locke_diary)
 export(acti_calculate_activity_index)
 export(acti_calculate_ai)
 export(acti_calculate_ai_defined)

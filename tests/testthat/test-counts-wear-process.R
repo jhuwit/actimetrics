@@ -79,6 +79,24 @@ test_that("sleep wrappers rename outputs and record transformations", {
   expect_named(sadeh, c("timestamp", "sleep"))
 })
 
+test_that("Tudor-Locke diary labels adapt to the downstream state format", {
+  time <- as.POSIXct(c("2020-01-01 22:00:00", "2020-01-01 22:01:00",
+                       "2020-01-01 22:02:00"), tz = "UTC")
+  data <- data.frame(time = time, counts = c(1, 2, 3))
+  diary <- data.frame(onset = time[2], wakeup = time[3])
+  labeled <- acti_apply_tudor_locke_diary(data, diary)
+  expect_identical(labeled$sleep, c(FALSE, TRUE, FALSE))
+
+  testthat::local_mocked_bindings(
+    apply_tudor_locke = function(x, ...) {
+      expect_identical(x$sleep, c("W", "S", "W"))
+      tibble::tibble(in_bed_time = x$timestamp[1])
+    },
+    .package = "actigraph.sleepr"
+  )
+  expect_named(acti_apply_tudor_locke(labeled), c("in_bed_time"))
+})
+
 test_that("acti_process merges counts and wear from a file path", {
   path = tempfile(fileext = ".gt3x")
   file.create(path)

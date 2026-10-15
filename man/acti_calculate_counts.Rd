@@ -5,7 +5,6 @@
 \alias{acti_calculate_wear}
 \alias{acti_calculate_nonwear}
 \alias{acti_apply_cole_kripke}
-\alias{acti_apply_tudor_locke}
 \alias{acti_apply_sadeh}
 \title{Process Count Data}
 \usage{
@@ -33,8 +32,6 @@ acti_calculate_nonwear(
 )
 
 acti_apply_cole_kripke(data)
-
-acti_apply_tudor_locke(data, ...)
 
 acti_apply_sadeh(data, ...)
 }

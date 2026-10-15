@@ -2,6 +2,12 @@
 
 ## actimetrics 0.7.0
 
+- Add sleep diary labeling for Tudor–Locke and adapt diary labels for
+  [`actigraph.sleepr::apply_tudor_locke()`](https://rdrr.io/pkg/actigraph.sleepr/man/apply_tudor_locke.html).
+
+- Declare `actigraph.sleepr` as an installation dependency for sleep
+  wrappers.
+
 - Fixing bug with `acti_calculate_mims` due to not subsetting `XYZ`.
 
 ## actimetrics 0.6.0

@@ -68,8 +68,6 @@ Process Count Data"></head><body>
 <span></span>
 <span><span class="fu">acti_apply_cole_kripke</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">acti_apply_tudor_locke</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
 <span><span class="fu">acti_apply_sadeh</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -160,7 +158,7 @@ otherwise the axis1 value is used.</p></dd>
 <span class="r-in"><span><span class="va">wear</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_calculate_wear</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tro_wear</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_calculate_wear</span><span class="op">(</span><span class="va">data</span>, method <span class="op">=</span> <span class="st">"troiano"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ck</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_apply_cole_kripke</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tl</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_apply_tudor_locke</span><span class="op">(</span><span class="va">ck</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tl</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu"><a href="acti_apply_tudor_locke.html">acti_apply_tudor_locke</a></span><span class="op">(</span><span class="va">ck</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sadeh</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_apply_sadeh</span><span class="op">(</span><span class="va">ck</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>

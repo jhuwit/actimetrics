@@ -32,8 +32,6 @@ acti_calculate_nonwear(
 
 acti_apply_cole_kripke(data)
 
-acti_apply_tudor_locke(data, ...)
-
 acti_apply_sadeh(data, ...)
 ```
 

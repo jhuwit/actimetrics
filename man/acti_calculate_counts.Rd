@@ -40,17 +40,17 @@ acti_apply_sadeh(data, ...)
 columns \code{axis1-3} and \code{counts}}
 
 \item{epoch}{epoch length in seconds.  Default is 60 seconds.
-See \code{agcounts::calculate_counts()}}
+See \link[agcounts:calculate_counts]{agcounts::calculate_counts}}
 
 \item{resample}{(recommended) resample the data to 30Hz using
 \link[actibase:acti_resample]{actibase::acti_resample} vs. using the resampling method from
 \link[agcounts:calculate_counts]{agcounts::calculate_counts}.}
 
 \item{lfe_select}{Apply the Actigraph Low Frequency Extension filter.
-See \code{agcounts::calculate_counts()}
-higher values are higher levels of verbosity.}
+See \link[agcounts:calculate_counts]{agcounts::calculate_counts}}
 
-\item{verbose}{print diagnostic messages.  Either logical or integer, where}
+\item{verbose}{print diagnostic messages.  Either logical or integer, where
+higher values are higher levels of verbosity.}
 
 \item{fix_first_second}{Fix the first second bug in \code{agcounts}.  Appends
 replicated data of the first record if the first record is not an "even"
@@ -78,6 +78,15 @@ A \code{data.frame} of transformed data
 Process Count Data
 
 Process Count Data
+}
+\details{
+The sampling frequency is only needed when \code{resample = FALSE};
+it is taken from the \code{sample_rate} attribute (or estimated from \code{time}).
+
+\code{acti_calculate_wear()}, \code{acti_apply_cole_kripke()}, and
+\code{acti_apply_sadeh()} require 60-second epochs.  Cole--Kripke, Sadeh, and
+\code{acti_calculate_wear(use_magnitude = FALSE)} score the vertical axis, so
+\code{data} must contain \code{axis1}; vector-magnitude-only counts are an error.
 }
 \note{
 This calls the downstream wear-processing helpers used by

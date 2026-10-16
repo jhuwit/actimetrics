@@ -43,6 +43,7 @@ test_that("sleep wrappers rename outputs and record transformations", {
       c("2020-01-01 00:00:00", "2020-01-01 00:01:00"),
       tz = "UTC"
     ),
+    axis1 = c(1, 1),
     vector.magnitude = c(1, 1)
   )
 
@@ -72,7 +73,7 @@ test_that("sleep wrappers rename outputs and record transformations", {
   ck = acti_apply_cole_kripke(data)
   expect_named(ck, c("time", "sleep"))
 
-  tl = acti_apply_tudor_locke(data)
+  tl = acti_apply_tudor_locke(dplyr::mutate(data, sleep = c("S", "W")))
   expect_true(all(c("in_bed_time", "out_bed_time", "sleep_fragmentation_index") %in% names(tl)))
 
   sadeh = acti_apply_sadeh(data)

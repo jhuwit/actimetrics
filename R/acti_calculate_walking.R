@@ -1,21 +1,43 @@
-summarize_to_minute = function(sdata, prefix) {
-  steps = NULL
-  rm(list = c("steps"))
-  # Now do it at a minute level
+# A unit whose step values are all NA (e.g. non-wear) stays NA rather than
+# becoming 0 steps; partially observed units sum the observed values.
+summarize_to_minute = function(sdata, prefix, unit = "1 min") {
+  steps = time = NULL
+  rm(list = c("steps", "time"))
   trans = get_transformations(sdata)
   sdata = sdata |>
-    dplyr::mutate(time = lubridate::floor_date(time, unit = "1 min")) |>
+    dplyr::mutate(time = lubridate::floor_date(time, unit = unit)) |>
     dplyr::group_by(time) |>
-    dplyr::summarise(steps = sum(steps, na.rm = TRUE)) |>
+    dplyr::summarise(
+      steps = if (all(is.na(steps))) NA_real_ else sum(steps, na.rm = TRUE)
+    ) |>
     dplyr::ungroup()
   sdata = set_transformations(sdata, trans)
   sdata = set_transformations(sdata,
-                              "steps_summarized_per_60s_epoch",
+                              paste0("steps_summarized_per_",
+                                     n_in_interval(unit, sample_rate = 1),
+                                     "s_epoch"),
                               prefix = prefix,
                               add = TRUE)
-  sdata = sdata |>
-    dplyr::mutate(steps = ifelse(!is.finite(steps), NA_integer_, steps))
   sdata
+}
+
+# Run `fun(...)` in a fresh R session (via callr) after loading a Python
+# environment with `pyenv_function`, and return its result visibly.
+run_in_callr = function(fun, ..., pyenv_function, show = FALSE) {
+  rlang::check_installed("callr")
+  callr::r(
+    show = show,
+    func = function(fun, ..., pyenv_function) {
+      args = list(...)
+      if ("args" %in% methods::formalArgs(pyenv_function)) {
+        args = pyenv_function(args)
+      } else {
+        pyenv_function()
+      }
+      do.call(fun, args = args)
+    },
+    args = list(fun, ..., pyenv_function = pyenv_function)
+  )
 }
 
 #' Calculate Step Counts via Verisense
@@ -40,7 +62,7 @@ acti_calculate_verisense = function(data,
                                     method = c("original", "revised"),
                                     ...
 ) {
-  trans = get_transformations(data)
+  method = match.arg(method)
 
   sdata = walking::estimate_steps_verisense(
     data,
@@ -83,9 +105,6 @@ acti_calculate_verisense = function(data,
 acti_calculate_forest = function(data,
                                  ...
 ) {
-  steps = NULL
-  rm(list = c("steps"))
-  trans = get_transformations(data)
   rlang::check_installed("walking")
 
   sdata = walking::estimate_steps_forest(
@@ -132,26 +151,13 @@ py_acti_calculate_forest = function(
     },
     show = FALSE
 ) {
-  rlang::check_installed("callr")
-  steps <- callr::r(
-    show = show,
-    func = function(..., pyenv_function) {
-      args = list(...)
-      if ("args" %in% methods::formalArgs(pyenv_function)) {
-        args = pyenv_function(args)
-      } else {
-        pyenv_function()
-      }
-      res = do.call(actimetrics::acti_calculate_forest, args = args)
-    },
-    args = list(...,
-                pyenv_function = pyenv_function)
-  ) # Safely injects data into the process
+  run_in_callr(actimetrics::acti_calculate_forest, ...,
+               pyenv_function = pyenv_function, show = show)
 }
 
 
 
-#' Calculate Step Counts via Oak/Forest
+#' Calculate Step Counts via SDT
 #'
 #'
 #' @param data A `data.frame`, `AccData` object, or GT3X file with `X`, `Y`,

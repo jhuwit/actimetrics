@@ -4,12 +4,16 @@
 \alias{acti_apply_tudor_locke}
 \title{Apply Tudor--Locke sleep period detection}
 \usage{
-acti_apply_tudor_locke(data, ...)
+acti_apply_tudor_locke(data, ..., sleep_col = "sleep")
 }
 \arguments{
 \item{data}{Epoch-level data containing activity counts and sleep state.}
 
 \item{...}{Arguments passed to \code{actigraph.sleepr::apply_tudor_locke()}.}
+
+\item{sleep_col}{Name of the sleep-state column in \code{data}, either logical
+(as from \code{\link[=acti_apply_tudor_locke_diary]{acti_apply_tudor_locke_diary()}}) or \code{S}/\code{W}.  It is used as the
+\code{sleep} column expected by \code{actigraph.sleepr}.}
 }
 \value{
 A data frame summarizing detected sleep periods.

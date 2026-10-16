@@ -2,8 +2,6 @@
 % Please edit documentation in R/calculate_measures.R
 \name{acti_calculate_measures}
 \alias{acti_calculate_measures}
-\alias{acti_calculate_ai}
-\alias{acti_calculate_activity_index}
 \alias{acti_calculate_flags}
 \alias{acti_calculate_n_idle}
 \alias{acti_calculate_enmo}
@@ -27,20 +25,6 @@ acti_calculate_measures(
   verbose = TRUE,
   sample_rate = NULL,
   ...
-)
-
-acti_calculate_ai(
-  data,
-  unit = "1 min",
-  ensure_all_time = TRUE,
-  verbose = FALSE
-)
-
-acti_calculate_activity_index(
-  data,
-  unit = "1 min",
-  ensure_all_time = TRUE,
-  verbose = FALSE
 )
 
 acti_calculate_flags(data, unit = "1 min", ensure_all_time = TRUE)
@@ -123,7 +107,9 @@ in the input}
 
 \item{...}{additional arguments to pass to \code{MIMSunit::mims_unit()}}
 
-\item{allow_truncation}{truncate small values}
+\item{allow_truncation}{truncate small values to 0 and mark epochs with
+impossibly large values as invalid (\code{-0.01} for all axes and the total),
+following \code{MIMSunit}}
 }
 \value{
 A data set with the calculated features

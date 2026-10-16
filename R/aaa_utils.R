@@ -23,3 +23,21 @@ remake_acc = function(data, hdr) {
   class(data) = "AccData"
   data
 }
+
+# Resolve the sampling frequency once, with an error that explains what is
+# missing and how to supply it, instead of a bare `stopifnot()`.
+resolve_sample_rate = function(data, sample_rate = NULL,
+                               caller = "This function") {
+  tryCatch(
+    get_sample_rate(data, sample_rate = sample_rate),
+    error = function(e) {
+      stop(
+        caller, " needs the sampling frequency (Hz) of `data`, but it could ",
+        "not be determined: ", conditionMessage(e), "\n",
+        "Set it with `attr(data, \"sample_rate\") = <Hz>` or pass ",
+        "`sample_rate` where available.",
+        call. = FALSE
+      )
+    }
+  )
+}

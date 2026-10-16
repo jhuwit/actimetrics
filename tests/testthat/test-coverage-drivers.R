@@ -54,8 +54,13 @@ test_that("activity measure helpers cover tibble and data.table branches", {
   )
   attr(base_data, "sample_rate") = 1L
 
-  ai_df = acti_calculate_ai(base_data, ensure_all_time = TRUE, verbose = TRUE)
-  ai_dt = acti_calculate_ai(data.table::as.data.table(base_data), ensure_all_time = TRUE, verbose = TRUE)
+  # 1 Hz data: one sample per second, so AI is undefined (NA) and warns
+  expect_warning(
+    ai_df <- acti_calculate_ai(base_data, ensure_all_time = TRUE, verbose = TRUE),
+    "fewer than 2 samples")
+  expect_warning(
+    ai_dt <- acti_calculate_ai(data.table::as.data.table(base_data), ensure_all_time = TRUE, verbose = TRUE),
+    "fewer than 2 samples")
   expect_equal(nrow(ai_df), 3L)
   expect_true(is.na(ai_df$AI[2]))
   expect_true(data.table::is.data.table(ai_dt))
@@ -178,14 +183,17 @@ test_that("measure wrappers and calibration can be driven by mocks", {
 
   testthat::local_mocked_bindings(
     mims_default_processing = function(data, ...) {
-      tibble::tibble(
+      out = tibble::tibble(
         HEADER_TIME_STAMP = as.POSIXct("2020-01-01 00:00:00", tz = "UTC"),
         X = 1,
         Y = 2,
         Z = 3
       )
+      attr(out, "sample_rate") = 100
+      out
     },
-    acti_calculate_auc = function(data, ...) {
+    acti_calculate_auc = function(data, sample_rate = NULL, ...) {
+      expect_equal(sample_rate, 100)
       tibble::tibble(
         HEADER_TIME_STAMP = as.POSIXct("2020-01-01 00:00:00", tz = "UTC"),
         AUC_X = 1,
@@ -234,26 +242,30 @@ test_that("measure wrappers and calibration can be driven by mocks", {
     },
     .package = "actimetrics"
   )
-  measures = acti_calculate_measures(
-    base_data,
-    calculate_mims = TRUE,
-    calculate_ac = TRUE,
-    flag_data = TRUE,
-    fix_zeros = TRUE,
-    verbose = TRUE,
-    ensure_all_time = TRUE
-  )
+  expect_warning(
+    measures <- acti_calculate_measures(
+      base_data,
+      calculate_mims = TRUE,
+      calculate_ac = TRUE,
+      flag_data = TRUE,
+      fix_zeros = TRUE,
+      verbose = TRUE,
+      ensure_all_time = TRUE
+    ),
+    "fewer than 2 samples")
   expect_true(all(c("time", "AC", "MIMS", "flags") %in% names(measures)))
 
-  measures_min = acti_calculate_measures(
-    base_data,
-    calculate_mims = FALSE,
-    calculate_ac = FALSE,
-    flag_data = FALSE,
-    fix_zeros = FALSE,
-    verbose = FALSE,
-    ensure_all_time = FALSE
-  )
+  expect_warning(
+    measures_min <- acti_calculate_measures(
+      base_data,
+      calculate_mims = FALSE,
+      calculate_ac = FALSE,
+      flag_data = FALSE,
+      fix_zeros = FALSE,
+      verbose = FALSE,
+      ensure_all_time = FALSE
+    ),
+    "fewer than 2 samples")
   expect_true("time" %in% names(measures_min))
 
   path = tempfile(fileext = ".gt3x")
@@ -391,25 +403,27 @@ test_that("mims helpers error when the dependency is unavailable", {
   )
 })
 
-test_that("calculate_activity_counts requires a sample rate", {
+test_that("calculate_activity_counts passes a supplied sample rate on", {
   testthat::local_mocked_bindings(
-    get_sample_rate = function(data, sample_rate = NULL) NULL,
+    acti_calculate_counts = function(data, epoch = 60L, verbose = TRUE) {
+      expect_equal(attr(data, "sample_rate"), 50)
+      expect_equal(epoch, 30L)
+      tibble::tibble(time = data$time[1], counts = 5)
+    },
     .package = "actimetrics"
   )
-  expect_error(
-    calculate_activity_counts(
-      tibble::tibble(
-        time = as.POSIXct("2020-01-01 00:00:00", tz = "UTC"),
-        X = 1,
-        Y = 1,
-        Z = 1
-      ),
-      unit = "1 min",
-      sample_rate = NULL,
-      verbose = FALSE
+  out = calculate_activity_counts(
+    tibble::tibble(
+      time = as.POSIXct("2020-01-01 00:00:00", tz = "UTC"),
+      X = 1,
+      Y = 1,
+      Z = 1
     ),
-    "sample_rate is required for calculating AC"
+    unit = "30s",
+    sample_rate = 50,
+    verbose = FALSE
   )
+  expect_named(out, c("HEADER_TIME_STAMP", "AC"))
 })
 
 test_that("acti_calculate_mims requires MIMSunit", {

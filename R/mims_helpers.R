@@ -43,9 +43,9 @@ mims_default_extrapolation = function(data, dynamic_range = NULL) {
                               k, spar)
   colnames(data) = gsub("EXTRAPOLATED_", "", colnames(data))
   attr(data, "sample_rate") = 100
-  transformations = c("extrapolated", transformations)
-  transformations = set_transformations(data, transformations = transformations,
-                                        add = FALSE)
+  data = set_transformations(data,
+                             transformations = c("extrapolated", transformations),
+                             add = FALSE)
   if (is_acc) {
     data = remake_acc(data, hdr)
   }
@@ -73,12 +73,12 @@ mims_default_interpolation = function(data) {
   data = MIMSunit::interpolate_signal(data, sr = 100L, method = "linear")
   colnames(data) = gsub("INTERPOLATED_", "", colnames(data))
   attr(data, "sample_rate") = 100
+  data = set_transformations(data,
+                             transformations = c("interpolated", transformations),
+                             add = FALSE)
   if (is_acc) {
     data = remake_acc(data, hdr)
   }
-  transformations = c("interpolated", transformations)
-  transformations = set_transformations(data, transformations = transformations,
-                                        add = FALSE)
   data
 }
 
@@ -117,12 +117,12 @@ mims_default_filtering = function(data) {
     filter_type = "butter")
   colnames(data) = gsub("IIR_", "", colnames(data))
   attr(data, "sample_rate") = sample_rate
+  data = set_transformations(data,
+                             transformations = c("filtered", transformations),
+                             add = FALSE)
   if (is_acc) {
     data = remake_acc(data, hdr)
   }
-  transformations = c("filtered", transformations)
-  transformations = set_transformations(data, transformations = transformations,
-                                        add = FALSE)
   data
 }
 

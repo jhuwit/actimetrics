@@ -6,8 +6,8 @@
 #' day inclusion is run if `NULL`.
 #' @param calibrate Logical. If `TRUE`, the data will be calibrated using [acti_calibrate()]
 #' @export
-#' @note For `acti_process_gt3x`, the `...` argument are passed to
-#' `actiread::acti_read_gt3x()`
+#' @note For `acti_process`, the `...` argument are passed to
+#' [actiread::acti_read_gt3x()]
 acti_process = function(data,
                         lfe_select = FALSE,
                         method = c("choi", "troiano"),

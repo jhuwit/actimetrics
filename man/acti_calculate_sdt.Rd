@@ -2,7 +2,7 @@
 % Please edit documentation in R/acti_calculate_walking.R
 \name{acti_calculate_sdt}
 \alias{acti_calculate_sdt}
-\title{Calculate Step Counts via Oak/Forest}
+\title{Calculate Step Counts via SDT}
 \usage{
 acti_calculate_sdt(data, sample_rate = NULL, ...)
 }
@@ -19,7 +19,7 @@ input object when available.}
 A tibble with minute-level \code{time}, \code{steps} columns.
 }
 \description{
-Calculate Step Counts via Oak/Forest
+Calculate Step Counts via SDT
 }
 \examples{
 data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())

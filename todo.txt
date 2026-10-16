@@ -1,0 +1,9 @@
+TODO (see AGENTS.md for agcounts / first-second padding background)
+
+- When agcounts >= 0.7.1 (contains PR #51) is on CRAN, bump
+  Suggests: agcounts (>= 0.7.1). Keep fix_first_second = TRUE regardless.
+- Optionally report upstream: agcounts padding rbind drops/fails on extra
+  columns; expected-timestamp grid should be built from the floored start.
+- acti_apply_tudor_locke(): uses axis1 for activity_counts/nonzero_epochs; with
+  counts-only data the VM/sqrt(3) fallback scales activity_counts by 1/sqrt(3).
+  Decide whether to require axis1 (would break counts-only diary workflow).

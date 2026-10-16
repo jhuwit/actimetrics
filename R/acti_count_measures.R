@@ -5,12 +5,6 @@
 #' @return A `data.frame` of transformed data
 #' @note This calls the downstream wear-processing helpers used by
 #' `actigraph.sleepr`
-#' @param verbose print diagnostic messages.  Either logical or integer, where
-#' @param epoch epoch length in seconds.  Default is 60 seconds.
-#' See `agcounts::calculate_counts()`
-#' @param lfe_select Apply the Actigraph Low Frequency Extension filter.
-#' See `agcounts::calculate_counts()`
-#' higher values are higher levels of verbosity.
 #' @param method Method for detecting non-wear, either "choi" or "troiano",
 #' corresponding to `actigraph.sleepr::apply_choi()` or
 #' `actigraph.sleepr::apply_troiano()`
@@ -18,6 +12,10 @@
 #' @param use_magnitude  If `TRUE`, the magnitude of the vector
 #' (axis1, axis2, axis3) is used to measure activity;
 #' otherwise the axis1 value is used.
+#' @details `acti_calculate_wear()`, `acti_apply_cole_kripke()`, and
+#' `acti_apply_sadeh()` require 60-second epochs.  Cole--Kripke, Sadeh, and
+#' `acti_calculate_wear(use_magnitude = FALSE)` score the vertical axis, so
+#' `data` must contain `axis1`; vector-magnitude-only counts are an error.
 #' @export
 #' @rdname acti_calculate_counts
 #' @examples
@@ -31,10 +29,15 @@ acti_calculate_wear = function(data,
                                method = c("choi", "troiano"),
                                use_magnitude = TRUE,
                                ...) {
-  timestamp = NULL
-  rm(list = c("timestamp"))
+  timestamp = time = wear = NULL
+  rm(list = c("timestamp", "time", "wear"))
   rlang::check_installed("actigraph.sleepr")
-  data = acti_standardize_actigraph.sleepr(data)
+  data = acti_standardize_actigraph.sleepr(
+    data,
+    require_axis1 = !use_magnitude,
+    caller = "acti_calculate_wear(use_magnitude = FALSE)"
+  )
+  check_60s_epochs(data$timestamp, caller = "acti_calculate_wear()")
 
   method = match.arg(method)
   func = switch(method,
@@ -47,7 +50,7 @@ acti_calculate_wear = function(data,
                   use_magnitude = use_magnitude,
                   ...)
   )
-  choi_nonwear = func(data)
+  choi_nonwear = func(data, ...)
   if (nrow(choi_nonwear) > 0) {
     choi_df = purrr::map2_df(
       # change for the end - not the last value
@@ -56,7 +59,8 @@ acti_calculate_wear = function(data,
         data.frame(timestamp = seq(from, to, by = 60L),
                    wear = FALSE)
       })
-    choi_df = dplyr::left_join(data, choi_df) |>
+    choi_df = dplyr::left_join(
+      dplyr::select(data, timestamp), choi_df, by = "timestamp") |>
       tidyr::replace_na(list(wear = TRUE))
   } else {
     choi_df = data.frame(timestamp = unique(data$timestamp),
@@ -65,7 +69,7 @@ acti_calculate_wear = function(data,
 
   choi_df = choi_df |>
     dplyr::rename(time = timestamp) |>
-    dplyr::select(time, dplyr::contains("wear")) |>
+    dplyr::select(time, wear) |>
     dplyr::as_tibble()
 
   trans = get_transformations(data)
@@ -91,8 +95,8 @@ acti_apply_cole_kripke = function(data) {
   rlang::check_installed("actigraph.sleepr")
   timestamp = NULL
   rm(list = c("timestamp"))
-  data = acti_standardize_actigraph.sleepr(data)
-
+  data = acti_standardize_actigraph.sleepr(
+    data, require_axis1 = TRUE, caller = "acti_apply_cole_kripke()")
 
   # https://actigraphcorp.my.site.com/support/s/article/What-does-the-Detect-Sleep-Periods-button-do-and-how-does-it-work
   ck = data |>
@@ -118,10 +122,20 @@ acti_apply_cole_kripke = function(data) {
 #'
 #' @param data Epoch-level data containing activity counts and sleep state.
 #' @param ... Arguments passed to `actigraph.sleepr::apply_tudor_locke()`.
+#' @param sleep_col Name of the sleep-state column in `data`, either logical
+#'   (as from [acti_apply_tudor_locke_diary()]) or `S`/`W`.  It is used as the
+#'   `sleep` column expected by `actigraph.sleepr`.
 #' @return A data frame summarizing detected sleep periods.
 #' @export
-acti_apply_tudor_locke = function(data, ...) {
+acti_apply_tudor_locke = function(data, ..., sleep_col = "sleep") {
   rlang::check_installed("actigraph.sleepr")
+  assertthat::assert_that(assertthat::is.string(sleep_col))
+  if (!sleep_col %in% names(data)) {
+    stop("`data` has no sleep-state column `", sleep_col, "`; set ",
+         "`sleep_col` or run acti_apply_cole_kripke() or ",
+         "acti_apply_tudor_locke_diary() first.", call. = FALSE)
+  }
+  data$sleep = data[[sleep_col]]
   data = acti_standardize_actigraph.sleepr(data)
   if (is.logical(data$sleep)) {
     data$sleep = ifelse(data$sleep, "S", "W")
@@ -142,14 +156,31 @@ acti_apply_tudor_locke = function(data, ...) {
 #' @rdname acti_calculate_counts
 acti_apply_sadeh = function(data, ...) {
   rlang::check_installed("actigraph.sleepr")
-  data = acti_standardize_actigraph.sleepr(data)
+  data = acti_standardize_actigraph.sleepr(
+    data, require_axis1 = TRUE, caller = "acti_apply_sadeh()")
   tl = data |>
     actigraph.sleepr::apply_sadeh(...)
   trans = get_transformations(data)
   tl = set_transformations(tl, trans)
   tl = set_transformations(tl,
                            "apply_sadeh_run",
-                           prefix = "acti_apply_apply_sadeh",
+                           prefix = "acti_apply_sadeh",
                            add = TRUE)
   tl
+}
+
+check_60s_epochs = function(timestamp, caller = "This function") {
+  if (length(timestamp) < 2L) {
+    return(invisible(TRUE))
+  }
+  d = diff(as.numeric(timestamp))
+  d = d[!is.na(d)]
+  epoch = stats::median(d)
+  if (!isTRUE(all.equal(epoch, 60))) {
+    stop(caller, " requires 60-second epochs (the algorithms are defined ",
+         "on 1-minute counts), but `data` has ", format(epoch),
+         "-second epochs.  Use `acti_calculate_counts(epoch = 60)` or ",
+         "aggregate the counts to 1 minute first.", call. = FALSE)
+  }
+  invisible(TRUE)
 }

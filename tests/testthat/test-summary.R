@@ -1,20 +1,29 @@
 test_that("summary helpers calculate and fill time correctly", {
   data = make_gap_signal()
 
-  ai_sparse = acti_calculate_ai(data, ensure_all_time = FALSE, verbose = TRUE)
-  ai_full = acti_calculate_ai(data, ensure_all_time = TRUE, verbose = TRUE)
+  # make_gap_signal() is 1 Hz, so AI is NA with a warning
+  expect_warning(
+    ai_sparse <- acti_calculate_ai(data, ensure_all_time = FALSE, verbose = TRUE),
+    "fewer than 2 samples")
+  expect_warning(
+    ai_full <- acti_calculate_ai(data, ensure_all_time = TRUE, verbose = TRUE),
+    "fewer than 2 samples")
   expect_equal(nrow(ai_sparse) + 1L, nrow(ai_full))
   expect_true("AI" %in% names(ai_full))
 
-  ai_index = acti_calculate_activity_index(
-    data,
-    ensure_all_time = FALSE,
-    verbose = TRUE
-  )
+  expect_warning(
+    ai_index <- acti_calculate_activity_index(
+      data,
+      ensure_all_time = FALSE,
+      verbose = TRUE
+    ),
+    "fewer than 2 samples")
   expect_equal(ai_sparse, ai_index)
 
   dt = data.table::as.data.table(data)
-  ai_dt = acti_calculate_ai(dt, ensure_all_time = FALSE, verbose = TRUE)
+  expect_warning(
+    ai_dt <- acti_calculate_ai(dt, ensure_all_time = FALSE, verbose = TRUE),
+    "fewer than 2 samples")
   expect_true(data.table::is.data.table(ai_dt))
 
   mad = acti_calculate_mad(data, ensure_all_time = FALSE, verbose = TRUE)

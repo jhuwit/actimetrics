@@ -61,27 +61,16 @@ acti_calculate_stepcount = function(data,
       time = lubridate::floor_date(time, unit = epoch),
       walking = walking > 0) |>
     dplyr::group_by(time) |>
-    dplyr::summarise(walking = any(walking, na.rm = TRUE))
+    dplyr::summarise(
+      walking = if (all(is.na(walking))) NA else any(walking, na.rm = TRUE)
+    )
   sdata = steps$steps
-  sdata = set_transformations(sdata,
-                              c("stepcounts_created",
-                                get_transformations(data)
-                              ),
-                              prefix = "acti_calculate_stepcount",
-                              add = FALSE)
-
-  # Now do it at a minute level
-  trans = get_transformations(sdata)
-  sdata = sdata |>
-    dplyr::mutate(time = lubridate::floor_date(time, unit = epoch)) |>
-    dplyr::group_by(time) |>
-    dplyr::summarise(steps = sum(steps, na.rm = TRUE)) |>
-    dplyr::ungroup()
-  sdata = set_transformations(sdata, trans)
-  sdata = set_transformations(sdata,
-                              "steps_summarized_per_60s_epoch",
+  sdata = set_transformations(sdata, get_transformations(data), add = FALSE)
+  sdata = set_transformations(sdata, "stepcounts_created",
                               prefix = "acti_calculate_stepcount",
                               add = TRUE)
+  sdata = summarize_to_minute(sdata, prefix = "acti_calculate_stepcount",
+                              unit = epoch)
 
   sdata = sdata |>
     dplyr::left_join(walking, by = "time")
@@ -89,9 +78,6 @@ acti_calculate_stepcount = function(data,
                               "walking_column_joined",
                               prefix = "acti_calculate_stepcount",
                               add = TRUE)
-
-  sdata = sdata |>
-    dplyr::mutate(steps = ifelse(!is.finite(steps), NA_integer_, steps))
   sdata
 }
 
@@ -101,8 +87,8 @@ acti_calculate_stepcount = function(data,
 #'
 #' @param ... arguments passed to [acti_calculate_stepcount()]
 #' @param pyenv_function function that loads the `stepcount` Python package.
-#' By default, it uses `reticulate::py_import("stepcount")` to
-#' import the package. If this function has an `args` argument, the output
+#' By default, it uses `stepcount::py_require_stepcount()` to
+#' set up the package. If this function has an `args` argument, the output
 #' of `pyenv_function` will be re-assigned to `args`.
 #' @param show Logical, whether to show the standard output on the
 #' screen while the child process is running, passed to [callr::r()]
@@ -124,19 +110,6 @@ py_acti_calculate_stepcount = function(
       stepcount::py_require_stepcount()
     },
     show = FALSE) {
-  rlang::check_installed("callr")
-  steps <- callr::r(
-    show = show,
-    func = function(..., pyenv_function) {
-      args = list(...)
-      if ("args" %in% methods::formalArgs(pyenv_function)) {
-        args = pyenv_function(args)
-      } else {
-        pyenv_function()
-      }
-      res = do.call(actimetrics::acti_calculate_stepcount, args = args)
-    },
-    args = list(...,
-                pyenv_function = pyenv_function)
-  ) # Safely injects data into the process
+  run_in_callr(actimetrics::acti_calculate_stepcount, ...,
+               pyenv_function = pyenv_function, show = show)
 }

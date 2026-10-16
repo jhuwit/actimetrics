@@ -20,8 +20,7 @@ acti_process(
 columns \code{axis1-3} and \code{counts}}
 
 \item{lfe_select}{Apply the Actigraph Low Frequency Extension filter.
-See \code{agcounts::calculate_counts()}
-higher values are higher levels of verbosity.}
+See \link[agcounts:calculate_counts]{agcounts::calculate_counts}}
 
 \item{method}{Method for detecting non-wear, either "choi" or "troiano",
 corresponding to \code{actigraph.sleepr::apply_choi()} or
@@ -33,7 +32,8 @@ otherwise the axis1 value is used.}
 
 \item{calibrate}{Logical. If \code{TRUE}, the data will be calibrated using \code{\link[=acti_calibrate]{acti_calibrate()}}}
 
-\item{verbose}{print diagnostic messages.  Either logical or integer, where}
+\item{verbose}{print diagnostic messages.  Either logical or integer, where
+higher values are higher levels of verbosity.}
 
 \item{...}{additional arguments to pass to \code{actigraph.sleepr} function}
 
@@ -47,6 +47,6 @@ A data frame containing activity counts and wear-time indicators.
 Process Raw data to Counts
 }
 \note{
-For \code{acti_process_gt3x}, the \code{...} argument are passed to
-\code{actiread::acti_read_gt3x()}
+For \code{acti_process}, the \code{...} argument are passed to
+\code{\link[actiread:acti_read_gt3x]{actiread::acti_read_gt3x()}}
 }

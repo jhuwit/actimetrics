@@ -28,7 +28,7 @@
 #' last times will be in the output, even if data during that time was not
 #' in the input
 #' @param sample_rate Sample rate of the data, only used if
-#' `calculcate_ac = TRUE`
+#' `calculate_ac = TRUE` and the data do not carry a `sample_rate` attribute
 #' @param ... additional arguments to pass to `MIMSunit::mims_unit()`
 #'
 #' @return A data set with the calculated features
@@ -86,9 +86,6 @@ acti_calculate_measures = function(
     colname_time = "HEADER_TIME_STAMP"
   )
   data = rename_time_stamp(data)
-  if (calculate_ac) {
-    sample_rate = get_sample_rate(data, sample_rate = sample_rate)
-  }
   if (fix_zeros) {
     if (verbose) {
       message("Fixing Zeros with fix_zeros")
@@ -173,7 +170,7 @@ acti_calculate_measures = function(
   res = join_all_time(res, unit, ensure_all_time)
   res = res |>
     dplyr::rename(time = HEADER_TIME_STAMP)
-  transforms = paste("aggregated_at_", paste(unit, collapse = "_"))
+  transforms = paste0("aggregated_at_", paste(unit, collapse = "_"))
   transformations = c(transforms, transformations)
   res = set_transformations(res, transformations = transformations,
                             add = FALSE)
@@ -204,8 +201,45 @@ is_dt = function(x) {
 
 .datatable.aware = TRUE
 
+#' Calculate the Activity Index (AI)
+#'
+#' Computes the Activity Index of Bai et al. (2016) from raw tri-axial
+#' accelerometry.  For each 1-second window \eqn{t}, with \eqn{\sigma^2_m(t)}
+#' the variance of axis \eqn{m \in \{X, Y, Z\}} over the samples in that
+#' second,
+#' \deqn{AI(t) = \sqrt{\frac{1}{3}\sum_{m} \sigma^2_m(t)}.}
+#' The per-second values are then summed within each `unit` (e.g. a minute).
+#'
+#' This is the unadjusted index (sometimes written \eqn{AI_0}): it does not
+#' subtract or normalise by the device's systematic noise variance
+#' \eqn{\bar{\sigma}^2_m}, which the original definition estimates from a
+#' stationary period.  It differs from `AI_DEFINED` returned by
+#' [acti_calculate_mad()], which takes the variances over the whole `unit`
+#' rather than summing 1-second values.
+#'
+#' A 1-second variance needs at least two samples, so seconds with fewer than
+#' two samples are `NA` and are skipped when summing; a `unit` with no valid
+#' seconds is `NA`.  Data sampled at under 2 Hz therefore give all-`NA` AI
+#' (with a warning).
+#'
+#' @param data An object with columns `X`, `Y`, and `Z` and a time column, or
+#' an object of class `AccData`
+#' @param unit length of time to sum the per-second AI over, passed to
+#' [lubridate::floor_date()]
+#' @param ensure_all_time if `TRUE`, all times from the first to the last
+#' `unit` are in the output, even those with no input data
+#' @param verbose print diagnostic messages
+#'
+#' @return A `data.frame` (or `data.table` if `data` is one) with columns
+#' `HEADER_TIME_STAMP` and `AI`.
+#' @references Bai J, Di C, Xiao L, et al. (2016). An Activity Index for Raw
+#' Accelerometry Data and Its Comparison with Other Activity Metrics.
+#' PLoS ONE 11(8): e0160644. \doi{10.1371/journal.pone.0160644}
 #' @export
-#' @rdname acti_calculate_measures
+#' @examples
+#' file = actiread::acti_example_gt3x()
+#' res = actiread::acti_read_gt3x(file, verbose = FALSE)
+#' ai = acti_calculate_ai(res[1:12000, ])
 acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
                         verbose = FALSE) {
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
@@ -261,13 +295,17 @@ acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
       dplyr::mutate(AI = sqrt(AI/3))
   }
 
+  if (nrow(data) > 0 && all(is.na(data$AI))) {
+    warning("Every 1-second window has fewer than 2 samples, so AI is NA; ",
+            "AI requires data sampled at 2 Hz or more.")
+  }
   data = data |>
     dplyr::mutate(
       HEADER_TIME_STAMP = lubridate::floor_date(HEADER_TIME_STAMP,
                                                 unit)) |>
     dplyr::group_by(HEADER_TIME_STAMP) |>
     dplyr::summarise(
-      AI = sum(AI)
+      AI = if (all(is.na(AI))) NA_real_ else sum(AI, na.rm = TRUE)
     )
   data = data |>
     tibble::as_tibble() |>
@@ -288,7 +326,7 @@ join_all_time = function(data, unit = "1 min", ensure_all_time) {
 }
 
 #' @export
-#' @rdname acti_calculate_measures
+#' @rdname acti_calculate_ai
 acti_calculate_activity_index = acti_calculate_ai
 
 #' @export
@@ -465,7 +503,9 @@ acti_calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
 #' @export
 #' @rdname acti_calculate_measures
 #' @param sample_rate sample rate of data, if not specified in header of object
-#' @param allow_truncation truncate small values
+#' @param allow_truncation truncate small values to 0 and mark epochs with
+#' impossibly large values as invalid (`-0.01` for all axes and the total),
+#' following `MIMSunit`
 acti_calculate_auc = function(data, unit = "1 min",
                          sample_rate = NULL,
                          allow_truncation = FALSE,
@@ -577,6 +617,13 @@ acti_calculate_auc = function(data, unit = "1 min",
       AUC = AUC_X + AUC_Y + AUC_Z
     ) |>
     dplyr::select(-good)
+  if (allow_truncation) {
+    # As in MIMSunit::custom_mims_unit(): if any axis is out of range (-1),
+    # the whole epoch is marked invalid with -0.01 rather than summing the
+    # -1 sentinel into the total.
+    abnormal = (data$AUC_X < 0 | data$AUC_Y < 0 | data$AUC_Z < 0) %in% TRUE
+    data[abnormal, c("AUC_X", "AUC_Y", "AUC_Z", "AUC")] = -0.01
+  }
   data = join_all_time(data, unit, ensure_all_time)
   data
 }
@@ -594,9 +641,9 @@ calculate_activity_counts = function(data,
   if ("HEADER_TIME_STAMP" %in% names(data) && !"time" %in% names(data)) {
     names(data)[names(data) == "HEADER_TIME_STAMP"] = "time"
   }
-  sample_rate = get_sample_rate(data, sample_rate = sample_rate)
-  if (is.null(sample_rate)) {
-    stop("sample_rate is required for calculating AC")
+  # acti_calculate_counts() resolves (and if needed errors on) the rate
+  if (!is.null(sample_rate)) {
+    attr(data, "sample_rate") = sample_rate
   }
   epoch = as.integer(n_in_interval(unit, sample_rate = 1))
   counts = acti_calculate_counts(
@@ -630,10 +677,15 @@ acti_calculate_fast_mims = function(
     output_mims_per_axis = args$output_mims_per_axis
     args$output_mims_per_axis = NULL
   }
+  if (!is.null(sample_rate)) {
+    warning("`sample_rate` is ignored by acti_calculate_fast_mims(): the ",
+            "rate of the processed (interpolated) data is used.")
+  }
   data = do.call(mims_default_processing, args = args)
   data = acti_calculate_auc(
     data, unit = unit,
-    sample_rate = sample_rate,
+    sample_rate = resolve_sample_rate(
+      data, caller = "acti_calculate_fast_mims()"),
     allow_truncation = allow_truncation,
     ensure_all_time = ensure_all_time,
     verbose = verbose
@@ -702,23 +754,19 @@ check_dynamic_range = function(data, dynamic_range = c(-6, 6)) {
   all(r >= dynamic_range[1] & r <= dynamic_range[2])
 }
 
+# Number of samples in an epoch string such as "1 min", "1min", "30s", or
+# "2 hours".  Parsed with lubridate so it agrees with lubridate::floor_date().
 n_in_interval = function(epoch, sample_rate = NULL) {
   stopifnot(!is.null(sample_rate))
-  epoch = strsplit(epoch, " ")[[1]]
-  if (length(epoch) == 1) {
-    token = 1
-  } else {
-    stopifnot(length(epoch) == 2)
-    token = as.numeric(epoch[1])
-    epoch = epoch[2]
+  assertthat::assert_that(assertthat::is.string(epoch))
+  seconds = tryCatch(
+    as.numeric(lubridate::duration(epoch)),
+    error = function(e) NA_real_
+  )
+  if (is.na(seconds) || seconds <= 0) {
+    stop("Could not interpret epoch/unit '", epoch, "' as a positive ",
+         "length of time (e.g. \"1 min\", \"30s\", \"1 hour\").",
+         call. = FALSE)
   }
-  epoch = sub("s$", "", trimws(epoch))
-  epoch = match.arg(epoch, c("seconds", "minutes", "hours", "days"))
-  multiplier = switch(epoch,
-                      seconds = 1,
-                      minutes = 60,
-                      hours = 60*60,
-                      days = 60*60*24)
-  n = token * sample_rate * multiplier
-  return(n)
+  seconds * sample_rate
 }

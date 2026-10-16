@@ -16,8 +16,8 @@ py_acti_calculate_stepcount(
 \item{...}{arguments passed to \code{\link[=acti_calculate_stepcount]{acti_calculate_stepcount()}}}
 
 \item{pyenv_function}{function that loads the \code{stepcount} Python package.
-By default, it uses \code{reticulate::py_import("stepcount")} to
-import the package. If this function has an \code{args} argument, the output
+By default, it uses \code{stepcount::py_require_stepcount()} to
+set up the package. If this function has an \code{args} argument, the output
 of \code{pyenv_function} will be re-assigned to \code{args}.}
 
 \item{show}{Logical, whether to show the standard output on the

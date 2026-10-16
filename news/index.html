@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,47 @@
       <small>Source: <a href="https://github.com/jhuwit/actimetrics/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.0" id="actimetrics-080">actimetrics 0.8.0<a class="anchor" aria-label="anchor" href="#actimetrics-080"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-8-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-8-0"></a></h3>
+<ul><li>
+<code><a href="../reference/acti_calculate_counts.html">acti_apply_cole_kripke()</a></code>, <code><a href="../reference/acti_calculate_counts.html">acti_apply_sadeh()</a></code>, and <code>acti_calculate_wear(use_magnitude = FALSE)</code> now error if <code>axis1</code> is missing. Both sleep algorithms score the vertical axis, so vector-magnitude counts are no longer silently converted with <code>axis1 = VM / sqrt(3)</code>.</li>
+<li>
+<code><a href="../reference/acti_calculate_counts.html">acti_calculate_wear()</a></code> errors with an informative message unless the data are 60-second epochs (required by Choi and Troiano).</li>
+<li>Step summaries (<code><a href="../reference/acti_calculate_stepcount.html">acti_calculate_stepcount()</a></code>, <code><a href="../reference/acti_calculate_verisense.html">acti_calculate_verisense()</a></code>, <code><a href="../reference/acti_calculate_forest.html">acti_calculate_forest()</a></code>, <code><a href="../reference/acti_calculate_sdt.html">acti_calculate_sdt()</a></code>) now return <code>NA</code> for epochs where all values are missing (e.g. non-wear) rather than 0 steps; <code>walking</code> from <code><a href="../reference/acti_calculate_stepcount.html">acti_calculate_stepcount()</a></code> is likewise <code>NA</code>.</li>
+<li>With <code>allow_truncation = TRUE</code>, <code><a href="../reference/acti_calculate_measures.html">acti_calculate_auc()</a></code> and <code><a href="../reference/acti_calculate_measures.html">acti_calculate_fast_mims()</a></code> mark an epoch with any out-of-range axis as <code>-0.01</code> (all axes and the total), as <code>MIMSunit</code> does, rather than adding the <code>-1</code> sentinel into the total.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-8-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-8-0"></a></h3>
+<ul><li>New <code><a href="../reference/acti_process_study.html">acti_process_study()</a></code> processes every supported raw file (GT3X, CWA, GENEActiv BIN, CSV) in a directory with <code><a href="../reference/acti_process.html">acti_process()</a></code> and saves RDS files. Failures are always reported with a warning and listed in the <code>failed</code> attribute of the result. CSV files are read with <code>readr</code>, which is now in Imports.</li>
+<li>
+<code><a href="../reference/acti_apply_tudor_locke.html">acti_apply_tudor_locke()</a></code> gains <code>sleep_col</code> to use a sleep-state column with another name (e.g. from <code><a href="../reference/acti_apply_tudor_locke_diary.html">acti_apply_tudor_locke_diary()</a></code>).</li>
+<li>
+<code><a href="../reference/acti_calculate_ai.html">acti_calculate_ai()</a></code> has its own documentation page describing the (noise-unadjusted) Activity Index of Bai et al. (2016).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-8-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-0"></a></h3>
+<ul><li>
+<code><a href="../reference/acti_calculate_counts.html">acti_calculate_counts()</a></code> subsets to <code>time</code>/<code>X</code>/<code>Y</code>/<code>Z</code> before calling <code>agcounts</code>, whose start-of-record padding failed on data with extra columns (e.g. GENEActiv <code>light</code>/<code>temperature</code>).</li>
+<li>The first-second padding before <code>agcounts</code> keeps all columns, attributes, and the timezone, builds the padded times on an exact sample grid, and no longer re-prefixes the existing transformation history. It is kept by default alongside the upstream fix (bhelsel/agcounts#51), as it also avoids agcounts’ duplicate zero-count rows and works with older <code>agcounts</code>.</li>
+<li>
+<code><a href="../reference/acti_calculate_counts.html">acti_calculate_wear()</a></code> now passes <code>...</code> to <code>actigraph.sleepr</code> (arguments such as <code>min_period_len</code> were ignored) and is not affected by existing <code>wear</code> columns.</li>
+<li>
+<code><a href="../reference/mims_default_extrapolation.html">mims_default_extrapolation()</a></code>, <code><a href="../reference/mims_default_extrapolation.html">mims_default_interpolation()</a></code>, and <code><a href="../reference/mims_default_extrapolation.html">mims_default_filtering()</a></code> now record their transformations.</li>
+<li>
+<code><a href="../reference/acti_calculate_ai.html">acti_calculate_ai()</a></code> skips 1-second windows with a single sample instead of making the whole epoch <code>NA</code>, and warns for data sampled under 2 Hz.</li>
+<li>
+<code><a href="../reference/acti_calculate_verisense.html">acti_calculate_verisense()</a></code> validates <code>method</code> with <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code>, so the default is <code>"original"</code>.</li>
+<li>
+<code><a href="../reference/acti_calculate_measures.html">acti_calculate_fast_mims()</a></code> uses the sample rate of the processed (100 Hz) data; a supplied <code>sample_rate</code> is ignored with a warning.</li>
+<li>A user-supplied <code>sample_rate</code> in <code><a href="../reference/acti_calculate_measures.html">acti_calculate_measures()</a></code> is now passed through to the activity-count calculation, and a missing sample rate gives an informative error from <code>acti_calculate_counts(resample = FALSE)</code>.</li>
+<li>Epoch/unit strings such as <code>"30s"</code> and <code>"1min"</code> are parsed with <code>lubridate</code>, consistent with <code><a href="https://lubridate.tidyverse.org/reference/round_date.html" class="external-link">lubridate::floor_date()</a></code>.</li>
+<li>
+<code><a href="../reference/py_acti_calculate_stepcount.html">py_acti_calculate_stepcount()</a></code> and <code><a href="../reference/py_acti_calculate_forest.html">py_acti_calculate_forest()</a></code> return their result visibly.</li>
+<li>Fixed the <code>aggregated_at_</code> transformation label and documentation of <code>verbose</code> and <code>lfe_select</code>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="actimetrics-070">actimetrics 0.7.0<a class="anchor" aria-label="anchor" href="#actimetrics-070"></a></h2>
 <ul><li><p>Add sleep diary labeling for Tudor–Locke and adapt diary labels for <code><a href="https://rdrr.io/pkg/actigraph.sleepr/man/apply_tudor_locke.html" class="external-link">actigraph.sleepr::apply_tudor_locke()</a></code>.</p></li>

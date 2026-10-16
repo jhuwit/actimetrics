@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,8 +63,7 @@ columns <code>axis1-3</code> and <code>counts</code></p></dd>
 
 <dt id="arg-lfe-select">lfe_select<a class="anchor" aria-label="anchor" href="#arg-lfe-select"></a></dt>
 <dd><p>Apply the Actigraph Low Frequency Extension filter.
-See <code><a href="https://rdrr.io/pkg/agcounts/man/calculate_counts.html" class="external-link">agcounts::calculate_counts()</a></code>
-higher values are higher levels of verbosity.</p></dd>
+See <a href="https://rdrr.io/pkg/agcounts/man/calculate_counts.html" class="external-link">agcounts::calculate_counts</a></p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
@@ -84,7 +83,8 @@ otherwise the axis1 value is used.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>print diagnostic messages.  Either logical or integer, where</p></dd>
+<dd><p>print diagnostic messages.  Either logical or integer, where
+higher values are higher levels of verbosity.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -102,7 +102,7 @@ day inclusion is run if <code>NULL</code>.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>For <code>acti_process_gt3x</code>, the <code>...</code> argument are passed to
+    <p>For <code>acti_process</code>, the <code>...</code> argument are passed to
 <code><a href="https://jhuwit.github.io/actiread/reference/acti_read_gt3x.html" class="external-link">actiread::acti_read_gt3x()</a></code></p>
     </div>
 

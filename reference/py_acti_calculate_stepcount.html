@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,8 +59,8 @@
 
 <dt id="arg-pyenv-function">pyenv_function<a class="anchor" aria-label="anchor" href="#arg-pyenv-function"></a></dt>
 <dd><p>function that loads the <code>stepcount</code> Python package.
-By default, it uses <code>reticulate::py_import("stepcount")</code> to
-import the package. If this function has an <code>args</code> argument, the output
+By default, it uses <code><a href="https://rdrr.io/pkg/stepcount/man/py_require_stepcount.html" class="external-link">stepcount::py_require_stepcount()</a></code> to
+set up the package. If this function has an <code>args</code> argument, the output
 of <code>pyenv_function</code> will be re-assigned to <code>args</code>.</p></dd>
 
 

@@ -13,7 +13,7 @@ states expected downstream.
 ## Usage
 
 ``` r
-acti_apply_tudor_locke(data, ...)
+acti_apply_tudor_locke(data, ..., sleep_col = "sleep")
 ```
 
 ## Arguments
@@ -26,6 +26,13 @@ acti_apply_tudor_locke(data, ...)
 
   Arguments passed to
   [`actigraph.sleepr::apply_tudor_locke()`](https://rdrr.io/pkg/actigraph.sleepr/man/apply_tudor_locke.html).
+
+- sleep_col:
+
+  Name of the sleep-state column in `data`, either logical (as from
+  [`acti_apply_tudor_locke_diary()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke_diary.md))
+  or `S`/`W`. It is used as the `sleep` column expected by
+  `actigraph.sleepr`.
 
 ## Value
 

@@ -1,6 +1,6 @@
-# Calculate Step Counts via Oak/Forest
+# Calculate Step Counts via SDT
 
-Calculate Step Counts via Oak/Forest
+Calculate Step Counts via SDT
 
 ## Usage
 

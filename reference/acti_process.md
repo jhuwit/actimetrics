@@ -27,8 +27,7 @@ acti_process(
 - lfe_select:
 
   Apply the Actigraph Low Frequency Extension filter. See
-  [`agcounts::calculate_counts()`](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
-  higher values are higher levels of verbosity.
+  [agcounts::calculate_counts](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
 
 - method:
 
@@ -50,7 +49,8 @@ acti_process(
 
 - verbose:
 
-  print diagnostic messages. Either logical or integer, where
+  print diagnostic messages. Either logical or integer, where higher
+  values are higher levels of verbosity.
 
 - ...:
 
@@ -67,5 +67,5 @@ A data frame containing activity counts and wear-time indicators.
 
 ## Note
 
-For `acti_process_gt3x`, the `...` argument are passed to
+For `acti_process`, the `...` argument are passed to
 [`actiread::acti_read_gt3x()`](https://jhuwit.github.io/actiread/reference/acti_read_gt3x.html)

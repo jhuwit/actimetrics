@@ -24,9 +24,10 @@ py_acti_calculate_stepcount(
 - pyenv_function:
 
   function that loads the `stepcount` Python package. By default, it
-  uses `reticulate::py_import("stepcount")` to import the package. If
-  this function has an `args` argument, the output of `pyenv_function`
-  will be re-assigned to `args`.
+  uses
+  [`stepcount::py_require_stepcount()`](https://rdrr.io/pkg/stepcount/man/py_require_stepcount.html)
+  to set up the package. If this function has an `args` argument, the
+  output of `pyenv_function` will be re-assigned to `args`.
 
 - show:
 

@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://jhuwit.github.io/actimetrics/404.html</loc></url>
+<url><loc>https://jhuwit.github.io/actimetrics/AGENTS.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/LICENSE.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/articles/actimetrics.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/articles/index.html</loc></url>
@@ -8,6 +9,7 @@
 <url><loc>https://jhuwit.github.io/actimetrics/news/index.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke_diary.html</loc></url>
+<url><loc>https://jhuwit.github.io/actimetrics/reference/acti_calculate_ai.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_calculate_forest.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_calculate_measures.html</loc></url>
@@ -16,6 +18,7 @@
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_calculate_verisense.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_count_data.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/acti_process.html</loc></url>
+<url><loc>https://jhuwit.github.io/actimetrics/reference/acti_process_study.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/calibrate.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/index.html</loc></url>
 <url><loc>https://jhuwit.github.io/actimetrics/reference/mims_default_extrapolation.html</loc></url>

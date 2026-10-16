@@ -9,7 +9,7 @@ Process Count Data"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@ columns <code>axis1-3</code> and <code>counts</code></p></dd>
 
 <dt id="arg-epoch">epoch<a class="anchor" aria-label="anchor" href="#arg-epoch"></a></dt>
 <dd><p>epoch length in seconds.  Default is 60 seconds.
-See <code><a href="https://rdrr.io/pkg/agcounts/man/calculate_counts.html" class="external-link">agcounts::calculate_counts()</a></code></p></dd>
+See <a href="https://rdrr.io/pkg/agcounts/man/calculate_counts.html" class="external-link">agcounts::calculate_counts</a></p></dd>
 
 
 <dt id="arg-resample">resample<a class="anchor" aria-label="anchor" href="#arg-resample"></a></dt>
@@ -93,12 +93,12 @@ See <code><a href="https://rdrr.io/pkg/agcounts/man/calculate_counts.html" class
 
 <dt id="arg-lfe-select">lfe_select<a class="anchor" aria-label="anchor" href="#arg-lfe-select"></a></dt>
 <dd><p>Apply the Actigraph Low Frequency Extension filter.
-See <code><a href="https://rdrr.io/pkg/agcounts/man/calculate_counts.html" class="external-link">agcounts::calculate_counts()</a></code>
-higher values are higher levels of verbosity.</p></dd>
+See <a href="https://rdrr.io/pkg/agcounts/man/calculate_counts.html" class="external-link">agcounts::calculate_counts</a></p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>print diagnostic messages.  Either logical or integer, where</p></dd>
+<dd><p>print diagnostic messages.  Either logical or integer, where
+higher values are higher levels of verbosity.</p></dd>
 
 
 <dt id="arg-fix-first-second">fix_first_second<a class="anchor" aria-label="anchor" href="#arg-fix-first-second"></a></dt>
@@ -131,6 +131,15 @@ otherwise the axis1 value is used.</p></dd>
 <p>A <code>data.frame</code> of transformed data</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The sampling frequency is only needed when <code>resample = FALSE</code>;
+it is taken from the <code>sample_rate</code> attribute (or estimated from <code>time</code>).</p>
+<p><code>acti_calculate_wear()</code>, <code>acti_apply_cole_kripke()</code>, and
+<code>acti_apply_sadeh()</code> require 60-second epochs.  Cole–Kripke, Sadeh, and
+<code>acti_calculate_wear(use_magnitude = FALSE)</code> score the vertical axis, so
+<code>data</code> must contain <code>axis1</code>; vector-magnitude-only counts are an error.</p>
+    </div>
+    <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>This calls the downstream wear-processing helpers used by
 <code>actigraph.sleepr</code></p>
@@ -146,8 +155,6 @@ otherwise the axis1 value is used.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Filled zeros in data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Timezone not applied to data</span>
 <span class="r-in"><span><span class="va">out</span> <span class="op">=</span> <span class="fu">acti_calculate_counts</span><span class="op">(</span><span class="va">ac</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading uv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Done!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Creating Downsampled Data"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Filtering Data"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Trimming Data"</span>

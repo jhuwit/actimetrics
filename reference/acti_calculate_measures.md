@@ -20,20 +20,6 @@ acti_calculate_measures(
   ...
 )
 
-acti_calculate_ai(
-  data,
-  unit = "1 min",
-  ensure_all_time = TRUE,
-  verbose = FALSE
-)
-
-acti_calculate_activity_index(
-  data,
-  unit = "1 min",
-  ensure_all_time = TRUE,
-  verbose = FALSE
-)
-
 acti_calculate_flags(data, unit = "1 min", ensure_all_time = TRUE)
 
 acti_calculate_n_idle(data, unit = "1 min", ensure_all_time = TRUE)
@@ -145,7 +131,9 @@ acti_calculate_mims(
 
 - allow_truncation:
 
-  truncate small values
+  truncate small values to 0 and mark epochs with impossibly large
+  values as invalid (`-0.01` for all axes and the total), following
+  `MIMSunit`
 
 ## Value
 

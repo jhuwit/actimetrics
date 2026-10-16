@@ -45,7 +45,7 @@ acti_apply_sadeh(data, ...)
 - epoch:
 
   epoch length in seconds. Default is 60 seconds. See
-  [`agcounts::calculate_counts()`](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
+  [agcounts::calculate_counts](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
 
 - resample:
 
@@ -57,12 +57,12 @@ acti_apply_sadeh(data, ...)
 - lfe_select:
 
   Apply the Actigraph Low Frequency Extension filter. See
-  [`agcounts::calculate_counts()`](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
-  higher values are higher levels of verbosity.
+  [agcounts::calculate_counts](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
 
 - verbose:
 
-  print diagnostic messages. Either logical or integer, where
+  print diagnostic messages. Either logical or integer, where higher
+  values are higher levels of verbosity.
 
 - fix_first_second:
 
@@ -96,6 +96,16 @@ A `data.frame` of transformed data with columns `axis1-3`, `counts`, and
 
 A `data.frame` of transformed data
 
+## Details
+
+The sampling frequency is only needed when `resample = FALSE`; it is
+taken from the `sample_rate` attribute (or estimated from `time`).
+
+`acti_calculate_wear()`, `acti_apply_cole_kripke()`, and
+`acti_apply_sadeh()` require 60-second epochs. Cole–Kripke, Sadeh, and
+`acti_calculate_wear(use_magnitude = FALSE)` score the vertical axis, so
+`data` must contain `axis1`; vector-magnitude-only counts are an error.
+
 ## Note
 
 This calls the downstream wear-processing helpers used by
@@ -112,8 +122,6 @@ ac = actiread::acti_read_gt3x(path)
 #> ✔ Filled zeros in data
 #> ℹ Timezone not applied to data
 out = acti_calculate_counts(ac)
-#> Downloading uv...
-#> Done!
 #> [1] "Creating Downsampled Data"
 #> [1] "Filtering Data"
 #> [1] "Trimming Data"

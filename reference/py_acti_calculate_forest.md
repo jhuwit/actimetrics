@@ -44,11 +44,9 @@ The output from
 ``` r
 # \donttest{
   Sys.setenv("SSQ_PARALLEL" = 0)
-  data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-#> ℹ Filling zeros in data
-#> ✔ Filled zeros in data
-#> ℹ Timezone not applied to data
-  steps = py_acti_calculate_forest(data, sample_rate = 100)
-#> Error in "get_result(output = out, options)": ! callr subprocess failed: could not start R, exited with non-zero status, has crashed or was killed
+  if (reticulate::py_module_available("forest")) {
+    data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+    steps = py_acti_calculate_forest(data, sample_rate = 100)
+  }
 # }
 ```

@@ -141,8 +141,10 @@ acti_calculate_forest = function(data,
 #' @examples
 #' \donttest{
 #'   Sys.setenv("SSQ_PARALLEL" = 0)
-#'   data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
-#'   steps = py_acti_calculate_forest(data, sample_rate = 100)
+#'   if (reticulate::py_module_available("forest")) {
+#'     data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
+#'     steps = py_acti_calculate_forest(data, sample_rate = 100)
+#'   }
 #' }
 py_acti_calculate_forest = function(
     ...,

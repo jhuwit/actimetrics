@@ -204,6 +204,9 @@ test_that("acti_calculate_counts handles extra columns with an offset start", {
   if (!can_run_agcounts()) {
     skip("agcounts is not runnable in this session")
   }
+  # fix_first_second = FALSE needs agcounts PR #51 (0.7.1) for an offset start
+  skip_if(utils::packageVersion("agcounts") < "0.7.1",
+          "agcounts < 0.7.1 crashes on a sub-second offset start")
   raw = make_example_signal(n = 30000L)
   r30 = actibase::acti_resample(raw, sample_rate = 30L)
   d = r30[r30$time >= r30$time[1] + 60.5, ]

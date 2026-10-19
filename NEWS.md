@@ -1,3 +1,23 @@
+# actimetrics 0.9.0
+
+## Breaking changes
+
+* `acti_process()` and `acti_process_study()` now aim to match ActiLife for
+  GT3X data: files are read with `digits = 8` (unless `digits` is given),
+  resampled to 30Hz, then rounded to 3 digits half away from zero, as
+  ActiLife does. Previously the data were read at 5 digits and not rounded,
+  giving counts that differed from ActiLife by 1-3 in many epochs. Rounding
+  5-digit data is not a fix: it rounds twice and differs from ActiLife more
+  often. Counts from GT3X files will change slightly.
+
+## New features
+
+* `acti_calculate_counts()` and `acti_process()` gain `round_digits` to round
+  `X`/`Y`/`Z` half away from zero (base `round()` rounds `0.0625` to
+  `0.062`) after resampling and before counting. In `acti_process()`, the
+  default `NULL` uses 3 for GT3X data and no rounding otherwise; `NA` turns
+  it off.
+
 # actimetrics 0.8.0
 
 ## Breaking changes

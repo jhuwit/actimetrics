@@ -367,10 +367,7 @@ test_that("acti_process_study reads CSV with readr and reports failures", {
   file.create(file.path(indir, "notes.txt"))
 
   testthat::local_mocked_bindings(
-    acti_read_gt3x = function(file, verbose = TRUE) stop("corrupt file"),
-    .package = "actiread"
-  )
-  testthat::local_mocked_bindings(
+    acti_read_gt3x = function(...) stop("corrupt file"),
     acti_process = function(raw, verbose = TRUE, ...) raw,
     .package = "actimetrics"
   )
@@ -385,4 +382,43 @@ test_that("acti_process_study reads CSV with readr and reports failures", {
   csv = readRDS(saved)
   expect_s3_class(csv, "tbl_df")
   expect_s3_class(csv$time, "POSIXct")
+})
+
+test_that("round_half_away rounds midpoints away from zero", {
+  x = c(16, 48, 80, -16, -48) / 256
+  expect_equal(round_half_away(x, 3), c(0.063, 0.188, 0.313, -0.063, -0.188))
+  expect_equal(round_half_away(x, 3), sign(x) * trunc(abs(x) * 1000 + 0.5) / 1000)
+  expect_equal(round_half_away(c(0, 1.2344, -1.2346), 3), c(0, 1.234, -1.235))
+})
+
+test_that("acti_calculate_counts rounds XYZ with round_digits", {
+  data = data.frame(
+    time = as.POSIXct("2020-01-01 00:00:00", tz = "UTC") +
+      seq(0, by = 1 / 30, length.out = 120),
+    X = 16 / 256, Y = -0.12345, Z = 1.00049
+  )
+  attr(data, "sample_rate") = 30L
+  seen = NULL
+  testthat::local_mocked_bindings(
+    calculate_counts = function(raw, epoch, tz, lfe_select, verbose) {
+      seen <<- raw
+      data.frame(time = raw$time[1], Axis1 = 1, Axis2 = 1, Axis3 = 1,
+                 Vector.Magnitude = 2)
+    },
+    .package = "agcounts"
+  )
+  out = acti_calculate_counts(data, resample = FALSE, verbose = FALSE,
+                              round_digits = 3)
+  expect_equal(unique(seen$X), 0.063)
+  expect_equal(unique(seen$Y), -0.123)
+  expect_equal(unique(seen$Z), 1)
+  expect_true("acti_calculate_counts:XYZ_rounded_to_3_digits" %in%
+                get_transformations(out))
+  acti_calculate_counts(data, resample = FALSE, verbose = FALSE)
+  expect_equal(unique(seen$Y), -0.12345)
+  expect_error(
+    acti_calculate_counts(data, resample = FALSE, verbose = FALSE,
+                          round_digits = 1.5),
+    "round_digits"
+  )
 })

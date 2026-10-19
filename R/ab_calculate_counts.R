@@ -37,6 +37,38 @@ fix_first_second_function = function(data, sample_rate = NULL, epoch = 60L) {
                       prefix = "acti_calculate_counts", add = TRUE)
 }
 
+# Round half away from zero, as ActiLife does for GT3X data
+# (`Math.Round(x, 3, MidpointRounding.AwayFromZero)` in
+# https://github.com/actigraph/GT3X-File-Format/blob/main/LogRecords/Activity.md)
+# and as `read.gt3x` does (C++ `std::round`).  Base R `round()` does not:
+# `round(0.0625, 3)` is 0.062, not 0.063.  This is
+# `sign(x) * trunc(abs(x) * 10^digits + 0.5) / 10^digits`, but compares the
+# fractional part to 0.5 so that adding 0.5 cannot round up in floating point.
+round_half_away = function(x, digits = 3L) {
+  m = 10^digits
+  y = abs(x) * m
+  r = trunc(y)
+  sign(x) * (r + (y - r >= 0.5)) / m
+}
+
+# Round X/Y/Z with round_half_away(); NULL or NA does nothing
+round_xyz = function(data, round_digits, prefix) {
+  if (is.null(round_digits) || (length(round_digits) == 1L && is.na(round_digits))) {
+    return(data)
+  }
+  if (!(assertthat::is.number(round_digits) && round_digits >= 0 &&
+        round_digits == trunc(round_digits))) {
+    stop("`round_digits` must be NULL, NA, or a single non-negative integer.",
+         call. = FALSE)
+  }
+  for (i in c("X", "Y", "Z")) {
+    data[[i]] = round_half_away(data[[i]], digits = round_digits)
+  }
+  set_transformations(data,
+                      paste0("XYZ_rounded_to_", round_digits, "_digits"),
+                      prefix = prefix, add = TRUE)
+}
+
 #' Process Count Data
 #'
 #' @param data A `data.frame` from [actiread::acti_read_gt3x]
@@ -50,6 +82,11 @@ fix_first_second_function = function(data, sample_rate = NULL, epoch = 60L) {
 #' @param resample (recommended) resample the data to 30Hz using
 #' [actibase::acti_resample] vs. using the resampling method from
 #' [agcounts::calculate_counts].
+#' @param round_digits If not `NULL`, the number of decimal places the
+#' `X`/`Y`/`Z` values are rounded to after resampling and before counting.
+#' Use `3` to match ActiLife, which rounds GT3X data to 3 decimals (half away
+#' from zero, so `0.0625` becomes `0.063`, unlike [base::round()]).  Useful if
+#' the data were read with more digits.  Default `NULL` does not round.
 #' @param fix_first_second Fix the first second bug in `agcounts`.  Appends
 #' replicated data of the first record if the first record is not an "even"
 #' epoch (e.g. 60 second epoch and data does not start at a 00 second).
@@ -73,7 +110,8 @@ acti_calculate_counts = function(
     resample = TRUE,
     lfe_select = FALSE,
     verbose = TRUE,
-    fix_first_second = TRUE
+    fix_first_second = TRUE,
+    round_digits = NULL
 ) {
   rlang::check_installed("agcounts")
   vector.magnitude = NULL
@@ -89,6 +127,8 @@ acti_calculate_counts = function(
     attr(data, "sample_rate") = resolve_sample_rate(
       data, caller = "acti_calculate_counts(resample = FALSE)")
   }
+  # round after resampling, so the interpolation uses the unrounded values
+  data = round_xyz(data, round_digits, prefix = "acti_calculate_counts")
   tz = lubridate::tz(data$time)
   trans = get_transformations(data)
 

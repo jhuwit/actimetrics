@@ -14,7 +14,8 @@ acti_calculate_counts(
   resample = TRUE,
   lfe_select = FALSE,
   verbose = TRUE,
-  fix_first_second = TRUE
+  fix_first_second = TRUE,
+  round_digits = NULL
 )
 
 acti_calculate_wear(
@@ -55,6 +56,12 @@ higher values are higher levels of verbosity.}
 \item{fix_first_second}{Fix the first second bug in \code{agcounts}.  Appends
 replicated data of the first record if the first record is not an "even"
 epoch (e.g. 60 second epoch and data does not start at a 00 second).}
+
+\item{round_digits}{If not \code{NULL}, the number of decimal places the
+\code{X}/\code{Y}/\code{Z} values are rounded to after resampling and before counting.
+Use \code{3} to match ActiLife, which rounds GT3X data to 3 decimals (half away
+from zero, so \code{0.0625} becomes \code{0.063}, unlike \code{\link[base:round]{base::round()}}).  Useful if
+the data were read with more digits.  Default \code{NULL} does not round.}
 
 \item{method}{Method for detecting non-wear, either "choi" or "troiano",
 corresponding to \code{actigraph.sleepr::apply_choi()} or

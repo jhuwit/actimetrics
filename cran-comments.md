@@ -2,9 +2,15 @@
 
 0 errors | 0 warnings | 1 note
 
-* This is an update release (0.8.0).
+* This is an update release (0.9.0).
 
 ---
+
+NOTE "Failed to inspect Python interpreter" is due to "bug" 
+https://github.com/r-lib/rlang/issues/1924, 
+where `rlang::check_installed("agcounts")` calls `.onLoad` which calls
+a `reticulate::py_require` statement that tries to initialize Python.
+
 
 This release fixes several bugs (see NEWS.md), including:
 
@@ -15,6 +21,9 @@ This release fixes several bugs (see NEWS.md), including:
   that do not start on an epoch boundary (see bhelsel/agcounts#50, #51).
 * MIMS preprocessing helpers record their transformations, and truncated
   MIMS/AUC epochs are flagged as in 'MIMSunit'.
+
+Counts from GT3X files now match ActiLife more closely: data are resampled
+before being rounded to 3 digits (half away from zero), as ActiLife does.
 
 It also adds `acti_process_study()` for batch processing a directory of raw
 files. 'readr' is added to Imports; it is already a dependency of 'actiread'.

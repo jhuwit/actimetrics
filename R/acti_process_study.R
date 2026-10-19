@@ -57,7 +57,7 @@ acti_process_study = function(directory, outdir, verbose = TRUE, ...) {
     if (verbose) message("Processing ", basename(file))
     tryCatch({
       raw = switch(types[[i]],
-        gt3x = actiread::acti_read_gt3x(file, verbose = verbose),
+        gt3x = read_gt3x_full_digits(file, verbose = verbose),
         cwa = actiread::acti_read_cwa(file, verbose = verbose),
         bin = actiread::acti_read_geneactiv(file, verbose = verbose),
         csv = readr::read_csv(file, show_col_types = FALSE,

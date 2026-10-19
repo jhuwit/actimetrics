@@ -13,7 +13,8 @@ acti_process(
   calibrate = FALSE,
   verbose = TRUE,
   ...,
-  min_required = 1368L
+  min_required = 1368L,
+  round_digits = NULL
 )
 ```
 
@@ -61,9 +62,26 @@ acti_process(
   Number of minutes required in a day to be called `included`. No day
   inclusion is run if `NULL`.
 
+- round_digits:
+
+  Number of decimal places `X`/`Y`/`Z` are rounded to (half away from
+  zero) after resampling to 30Hz and before counting. The default `NULL`
+  uses `3` for GT3X data (read with
+  [`actiread::acti_read_gt3x()`](https://jhuwit.github.io/actiread/reference/acti_read_gt3x.html))
+  and does not round other data. Use `NA` to never round.
+
 ## Value
 
 A data frame containing activity counts and wear-time indicators.
+
+## Details
+
+To match ActiLife for GT3X files, a GT3X path is read with `digits = 8`
+(unless `digits` is given in `...`), resampled, and then rounded to 3
+digits. ActiLife rounds the scaled samples to 3 digits, half away from
+zero. Reading at 8 digits and then rounding gives exactly those values,
+but rounding values already read at 5 digits does not (e.g.
+`0.1234996 -> 0.12350 -> 0.124`).
 
 ## Note
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,19 @@
       <small>Source: <a href="https://github.com/jhuwit/actimetrics/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.9.0" id="actimetrics-090">actimetrics 0.9.0<a class="anchor" aria-label="anchor" href="#actimetrics-090"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-9-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-9-0"></a></h3>
+<ul><li>
+<code><a href="../reference/acti_process.html">acti_process()</a></code> and <code><a href="../reference/acti_process_study.html">acti_process_study()</a></code> now aim to match ActiLife for GT3X data: files are read with <code>digits = 8</code> (unless <code>digits</code> is given), resampled to 30Hz, then rounded to 3 digits half away from zero, as ActiLife does. Previously the data were read at 5 digits and not rounded, giving counts that differed from ActiLife by 1-3 in many epochs. Rounding 5-digit data is not a fix: it rounds twice and differs from ActiLife more often. Counts from GT3X files will change slightly.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-9-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-9-0"></a></h3>
+<ul><li>
+<code><a href="../reference/acti_calculate_counts.html">acti_calculate_counts()</a></code> and <code><a href="../reference/acti_process.html">acti_process()</a></code> gain <code>round_digits</code> to round <code>X</code>/<code>Y</code>/<code>Z</code> half away from zero (base <code><a href="https://rdrr.io/r/base/Round.html" class="external-link">round()</a></code> rounds <code>0.0625</code> to <code>0.062</code>) after resampling and before counting. In <code><a href="../reference/acti_process.html">acti_process()</a></code>, the default <code>NULL</code> uses 3 for GT3X data and no rounding otherwise; <code>NA</code> turns it off.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.8.0" id="actimetrics-080">actimetrics 0.8.0<a class="anchor" aria-label="anchor" href="#actimetrics-080"></a></h2>
 <div class="section level3">

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,8 @@
 <span>  calibrate <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  min_required <span class="op">=</span> <span class="fl">1368L</span></span>
+<span>  min_required <span class="op">=</span> <span class="fl">1368L</span>,</span>
+<span>  round_digits <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -95,10 +96,26 @@ higher values are higher levels of verbosity.</p></dd>
 <dd><p>Number of minutes required in a day to be called <code>included</code>. No
 day inclusion is run if <code>NULL</code>.</p></dd>
 
+
+<dt id="arg-round-digits">round_digits<a class="anchor" aria-label="anchor" href="#arg-round-digits"></a></dt>
+<dd><p>Number of decimal places <code>X</code>/<code>Y</code>/<code>Z</code> are rounded to
+(half away from zero) after resampling to 30Hz and before counting.  The
+default <code>NULL</code> uses <code>3</code> for GT3X data (read with <code><a href="https://jhuwit.github.io/actiread/reference/acti_read_gt3x.html" class="external-link">actiread::acti_read_gt3x()</a></code>)
+and does not round other data.  Use <code>NA</code> to never round.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data frame containing activity counts and wear-time indicators.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>To match ActiLife for GT3X files, a GT3X path is read with
+<code>digits = 8</code> (unless <code>digits</code> is given in <code>...</code>), resampled, and then
+rounded to 3 digits.  ActiLife rounds the scaled samples to 3 digits, half
+away from zero.  Reading at 8 digits and then rounding gives exactly those
+values, but rounding values already read at 5 digits does not
+(e.g. <code>0.1234996 -&gt; 0.12350 -&gt; 0.124</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>

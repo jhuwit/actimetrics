@@ -13,7 +13,8 @@ acti_calculate_counts(
   resample = TRUE,
   lfe_select = FALSE,
   verbose = TRUE,
-  fix_first_second = TRUE
+  fix_first_second = TRUE,
+  round_digits = NULL
 )
 
 acti_calculate_wear(
@@ -69,6 +70,15 @@ acti_apply_sadeh(data, ...)
   Fix the first second bug in `agcounts`. Appends replicated data of the
   first record if the first record is not an "even" epoch (e.g. 60
   second epoch and data does not start at a 00 second).
+
+- round_digits:
+
+  If not `NULL`, the number of decimal places the `X`/`Y`/`Z` values are
+  rounded to after resampling and before counting. Use `3` to match
+  ActiLife, which rounds GT3X data to 3 decimals (half away from zero,
+  so `0.0625` becomes `0.063`, unlike
+  [`base::round()`](https://rdrr.io/r/base/Round.html)). Useful if the
+  data were read with more digits. Default `NULL` does not round.
 
 - method:
 

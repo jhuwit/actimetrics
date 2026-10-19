@@ -9,7 +9,7 @@ Process Count Data"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,8 @@ Process Count Data"></head><body>
 <span>  resample <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  lfe_select <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  fix_first_second <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  fix_first_second <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  round_digits <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">acti_calculate_wear</span><span class="op">(</span></span>
@@ -105,6 +106,14 @@ higher values are higher levels of verbosity.</p></dd>
 <dd><p>Fix the first second bug in <code>agcounts</code>.  Appends
 replicated data of the first record if the first record is not an "even"
 epoch (e.g. 60 second epoch and data does not start at a 00 second).</p></dd>
+
+
+<dt id="arg-round-digits">round_digits<a class="anchor" aria-label="anchor" href="#arg-round-digits"></a></dt>
+<dd><p>If not <code>NULL</code>, the number of decimal places the
+<code>X</code>/<code>Y</code>/<code>Z</code> values are rounded to after resampling and before counting.
+Use <code>3</code> to match ActiLife, which rounds GT3X data to 3 decimals (half away
+from zero, so <code>0.0625</code> becomes <code>0.063</code>, unlike <code><a href="https://rdrr.io/r/base/Round.html" class="external-link">base::round()</a></code>).  Useful if
+the data were read with more digits.  Default <code>NULL</code> does not round.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>

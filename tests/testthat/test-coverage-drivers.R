@@ -225,7 +225,7 @@ test_that("measure wrappers and calibration can be driven by mocks", {
 
   testthat::local_mocked_bindings(
     acti_fill_zeros = function(data) data,
-    flag_qc_all = function(data, dynamic_range, verbose, flags) {
+    run_flag_qc_all = function(data, dynamic_range, verbose, flags) {
       dplyr::mutate(data, flag_low = 1L)
     },
     acti_calculate_counts = function(data, epoch = 60L, resample = TRUE, lfe_select = FALSE, verbose = TRUE) {

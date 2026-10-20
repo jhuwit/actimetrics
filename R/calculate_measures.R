@@ -96,8 +96,8 @@ acti_calculate_measures = function(
     if (verbose) {
       message("Flagging data")
     }
-    data = flag_qc_all(data, dynamic_range = dynamic_range, verbose = verbose,
-                       flags = flags)
+    data = run_flag_qc_all(data, dynamic_range = dynamic_range,
+                           verbose = verbose, flags = flags)
     data$flags = rowSums(
       data |>
         dplyr::select(dplyr::starts_with("flag_")) > 0

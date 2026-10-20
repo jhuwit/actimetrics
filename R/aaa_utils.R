@@ -41,3 +41,11 @@ resolve_sample_rate = function(data, sample_rate = NULL,
     }
   )
 }
+
+# actibase renamed flag_qc_all() to acti_flag_qc_all() in 0.8.0; look the
+# function up at run time so either version of actibase works
+run_flag_qc_all = function(...) {
+  exports = getNamespaceExports("actibase")
+  fun = if ("acti_flag_qc_all" %in% exports) "acti_flag_qc_all" else "flag_qc_all"
+  getExportedValue("actibase", fun)(...)
+}

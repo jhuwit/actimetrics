@@ -4,6 +4,14 @@
 
 * This is an update release (0.9.0).
 
+## Resubmission
+
+This is a resubmission.  The previous 0.9.0 upload failed the incoming checks
+because it called functions from an unreleased version of 'actibase'.  This
+version works with both the CRAN version of 'actibase' (0.6.0) and 'actibase'
+0.8.0, currently in the incoming queue, which renames `flag_qc_all()` to
+`acti_flag_qc_all()`.
+
 ---
 
 NOTE "Failed to inspect Python interpreter" is due to "bug" 

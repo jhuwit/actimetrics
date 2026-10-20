@@ -45,7 +45,9 @@ acti_apply_sadeh(data, ...)
 
 - epoch:
 
-  epoch length in seconds. Default is 60 seconds. See
+  epoch length, either in seconds or a string such as `"1 min"` (see
+  `actibase::acti_standardize_epoch()`); must be a whole number of
+  seconds. Default is 60 seconds. See
   [agcounts::calculate_counts](https://rdrr.io/pkg/agcounts/man/calculate_counts.html)
 
 - resample:
@@ -132,11 +134,7 @@ ac = actiread::acti_read_gt3x(path)
 #> ✔ Filled zeros in data
 #> ℹ Timezone not applied to data
 out = acti_calculate_counts(ac)
-#> [1] "Creating Downsampled Data"
-#> [1] "Filtering Data"
-#> [1] "Trimming Data"
-#> [1] "Getting data back to 10Hz for accumulation"
-#> [1] "Summing epochs"
+#> Error in acti_standardize_epoch(epoch): could not find function "acti_standardize_epoch"
 # }
 data = actimetrics::acti_count_data
 wear = actimetrics::acti_calculate_wear(data)

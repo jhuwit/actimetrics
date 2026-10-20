@@ -34,6 +34,13 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="actimetrics-development-version">actimetrics (development version)<a class="anchor" aria-label="anchor" href="#actimetrics-development-version"></a></h2>
+<ul><li>
+<code>epoch</code>/<code>unit</code> arguments are standardized with <code>actibase::acti_standardize_epoch()</code>, so <code><a href="../reference/acti_calculate_counts.html">acti_calculate_counts()</a></code> accepts <code>epoch = "1 min"</code> and the measure functions accept numeric seconds or strings such as <code>"30s"</code>. <code>ensure_all_time = TRUE</code> no longer errors for units such as <code>"5 seconds"</code> or <code>"1 minute"</code>, and <code><a href="../reference/acti_calculate_measures.html">acti_calculate_mims()</a></code> no longer errors for units without a space such as <code>"1min"</code>.</li>
+<li>
+<code><a href="../reference/acti_calculate_ai.html">acti_calculate_ai()</a></code> and <code><a href="../reference/acti_calculate_measures.html">acti_calculate_mad()</a></code> now default to <code>verbose = TRUE</code>.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0" id="actimetrics-090">actimetrics 0.9.0<a class="anchor" aria-label="anchor" href="#actimetrics-090"></a></h2>
 <div class="section level3">
 <h3 id="breaking-changes-0-9-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-9-0"></a></h3>

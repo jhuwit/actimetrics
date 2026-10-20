@@ -29,9 +29,9 @@ acti_calculate_stepcount(data, sample_rate = NULL, ..., epoch = "1 minute")
 
 - epoch:
 
-  epoch unit to aggregate the data to, passed to
-  [`lubridate::floor_date()`](https://lubridate.tidyverse.org/reference/round_date.html),
-  original output is at 10-seconds
+  epoch to aggregate the data to, in seconds or a string such as
+  `"1 minute"` (see `actibase::acti_standardize_epoch()`); original
+  output is at 10-seconds
 
 ## Value
 

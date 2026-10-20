@@ -12,12 +12,12 @@ Source:
 
 Muschelli J (2026). *actimetrics: Create Metrics Actigraphy and Activity
 Analysis*. R package version 0.9.0,
-<https://jhuwit.github.io/actimetrics/>.
+<https://github.com/jhuwit/actimetrics>.
 
     @Manual{,
       title = {actimetrics: Create Metrics Actigraphy and Activity Analysis},
       author = {John Muschelli},
       year = {2026},
       note = {R package version 0.9.0},
-      url = {https://jhuwit.github.io/actimetrics/},
+      url = {https://github.com/jhuwit/actimetrics},
     }

@@ -9,18 +9,13 @@ per-second values are then summed within each `unit` (e.g. a minute).
 ## Usage
 
 ``` r
-acti_calculate_ai(
-  data,
-  unit = "1 min",
-  ensure_all_time = TRUE,
-  verbose = FALSE
-)
+acti_calculate_ai(data, unit = "1 min", ensure_all_time = TRUE, verbose = TRUE)
 
 acti_calculate_activity_index(
   data,
   unit = "1 min",
   ensure_all_time = TRUE,
-  verbose = FALSE
+  verbose = TRUE
 )
 ```
 
@@ -78,4 +73,7 @@ ONE 11(8): e0160644.
 file = actiread::acti_example_gt3x()
 res = actiread::acti_read_gt3x(file, verbose = FALSE)
 ai = acti_calculate_ai(res[1:12000, ])
+#> Running floor_sec on time
+#> Summarizing the variance
+#> Calculating AI
 ```

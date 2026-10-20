@@ -1,3 +1,22 @@
+# actibase < 0.8.0 warns and actibase >= 0.8.0 messages when it guesses the
+# sample rate; accept either and return the value of `code`
+expect_guessed_sample_rate = function(code) {
+  guessed = FALSE
+  muffle = function(cnd, restart) {
+    if (grepl("Guessing sample_rate", conditionMessage(cnd))) {
+      guessed <<- TRUE
+      invokeRestart(restart)
+    }
+  }
+  out = withCallingHandlers(
+    code,
+    message = function(m) muffle(m, "muffleMessage"),
+    warning = function(w) muffle(w, "muffleWarning")
+  )
+  testthat::expect_true(guessed)
+  out
+}
+
 test_that("stepcount wrapper uses the provided or inferred sample rate", {
   data = tibble::tibble(
     time = as.POSIXct(
@@ -86,14 +105,10 @@ test_that("stepcount and sdt infer sample rate when missing", {
     .package = "walking"
   )
 
-  testthat::expect_warning({
-    out = acti_calculate_stepcount(data)
-  })
+  out = expect_guessed_sample_rate(acti_calculate_stepcount(data))
   expect_equal(out$steps, 5)
 
-  testthat::expect_warning({
-    sdt = acti_calculate_sdt(data)
-  })
+  sdt = expect_guessed_sample_rate(acti_calculate_sdt(data))
   expect_equal(sdt$steps, 5)
 })
 

@@ -101,6 +101,7 @@ acti_apply_cole_kripke = function(data) {
   # https://actigraphcorp.my.site.com/support/s/article/What-does-the-Detect-Sleep-Periods-button-do-and-how-does-it-work
   ck = data |>
     actigraph.sleepr::apply_cole_kripke()
+  ck = restore_count_column(ck, data)
   ck = ck |>
     dplyr::rename(time = timestamp)
   trans = get_transformations(data)
@@ -160,6 +161,7 @@ acti_apply_sadeh = function(data, ...) {
     data, require_axis1 = TRUE, caller = "acti_apply_sadeh()")
   tl = data |>
     actigraph.sleepr::apply_sadeh(...)
+  tl = restore_count_column(tl, data)
   trans = get_transformations(data)
   tl = set_transformations(tl, trans)
   tl = set_transformations(tl,
@@ -167,6 +169,18 @@ acti_apply_sadeh = function(data, ...) {
                            prefix = "acti_apply_sadeh",
                            add = TRUE)
   tl
+}
+
+# actigraph.sleepr's Cole-Kripke and Sadeh scoring leave behind a `count`
+# column of truncated/rescaled axis1 values used to score.  It is not a count,
+# and it overwrites any `count` column in the input, so drop it and restore
+# the input's column.
+restore_count_column = function(scored, data) {
+  scored$count = NULL
+  if ("count" %in% names(data)) {
+    scored$count = data$count
+  }
+  scored
 }
 
 check_60s_epochs = function(timestamp, caller = "This function") {

@@ -132,6 +132,29 @@ test_that("axis-based scoring requires axis1 instead of VM/sqrt(3)", {
   expect_equal(sqrt(std$axis1^2 + std$axis2^2 + std$axis3^2), std$counts)
 })
 
+test_that("sleepr helpers do not add a vector.magnitude column", {
+  epochs = actimetrics::acti_count_data
+  expect_false("vector.magnitude" %in% names(epochs))
+  expect_false("vector.magnitude" %in% names(acti_standardize_actigraph.sleepr(epochs)))
+  expect_false("vector.magnitude" %in% names(acti_calculate_wear(epochs)))
+  expect_false("vector.magnitude" %in% names(acti_apply_cole_kripke(epochs)))
+  expect_false("vector.magnitude" %in% names(acti_apply_sadeh(epochs)))
+})
+
+test_that("Cole-Kripke and Sadeh do not leave the scoring `count` column", {
+  epochs = actimetrics::acti_count_data
+  ck = acti_apply_cole_kripke(epochs)
+  sadeh = acti_apply_sadeh(epochs)
+  expect_false("count" %in% names(ck))
+  expect_false("count" %in% names(sadeh))
+  expect_equal(ck$counts, epochs$counts)
+
+  # a user `count` column is kept, not overwritten
+  epochs$count = seq_len(nrow(epochs))
+  expect_equal(acti_apply_cole_kripke(epochs)$count, epochs$count)
+  expect_equal(acti_apply_sadeh(epochs)$count, epochs$count)
+})
+
 test_that("Cole-Kripke and Sadeh score the axis1 counts", {
   epochs = make_sleepr_epochs()
   ck = acti_apply_cole_kripke(epochs)

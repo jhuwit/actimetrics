@@ -66,6 +66,7 @@ acti_calculate_measures = function(
   verbose = TRUE,
   sample_rate = NULL,
   ...) {
+  unit = acti_standardize_epoch(unit, output = "character")
   if (calculate_ac && !requireNamespace("agcounts", quietly = TRUE)) {
     stop("agcounts package required for calculating AC")
   }
@@ -242,6 +243,7 @@ is_dt = function(x) {
 #' ai = acti_calculate_ai(res[1:12000, ])
 acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
                         verbose = TRUE) {
+  unit = acti_standardize_epoch(unit, output = "character")
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   AI = NULL
@@ -318,8 +320,9 @@ acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
 join_all_time = function(data, unit = "1 min", ensure_all_time) {
   if (ensure_all_time) {
     rtime = range(data$HEADER_TIME_STAMP)
-    time_df = tibble::tibble(HEADER_TIME_STAMP = seq(rtime[1], rtime[2],
-                                                     by = unit))
+    # seq() only understands a few unit strings, so step in seconds
+    time_df = tibble::tibble(HEADER_TIME_STAMP = seq(
+      rtime[1], rtime[2], by = acti_standardize_epoch(unit)))
     data = dplyr::left_join(time_df, data, by = "HEADER_TIME_STAMP")
   }
   data
@@ -332,6 +335,7 @@ acti_calculate_activity_index = acti_calculate_ai
 #' @export
 #' @rdname acti_calculate_measures
 acti_calculate_flags = function(data, unit = "1 min", ensure_all_time = TRUE) {
+  unit = acti_standardize_epoch(unit, output = "character")
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   data = acti_standardize_data(
@@ -361,6 +365,7 @@ acti_calculate_flags = function(data, unit = "1 min", ensure_all_time = TRUE) {
 #' @export
 #' @rdname acti_calculate_measures
 acti_calculate_n_idle = function(data, unit = "1 min", ensure_all_time = TRUE) {
+  unit = acti_standardize_epoch(unit, output = "character")
   ENMO = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time", "ENMO"))
   data = acti_standardize_data(
@@ -423,6 +428,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 #' @rdname acti_calculate_measures
 acti_calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
                          verbose = TRUE) {
+  unit = acti_standardize_epoch(unit, output = "character")
   ENMO_t = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   is_data_table = is_dt(data)
@@ -512,6 +518,7 @@ acti_calculate_auc = function(data, unit = "1 min",
                          ensure_all_time = TRUE,
                          verbose = TRUE
 ) {
+  unit = acti_standardize_epoch(unit, output = "character")
   dtime = good = NULL
   rm(list = c("good", "dtime"))
   dtime = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
@@ -668,6 +675,7 @@ acti_calculate_fast_mims = function(
   ensure_all_time = TRUE,
   verbose = TRUE,
   ...) {
+  unit = acti_standardize_epoch(unit, output = "character")
   args = list(data,
               ...,
               verbose = verbose,
@@ -705,6 +713,7 @@ acti_calculate_mims = function(
   dynamic_range = c(-6, 6),
   ensure_all_time = TRUE,
   ...) {
+  unit = acti_standardize_epoch(unit, output = "character")
   HEADER_TIME_STAMP = NULL
   rm(list = "HEADER_TIME_STAMP")
 
@@ -754,19 +763,9 @@ check_dynamic_range = function(data, dynamic_range = c(-6, 6)) {
   all(r >= dynamic_range[1] & r <= dynamic_range[2])
 }
 
-# Number of samples in an epoch string such as "1 min", "1min", "30s", or
-# "2 hours".  Parsed with lubridate so it agrees with lubridate::floor_date().
+# Number of samples in an epoch such as 60, "1 min", "1min", "30s", or
+# "2 hours"
 n_in_interval = function(epoch, sample_rate = NULL) {
   stopifnot(!is.null(sample_rate))
-  assertthat::assert_that(assertthat::is.string(epoch))
-  seconds = tryCatch(
-    as.numeric(lubridate::duration(epoch)),
-    error = function(e) NA_real_
-  )
-  if (is.na(seconds) || seconds <= 0) {
-    stop("Could not interpret epoch/unit '", epoch, "' as a positive ",
-         "length of time (e.g. \"1 min\", \"30s\", \"1 hour\").",
-         call. = FALSE)
-  }
-  seconds * sample_rate
+  acti_standardize_epoch(epoch) * sample_rate
 }

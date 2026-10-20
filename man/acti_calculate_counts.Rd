@@ -40,8 +40,9 @@ acti_apply_sadeh(data, ...)
 \item{data}{A \code{data.frame} from \code{acti_calculate_counts} that has
 columns \code{axis1-3} and \code{counts}}
 
-\item{epoch}{epoch length in seconds.  Default is 60 seconds.
-See \link[agcounts:calculate_counts]{agcounts::calculate_counts}}
+\item{epoch}{epoch length, either in seconds or a string such as \code{"1 min"}
+(see \code{\link[actibase:acti_standardize_epoch]{actibase::acti_standardize_epoch()}}); must be a whole number of
+seconds.  Default is 60 seconds.  See \link[agcounts:calculate_counts]{agcounts::calculate_counts}}
 
 \item{resample}{(recommended) resample the data to 30Hz using
 \link[actibase:acti_resample]{actibase::acti_resample} vs. using the resampling method from

@@ -15,8 +15,9 @@ input object when available.}
 
 \item{...}{Additional arguments passed to \code{\link[stepcount:stepcount]{stepcount::stepcount()}}}
 
-\item{epoch}{epoch unit to aggregate the data to, passed to
-\code{\link[lubridate:floor_date]{lubridate::floor_date()}}, original output is at 10-seconds}
+\item{epoch}{epoch to aggregate the data to, in seconds or a string such
+as \code{"1 minute"} (see \code{\link[actibase:acti_standardize_epoch]{actibase::acti_standardize_epoch()}}); original
+output is at 10-seconds}
 }
 \value{
 A tibble with minute-level \code{time}, \code{steps}, and \code{walking}

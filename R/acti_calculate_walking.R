@@ -3,6 +3,7 @@
 summarize_to_minute = function(sdata, prefix, unit = "1 min") {
   steps = time = NULL
   rm(list = c("steps", "time"))
+  unit = acti_standardize_epoch(unit, output = "character")
   trans = get_transformations(sdata)
   sdata = sdata |>
     dplyr::mutate(time = lubridate::floor_date(time, unit = unit)) |>

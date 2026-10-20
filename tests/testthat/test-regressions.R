@@ -425,3 +425,14 @@ test_that("acti_calculate_counts rounds XYZ with round_digits", {
     "round_digits"
   )
 })
+
+test_that("epoch/unit arguments accept any acti_standardize_epoch() form", {
+  expect_equal(n_in_interval("1min", sample_rate = 10), 600)
+  expect_equal(n_in_interval(30, sample_rate = 10), 300)
+  times = as.POSIXct("2020-01-01 00:00:00", tz = "UTC") + c(0, 15)
+  data = tibble::tibble(HEADER_TIME_STAMP = times, value = 1:2)
+  # seq() does not understand "5 seconds", so this used to error
+  out = join_all_time(data, "5 seconds", ensure_all_time = TRUE)
+  expect_equal(nrow(out), 4L)
+  expect_equal(nrow(join_all_time(data, 5, ensure_all_time = TRUE)), 4L)
+})

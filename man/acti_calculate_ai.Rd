@@ -5,18 +5,13 @@
 \alias{acti_calculate_activity_index}
 \title{Calculate the Activity Index (AI)}
 \usage{
-acti_calculate_ai(
-  data,
-  unit = "1 min",
-  ensure_all_time = TRUE,
-  verbose = FALSE
-)
+acti_calculate_ai(data, unit = "1 min", ensure_all_time = TRUE, verbose = TRUE)
 
 acti_calculate_activity_index(
   data,
   unit = "1 min",
   ensure_all_time = TRUE,
-  verbose = FALSE
+  verbose = TRUE
 )
 }
 \arguments{

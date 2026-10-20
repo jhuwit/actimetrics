@@ -241,7 +241,7 @@ is_dt = function(x) {
 #' res = actiread::acti_read_gt3x(file, verbose = FALSE)
 #' ai = acti_calculate_ai(res[1:12000, ])
 acti_calculate_ai = function(data, unit = "1 min", ensure_all_time = TRUE,
-                        verbose = FALSE) {
+                        verbose = TRUE) {
   time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   AI = NULL
@@ -422,7 +422,7 @@ if (requireNamespace("data.table", quietly = TRUE)) {
 #' @export
 #' @rdname acti_calculate_measures
 acti_calculate_mad = function(data, unit = "1 min", ensure_all_time = TRUE,
-                         verbose = FALSE) {
+                         verbose = TRUE) {
   ENMO_t = time = HEADER_TIME_STAMP = X = Y = Z = r = NULL
   rm(list = c("HEADER_TIME_STAMP", "X", "Y", "Z", "r", "time"))
   is_data_table = is_dt(data)

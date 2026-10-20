@@ -1,3 +1,14 @@
+# actimetrics (development version)
+
+* `epoch`/`unit` arguments are standardized with
+  `actibase::acti_standardize_epoch()`, so `acti_calculate_counts()` accepts
+  `epoch = "1 min"` and the measure functions accept numeric seconds or
+  strings such as `"30s"`.  `ensure_all_time = TRUE` no longer errors for
+  units such as `"5 seconds"` or `"1 minute"`, and `acti_calculate_mims()`
+  no longer errors for units without a space such as `"1min"`.
+* `acti_calculate_ai()` and `acti_calculate_mad()` now default to
+  `verbose = TRUE`.
+
 # actimetrics 0.9.0
 
 ## Breaking changes

@@ -8,8 +8,9 @@
 #' @param sample_rate Sample rate in Hz. If omitted, it is taken from the
 #' input object when available.
 #' @param ... Additional arguments passed to [stepcount::stepcount()]
-#' @param epoch epoch unit to aggregate the data to, passed to
-#' [lubridate::floor_date()], original output is at 10-seconds
+#' @param epoch epoch to aggregate the data to, in seconds or a string such
+#' as `"1 minute"` (see [actibase::acti_standardize_epoch()]); original
+#' output is at 10-seconds
 #'
 #' @return A tibble with minute-level `time`, `steps`, and `walking`
 #' columns.
@@ -31,6 +32,7 @@ acti_calculate_stepcount = function(data,
                                     epoch = "1 minute"
 ) {
   rlang::check_installed("stepcount")
+  epoch = acti_standardize_epoch(epoch, output = "character")
   if (is.data.frame(data)) {
     data = acti_standardize_data(data, check_xyz = TRUE)
   }

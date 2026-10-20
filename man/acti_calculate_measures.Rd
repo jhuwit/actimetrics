@@ -39,7 +39,7 @@ acti_calculate_mad(
   data,
   unit = "1 min",
   ensure_all_time = TRUE,
-  verbose = FALSE
+  verbose = TRUE
 )
 
 acti_calculate_auc(

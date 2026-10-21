@@ -1,5 +1,14 @@
 # actimetrics (development version)
 
+* `acti_calculate_stepcount()` (and `py_acti_calculate_stepcount()`) now
+  return times in the input's time zone. `stepcount` reports local clock
+  times without a time zone, which were previously labelled UTC, shifting
+  steps by the input's UTC offset (e.g. one hour for British Summer Time).
+  A new `tz` argument sets the time zone, which is needed for file input
+  (default `"UTC"`).
+
+# actimetrics (development version)
+
 * `epoch`/`unit` arguments are standardized with
   `actibase::acti_standardize_epoch()`, so `acti_calculate_counts()` accepts
   `epoch = "1 min"` and the measure functions accept numeric seconds or

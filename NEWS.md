@@ -7,8 +7,6 @@
   A new `tz` argument sets the time zone, which is needed for file input
   (default `"UTC"`).
 
-# actimetrics (development version)
-
 * `epoch`/`unit` arguments are standardized with
   `actibase::acti_standardize_epoch()`, so `acti_calculate_counts()` accepts
   `epoch = "1 min"` and the measure functions accept numeric seconds or

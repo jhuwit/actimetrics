@@ -36,7 +36,7 @@ Suggests:
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 
-    actibase,
+    actibase (>= 0.8.0),
     actiread,
     actigraph.sleepr (>= 0.3.1),
     dplyr,

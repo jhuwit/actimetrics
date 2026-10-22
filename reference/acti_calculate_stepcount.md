@@ -30,8 +30,9 @@ acti_calculate_stepcount(data, sample_rate = NULL, ..., epoch = "1 minute")
 - epoch:
 
   epoch to aggregate the data to, in seconds or a string such as
-  `"1 minute"` (see `actibase::acti_standardize_epoch()`); original
-  output is at 10-seconds
+  `"1 minute"` (see
+  [`actibase::acti_standardize_epoch()`](https://jhuwit.github.io/actibase/reference/acti_standardize_epoch.html));
+  original output is at 10-seconds
 
 ## Value
 

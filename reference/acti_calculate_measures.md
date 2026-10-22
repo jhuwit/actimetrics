@@ -101,15 +101,12 @@ acti_calculate_mims(
 
 - flag_data:
 
-  Should the downstream overlay
-  [`flag_qc()`](https://jhuwit.github.io/actibase/reference/flag_qc.html)
-  be run? It will be executed after `fix_zeros` before any measure
-  calculation
+  Should the downstream overlay `flag_qc()` be run? It will be executed
+  after `fix_zeros` before any measure calculation
 
 - flags:
 
-  the flags to calculate, passed to the downstream overlay
-  [`flag_qc()`](https://jhuwit.github.io/actibase/reference/flag_qc.html)
+  the flags to calculate, passed to the downstream overlay `flag_qc()`
 
 - ensure_all_time:
 

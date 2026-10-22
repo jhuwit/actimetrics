@@ -52,5 +52,4 @@ steps = acti_calculate_verisense(data)
 #> Thresholding Peak by Periodicity
 #> Thresholding Peak by Similarity
 #> Thresholding Peak by Continuity
-#> Error in acti_standardize_epoch(unit, output = "character"): could not find function "acti_standardize_epoch"
 ```

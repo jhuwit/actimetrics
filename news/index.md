@@ -3,7 +3,8 @@
 ## actimetrics (development version)
 
 - `epoch`/`unit` arguments are standardized with
-  `actibase::acti_standardize_epoch()`, so
+  [`actibase::acti_standardize_epoch()`](https://jhuwit.github.io/actibase/reference/acti_standardize_epoch.html),
+  so
   [`acti_calculate_counts()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
   accepts `epoch = "1 min"` and the measure functions accept numeric
   seconds or strings such as `"30s"`. `ensure_all_time = TRUE` no longer
@@ -14,8 +15,31 @@
   and
   [`acti_calculate_mad()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_measures.md)
   now default to `verbose = TRUE`.
+- [`acti_apply_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md),
+  [`acti_apply_sadeh()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md),
+  and
+  [`acti_apply_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
+  no longer add a superfluous `vector.magnitude` column (a copy of
+  `counts`) to their output.
+- [`acti_apply_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
+  and
+  [`acti_apply_sadeh()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
+  no longer return the `count` column that `actigraph.sleepr` uses
+  internally for scoring (`axis1` truncated and, for Cole-Kripke,
+  divided by 100). It overwrote any `count` column in the input, which
+  is now kept.
 
 ## actimetrics 0.9.0
+
+CRAN release: 2026-10-20
+
+- Works with both actibase 0.6.0 and 0.8.0:
+  [`acti_calculate_measures()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_measures.md)
+  uses
+  [`acti_flag_qc_all()`](https://jhuwit.github.io/actibase/reference/acti_flag_qc.html)
+  when actibase provides it and
+  [`flag_qc_all()`](https://jhuwit.github.io/actibase/reference/acti_flag_qc.html)
+  otherwise, since actibase 0.8.0 renames it.
 
 ### Breaking changes
 

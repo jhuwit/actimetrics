@@ -38,5 +38,4 @@ data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #> ℹ Timezone not applied to data
 steps = acti_calculate_sdt(data)
 #> sdt completed
-#> Error in acti_standardize_epoch(unit, output = "character"): could not find function "acti_standardize_epoch"
 ```

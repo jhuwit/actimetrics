@@ -56,6 +56,10 @@ acti_process = function(data,
     verbose = verbose,
     # after resampling
     round_digits = round_digits)
+  # the raw data are not needed after counting; free them before the
+  # remaining steps (a 7-day 30 Hz recording is about 550 MB)
+  rm(data)
+  invisible(gc())
 
   # Process the data
   wear = acti_calculate_nonwear(

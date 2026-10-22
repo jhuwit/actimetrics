@@ -7,7 +7,13 @@ default)
 ## Usage
 
 ``` r
-acti_calculate_stepcount(data, sample_rate = NULL, ..., epoch = "1 minute")
+acti_calculate_stepcount(
+  data,
+  sample_rate = NULL,
+  ...,
+  epoch = "1 minute",
+  tz = NULL
+)
 ```
 
 ## Arguments
@@ -33,6 +39,13 @@ acti_calculate_stepcount(data, sample_rate = NULL, ..., epoch = "1 minute")
   `"1 minute"` (see
   [`actibase::acti_standardize_epoch()`](https://jhuwit.github.io/actibase/reference/acti_standardize_epoch.html));
   original output is at 10-seconds
+
+- tz:
+
+  Time zone of the returned times. `stepcount` reports local clock times
+  without a time zone; by default they are given the time zone of
+  `data$time` (so they line up with the input), or `"UTC"` when `data`
+  is a file path. Set `tz` to the recording's time zone for file input.
 
 ## Value
 

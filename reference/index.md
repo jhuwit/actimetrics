@@ -53,6 +53,26 @@
 - [`acti_process_study()`](https://jhuwit.github.io/actimetrics/reference/acti_process_study.md)
   : Process all supported actigraphy files in a directory
 
+- [`acti_threshold_counts()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_counts.md)
+  : Classify activity counts using intensity thresholds
+
+- [`acti_threshold_enmo()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_enmo.md)
+  : Classify ENMO using activity-intensity thresholds
+
+- [`acti_threshold_hildebrand()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_hildebrand.md)
+  [`acti_threshold_hildebrand_wrist()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_hildebrand.md)
+  [`acti_threshold_hildebrand_hip()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_hildebrand.md)
+  : Classify adult ENMO with Hildebrand cut-points
+
+- [`acti_threshold_montoye()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_montoye.md)
+  : Classify wrist ActiGraph counts with Montoye cut-points
+
+- [`acti_threshold_romanzini()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_romanzini.md)
+  : Classify adolescent hip ActiGraph counts with Romanzini cut-points
+
+- [`acti_threshold_sasaki()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_sasaki.md)
+  : Classify hip ActiGraph counts with Sasaki cut-points
+
 - [`acti_calibrate()`](https://jhuwit.github.io/actimetrics/reference/calibrate.md)
   :
 

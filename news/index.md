@@ -2,6 +2,15 @@
 
 ## actimetrics (development version)
 
+- [`acti_calculate_stepcount()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_stepcount.md)
+  (and
+  [`py_acti_calculate_stepcount()`](https://jhuwit.github.io/actimetrics/reference/py_acti_calculate_stepcount.md))
+  now return times in the input’s time zone. `stepcount` reports local
+  clock times without a time zone, which were previously labelled UTC,
+  shifting steps by the input’s UTC offset (e.g. one hour for British
+  Summer Time). A new `tz` argument sets the time zone, which is needed
+  for file input (default `"UTC"`).
+
 - `epoch`/`unit` arguments are standardized with
   [`actibase::acti_standardize_epoch()`](https://jhuwit.github.io/actibase/reference/acti_standardize_epoch.html),
   so
@@ -11,16 +20,19 @@
   errors for units such as `"5 seconds"` or `"1 minute"`, and
   [`acti_calculate_mims()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_measures.md)
   no longer errors for units without a space such as `"1min"`.
+
 - [`acti_calculate_ai()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_ai.md)
   and
   [`acti_calculate_mad()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_measures.md)
   now default to `verbose = TRUE`.
+
 - [`acti_apply_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md),
   [`acti_apply_sadeh()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md),
   and
   [`acti_apply_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
   no longer add a superfluous `vector.magnitude` column (a copy of
   `counts`) to their output.
+
 - [`acti_apply_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
   and
   [`acti_apply_sadeh()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)

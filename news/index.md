@@ -2,6 +2,10 @@
 
 ## actimetrics (development version)
 
+- [`acti_process()`](https://jhuwit.github.io/actimetrics/reference/acti_process.md)
+  frees the raw data once counts are calculated, before non-wear
+  detection and day inclusion.
+
 - [`acti_calculate_stepcount()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_stepcount.md)
   (and
   [`py_acti_calculate_stepcount()`](https://jhuwit.github.io/actimetrics/reference/py_acti_calculate_stepcount.md))

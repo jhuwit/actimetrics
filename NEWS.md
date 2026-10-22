@@ -1,5 +1,11 @@
 # actimetrics (development version)
 
+* `acti_process()` no longer resamples data that are already on the 30 Hz grid
+  that `acti_resample()` would interpolate to (sorted, unique times exactly
+  at 30 Hz), since resampling returns the same samples. The result is
+  unchanged; for a 7-day 30 Hz GT3X recording this saves about 2.5 GB of peak
+  memory and 20-30 seconds.
+
 * `acti_calculate_stepcount()` (and `py_acti_calculate_stepcount()`) now
   return times in the input's time zone. `stepcount` reports local clock
   times without a time zone, which were previously labelled UTC, shifting

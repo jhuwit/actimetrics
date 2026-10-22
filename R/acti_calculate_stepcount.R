@@ -11,6 +11,10 @@
 #' @param epoch epoch to aggregate the data to, in seconds or a string such
 #' as `"1 minute"` (see [actibase::acti_standardize_epoch()]); original
 #' output is at 10-seconds
+#' @param tz Time zone of the returned times. `stepcount` reports local clock
+#' times without a time zone; by default they are given the time zone of
+#' `data$time` (so they line up with the input), or `"UTC"` when `data` is a
+#' file path. Set `tz` to the recording's time zone for file input.
 #'
 #' @return A tibble with minute-level `time`, `steps`, and `walking`
 #' columns.
@@ -29,13 +33,23 @@
 acti_calculate_stepcount = function(data,
                                     sample_rate = NULL,
                                     ...,
-                                    epoch = "1 minute"
+                                    epoch = "1 minute",
+                                    tz = NULL
 ) {
   rlang::check_installed("stepcount")
   epoch = acti_standardize_epoch(epoch, output = "character")
   if (is.data.frame(data)) {
     data = acti_standardize_data(data, check_xyz = TRUE)
   }
+  if (is.null(tz)) {
+    tz = if (is.data.frame(data) && inherits(data$time, "POSIXt")) {
+      tzone = attr(data$time, "tzone")
+      if (is.null(tzone)) "" else tzone[1L]
+    } else {
+      "UTC"
+    }
+  }
+  assertthat::assert_that(assertthat::is.string(tz))
   if (!is.null(sample_rate)) {
     attr(data, "sample_rate") = sample_rate
   } else {
@@ -57,6 +71,9 @@ acti_calculate_stepcount = function(data,
   steps = stepcount::stepcount(data,
                                sample_rate = attr(data, "sample_rate"),
                                ...)
+  # stepcount reports naive local clock times: relabel, not convert
+  steps$steps$time = lubridate::force_tz(steps$steps$time, tz)
+  steps$walking$time = lubridate::force_tz(steps$walking$time, tz)
   walking = steps$walking
   walking = walking |>
     dplyr::mutate(

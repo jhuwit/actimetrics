@@ -4,7 +4,13 @@
 \alias{acti_calculate_stepcount}
 \title{Calculate Step Counts via \code{stepcount}}
 \usage{
-acti_calculate_stepcount(data, sample_rate = NULL, ..., epoch = "1 minute")
+acti_calculate_stepcount(
+  data,
+  sample_rate = NULL,
+  ...,
+  epoch = "1 minute",
+  tz = NULL
+)
 }
 \arguments{
 \item{data}{A \code{data.frame}, \code{AccData} object, or GT3X file with \code{X}, \code{Y},
@@ -18,6 +24,11 @@ input object when available.}
 \item{epoch}{epoch to aggregate the data to, in seconds or a string such
 as \code{"1 minute"} (see \code{\link[actibase:acti_standardize_epoch]{actibase::acti_standardize_epoch()}}); original
 output is at 10-seconds}
+
+\item{tz}{Time zone of the returned times. \code{stepcount} reports local clock
+times without a time zone; by default they are given the time zone of
+\code{data$time} (so they line up with the input), or \code{"UTC"} when \code{data} is a
+file path. Set \code{tz} to the recording's time zone for file input.}
 }
 \value{
 A tibble with minute-level \code{time}, \code{steps}, and \code{walking}

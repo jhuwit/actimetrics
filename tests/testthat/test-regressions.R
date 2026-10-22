@@ -70,6 +70,33 @@ test_that("acti_calculate_stepcount keeps missing steps and walking as NA", {
   expect_identical(out$walking, c(NA, TRUE))
 })
 
+test_that("acti_calculate_stepcount returns times in the input time zone", {
+  data = tibble::tibble(
+    time = as.POSIXct("2013-06-10 19:30:00", tz = "Europe/London") + 0:2,
+    X = 0, Y = 0, Z = 1
+  )
+  attr(data, "sample_rate") = 1L
+  # stepcount reports naive local clock times, which R labels UTC
+  times = as.POSIXct("2013-06-10 19:30:00", tz = "UTC") + c(0, 30, 60, 90)
+  testthat::local_mocked_bindings(
+    stepcount = function(data, sample_rate, ...) {
+      list(
+        walking = tibble::tibble(time = times, walking = c(0, 1, 0, 1)),
+        steps = tibble::tibble(time = times, steps = c(0, 2, 0, 4))
+      )
+    },
+    .package = "stepcount"
+  )
+  out = acti_calculate_stepcount(data)
+  expect_identical(attr(out$time, "tzone"), "Europe/London")
+  expect_equal(out$time[1], data$time[1])
+  expect_identical(out$steps, c(2, 4))
+
+  out = acti_calculate_stepcount(data, tz = "UTC")
+  expect_identical(attr(out$time, "tzone"), "UTC")
+  expect_identical(format(out$time[1]), "2013-06-10 19:30:00")
+})
+
 test_that("acti_calculate_verisense resolves a single method", {
   data = tibble::tibble(
     time = as.POSIXct("2020-01-01", tz = "UTC") + 0:2,

@@ -1,6 +1,6 @@
 Type: Package
 Package: actimetrics
-Title: Create Metrics Actigraphy and Activity Analysis
+Title: Create Metrics of Actigraphy and Activity Analysis
 Version: 0.9.0.9001
 Authors@R: c(
     person(given = "John",
@@ -36,7 +36,8 @@ Suggests:
     reticulate,
     stepcount (>= 0.6.0),
     agcounts (>= 0.6.7),
-    callr
+    callr,
+    GGIR
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 

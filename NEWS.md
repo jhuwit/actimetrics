@@ -8,8 +8,19 @@
   no longer errors for units without a space such as `"1min"`.
 * `acti_calculate_ai()` and `acti_calculate_mad()` now default to
   `verbose = TRUE`.
+* `acti_apply_cole_kripke()`, `acti_apply_sadeh()`, and
+  `acti_apply_tudor_locke()` no longer add a superfluous `vector.magnitude`
+  column (a copy of `counts`) to their output.
+* `acti_apply_cole_kripke()` and `acti_apply_sadeh()` no longer return the
+  `count` column that `actigraph.sleepr` uses internally for scoring
+  (`axis1` truncated and, for Cole-Kripke, divided by 100).  It overwrote
+  any `count` column in the input, which is now kept.
 
 # actimetrics 0.9.0
+
+* Works with both actibase 0.6.0 and 0.8.0: `acti_calculate_measures()` uses
+  `acti_flag_qc_all()` when actibase provides it and `flag_qc_all()`
+  otherwise, since actibase 0.8.0 renames it.
 
 ## Breaking changes
 

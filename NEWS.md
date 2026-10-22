@@ -1,4 +1,24 @@
-# actimetrics (development version)
+# actimetrics 0.10.0
+
+## New features
+
+* New sleep-period-time guiders following the GGIR sleep definitions
+  (implemented without calling GGIR): `acti_sleep_hdcza()`,
+  `acti_sleep_hlrb()`, `acti_sleep_horangle()`, `acti_sleep_l5()`,
+  `acti_sleep_notworn()`, `acti_sleep_setwindow()`, and
+  `acti_sleep_diary()`, dispatched by `acti_sleep_guider()` (see
+  `acti_sleep_guider_requirements()`).  `acti_sleep_sib()` detects sustained
+  inactivity bouts, `acti_sleep_label()` and `acti_sleep_labels()` turn
+  guiders into epoch-level sleep/wake labels, `acti_sleep_fuse_labels()`
+  combines labels with STAPLE, and `acti_sleep_ensemble()` runs the whole
+  pipeline from raw or epoch data.
+* New activity-intensity classifiers: `acti_threshold_counts()` and
+  `acti_threshold_enmo()` for user-supplied cut-points, and published
+  cut-points in `acti_threshold_montoye()`, `acti_threshold_sasaki()`,
+  `acti_threshold_romanzini()`, and `acti_threshold_hildebrand()` (with
+  `acti_threshold_hildebrand_wrist()` and `acti_threshold_hildebrand_hip()`).
+
+## Bug fixes and other changes
 
 * `acti_calculate_stepcount()` (and `py_acti_calculate_stepcount()`) now
   return times in the input's time zone. `stepcount` reports local clock
@@ -6,7 +26,6 @@
   steps by the input's UTC offset (e.g. one hour for British Summer Time).
   A new `tz` argument sets the time zone, which is needed for file input
   (default `"UTC"`).
-
 * `epoch`/`unit` arguments are standardized with
   `actibase::acti_standardize_epoch()`, so `acti_calculate_counts()` accepts
   `epoch = "1 min"` and the measure functions accept numeric seconds or

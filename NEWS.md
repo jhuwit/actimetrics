@@ -1,5 +1,8 @@
 # actimetrics (development version)
 
+* `acti_process()` frees the raw data once counts are calculated, before
+  non-wear detection and day inclusion.
+
 * `acti_calculate_stepcount()` (and `py_acti_calculate_stepcount()`) now
   return times in the input's time zone. `stepcount` reports local clock
   times without a time zone, which were previously labelled UTC, shifting

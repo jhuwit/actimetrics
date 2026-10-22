@@ -46,7 +46,13 @@ acti_process = function(data,
                           verbose = verbose)
   }
 
-  data = acti_resample(data, sample_rate = 30L)
+  # Resampling data that are already on the 30 Hz grid returns the same
+  # samples, but copies the whole recording several times
+  if (on_resample_grid(data, sample_rate = 30L)) {
+    data = as_resampled(data, sample_rate = 30L)
+  } else {
+    data = acti_resample(data, sample_rate = 30L)
+  }
 
   counts = acti_calculate_counts(
     data,
@@ -96,4 +102,46 @@ gt3x_supports_digits = function() {
 
 is_gt3x_data = function(data) {
   any(grepl("^acti_read_gt3x:", get_transformations(data)))
+}
+
+# TRUE when acti_resample(data, sample_rate) would return the same samples:
+# the times are sorted, unique, and exactly the grid acti_resample()
+# interpolates to, so linear interpolation returns each sample unchanged
+on_resample_grid = function(data, sample_rate) {
+  time = data$time
+  if (!inherits(time, "POSIXt") || length(time) < 2L || anyNA(time) ||
+      is.unsorted(time, strictly = TRUE)) {
+    return(FALSE)
+  }
+  x = as.numeric(time)
+  # the same grid as acti_resample()
+  grid = seq(0, x[length(x)] - x[1], (1 / sample_rate)) + x[1]
+  length(grid) == length(x) && all(grid == x)
+}
+
+# What acti_resample() returns for data already on its grid: time, X, Y, and
+# Z, with times rounded to the millisecond, the sample_rate attribute, and
+# the transformations
+as_resampled = function(data, sample_rate) {
+  trans = get_transformations(data)
+  is_data_tibble = inherits(data, "tbl_df")
+  tz = lubridate::tz(data$time)
+  out = data.frame(
+    time = as.POSIXct(round(as.numeric(data$time), 3), tz = tz,
+                      origin = lubridate::origin),
+    X = data$X,
+    Y = data$Y,
+    Z = data$Z
+  )
+  out = acti_standardize_data(data = out, subset_xyz = FALSE)
+  if (is_data_tibble) {
+    out = dplyr::as_tibble(out)
+  }
+  attr(out, "sample_rate") = sample_rate
+  out = set_transformations(out, trans)
+  set_transformations(out,
+                      c(paste0("sample_rate_attribute_changed_to_", sample_rate),
+                        paste0("linear_resampled_to_", sample_rate, "Hz")),
+                      prefix = "acti_resample",
+                      add = TRUE)
 }

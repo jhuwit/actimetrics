@@ -1,30 +1,10 @@
-# actimetrics (development version)
-
-## New features
-
-* New `acti_calculate_wear_raw()` estimates non-wear from raw tri-axial
-  acceleration, implemented without calling GGIR or actipy.  Like
-  `acti_calculate_wear()`, it takes a `method` argument and passes `...` to
-  the method function:
-  * `acti_calculate_wear_raw_ggir()` (`method = "ggir"`, default): the GGIR
-    non-wear and clipping algorithm (van Hees et al. 2011, 2013), exposing
-    GGIR's settings: the medium/long window sizes, the `"2023"` and `"2013"`
-    approaches, the standard-deviation and range thresholds, the clipping
-    threshold or dynamic range, edge correction, and the night-time short
-    non-wear filter.
-  * `acti_calculate_wear_raw_actipy()` (`method = "actipy"`): stationary
-    episodes of Doherty et al. (2017), as in actipy's `detect_nonwear()`,
-    with the window, patience, and standard-deviation threshold exposed.
-
-  `acti_calculate_wear()` remains the count-based (Choi/Troiano) method.
-* `GGIR` is no longer listed in `Suggests`; it was not used.
-
 # actimetrics 0.10.0
 
 ## Internal
 
 * Imports `actiread` with `except = "tzoffset_to_tz"`, so `actibase` can
   export `tzoffset_to_tz()` later without an import conflict.
+* `GGIR` is no longer listed in `Suggests`; it was not used.
 
 ## New features
 
@@ -43,6 +23,21 @@
   cut-points in `acti_threshold_montoye()`, `acti_threshold_sasaki()`,
   `acti_threshold_romanzini()`, and `acti_threshold_hildebrand()` (with
   `acti_threshold_hildebrand_wrist()` and `acti_threshold_hildebrand_hip()`).
+* New `acti_calculate_wear_raw()` estimates non-wear from raw tri-axial
+  acceleration, implemented without calling GGIR or actipy.  Like
+  `acti_calculate_wear()`, it takes a `method` argument and passes `...` to
+  the method function:
+  * `acti_calculate_wear_raw_ggir()` (`method = "ggir"`, default): the GGIR
+    non-wear and clipping algorithm (van Hees et al. 2011, 2013), exposing
+    GGIR's settings: the medium/long window sizes, the `"2023"` and `"2013"`
+    approaches, the standard-deviation and range thresholds, the clipping
+    threshold or dynamic range, edge correction, and the night-time short
+    non-wear filter.
+  * `acti_calculate_wear_raw_actipy()` (`method = "actipy"`): stationary
+    episodes of Doherty et al. (2017), as in actipy's `detect_nonwear()`,
+    with the window, patience, and standard-deviation threshold exposed.
+
+  `acti_calculate_wear()` remains the count-based (Choi/Troiano) method.
 
 ## Bug fixes and other changes
 

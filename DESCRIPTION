@@ -36,8 +36,7 @@ Suggests:
     reticulate,
     stepcount (>= 0.6.0),
     agcounts (>= 0.6.7),
-    callr,
-    GGIR
+    callr
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 

@@ -157,3 +157,66 @@ test_that("acti_calculate_wear_raw dispatches to the method functions", {
                                        approach = "2013"),
                "unused argument")
 })
+
+test_that("samples beyond 1.5 times the clip threshold clip the whole epoch", {
+  data = make_still_signal(rep(FALSE, 180))
+  data$X[100] = 12
+  out = acti_calculate_wear_raw_ggir(data, clip_threshold = 7.5)
+  expect_equal(out$clipping_score[1], 1)
+  expect_true(out$clipping[1])
+  expect_equal(out$clipping_score[-1], rep(0, nrow(out) - 1))
+})
+
+test_that("a one-axis epoch between multi-axis epochs is promoted to 2", {
+  data = make_still_signal(rep(c(FALSE, TRUE, FALSE), times = c(60, 360, 60)))
+  # Move X and Y, but not Z, for one 15-minute epoch inside the still period
+  move = data$time >= as.POSIXct("2020-01-01 03:30:00", tz = "UTC") &
+    data$time < as.POSIXct("2020-01-01 03:45:00", tz = "UTC")
+  data$X[move] = stats::rnorm(sum(move), sd = 0.3)
+  data$Y[move] = stats::rnorm(sum(move), sd = 0.3)
+  out = acti_calculate_wear_raw_ggir(data)
+  # Only Z is still in every window covering epoch 15 (a score of 1), but
+  # its neighbours score 3
+  expect_equal(out$nonwear_score[14:16], c(3, 2, 3))
+  expect_true(out$nonwear[15])
+
+  # The first epoch has no left neighbour, so it is not promoted
+  data = make_still_signal(rep(c(TRUE, FALSE), times = c(120, 120)))
+  move = data$time < as.POSIXct("2020-01-01 00:15:00", tz = "UTC")
+  data$Y[move] = stats::rnorm(sum(move), sd = 0.3)
+  data$Z[move] = 1 + stats::rnorm(sum(move), sd = 0.3)
+  out = acti_calculate_wear_raw_ggir(data)
+  expect_equal(out$nonwear_score[1:2], c(1, 3))
+  expect_false(out$nonwear[1])
+})
+
+test_that("night filter leaves all-wear data unchanged", {
+  data = make_still_signal(rep(FALSE, 180))
+  out = acti_calculate_wear_raw_ggir(data, filter_max_hours = 3,
+                                     filter_window = c(22, 7))
+  expect_identical(out, acti_calculate_wear_raw_ggir(data))
+  expect_true(all(out$wear))
+})
+
+test_that("night filter works with a window that does not wrap midnight", {
+  still = c(rep(FALSE, 120), rep(TRUE, 120), rep(FALSE, 10 * 60))
+  data = make_still_signal(still)
+  expect_true(any(acti_calculate_wear_raw_ggir(data)$nonwear))
+  inside = acti_calculate_wear_raw_ggir(data, filter_max_hours = 3,
+                                        filter_window = c(1, 5))
+  expect_false(any(inside$nonwear))
+  outside = acti_calculate_wear_raw_ggir(data, filter_max_hours = 3,
+                                         filter_window = c(5, 9))
+  expect_true(any(outside$nonwear))
+})
+
+test_that("edge correction extends non-wear near the end", {
+  still = c(rep(FALSE, 600), rep(TRUE, 120), rep(FALSE, 60))
+  data = make_still_signal(still)
+  with_edge = acti_calculate_wear_raw_ggir(data)
+  without = acti_calculate_wear_raw_ggir(data, edge_correction = FALSE)
+  last_hour = utils::tail(seq_len(nrow(with_edge)), 4)
+  expect_true(all(with_edge$nonwear_additional[last_hour]))
+  expect_false(any(with_edge$wear[last_hour]))
+  expect_false(any(without$nonwear_additional[last_hour]))
+})

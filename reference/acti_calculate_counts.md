@@ -134,6 +134,7 @@ ac = actiread::acti_read_gt3x(path)
 #> ✔ Filled zeros in data
 #> ℹ Timezone not applied to data
 out = acti_calculate_counts(ac)
+#> namespace 'agcounts' is already loaded so argument 'partial' will be ignored.
 #> [1] "Creating Downsampled Data"
 #> [1] "Filtering Data"
 #> [1] "Trimming Data"

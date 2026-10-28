@@ -9,6 +9,13 @@
   [`tzoffset_to_tz()`](https://jhuwit.github.io/actiread/reference/tzoffset_to_tz.html)
   later without an import conflict.
 - `GGIR` is no longer listed in `Suggests`; it was not used.
+- Checks for `agcounts` and `stepcount` now use
+  [`requireNamespace(pkg, partial = TRUE)`](https://rdrr.io/r/base/ns-load.html)
+  instead of
+  [`rlang::check_installed()`](https://rlang.r-lib.org/reference/is_installed.html)/[`rlang::is_installed()`](https://rlang.r-lib.org/reference/is_installed.html),
+  so their `.onLoad` hooks (which initialize Python via `reticulate`) do
+  not run during the check. This fixes the CRAN NOTE in “checking
+  dependencies in R code”.
 
 ### New features
 

@@ -54,6 +54,7 @@ the `X/Y/Z` values calibrated using the van Hees method.
 ``` r
 # \donttest{
   res = acti_calibrate(data = actiread::acti_example_gt3x())
+#> namespace 'agcounts' is already loaded so argument 'partial' will be ignored.
 #> Detected gt3x file - reading in using acti_read_gt3x
 #> Filling Zeros
 #> Running agcounts::agcalibrate

@@ -44,6 +44,15 @@
 - [`acti_calculate_verisense()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_verisense.md)
   : Calculate Step Counts via Verisense
 
+- [`acti_calculate_wear_raw()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_wear_raw.md)
+  : Estimate Non-wear from Raw Accelerometry
+
+- [`acti_calculate_wear_raw_actipy()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_wear_raw_actipy.md)
+  : Estimate Non-wear from Raw Accelerometry with the actipy Method
+
+- [`acti_calculate_wear_raw_ggir()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_wear_raw_ggir.md)
+  : Estimate Non-wear from Raw Accelerometry with the GGIR Method
+
 - [`acti_count_data`](https://jhuwit.github.io/actimetrics/reference/acti_count_data.md)
   : Example Actigraphy/Activity Count Data
 

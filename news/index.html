@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,26 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="actimetrics-development-version">actimetrics (development version)<a class="anchor" aria-label="anchor" href="#actimetrics-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.10.0" id="actimetrics-0100">actimetrics 0.10.0<a class="anchor" aria-label="anchor" href="#actimetrics-0100"></a></h2>
+<div class="section level3">
+<h3 id="internal-0-10-0">Internal<a class="anchor" aria-label="anchor" href="#internal-0-10-0"></a></h3>
+<ul><li>Imports <code>actiread</code> with <code>except = "tzoffset_to_tz"</code>, so <code>actibase</code> can export <code><a href="https://jhuwit.github.io/actiread/reference/tzoffset_to_tz.html" class="external-link">tzoffset_to_tz()</a></code> later without an import conflict.</li>
+<li>
+<code>GGIR</code> is no longer listed in <code>Suggests</code>; it was not used.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-10-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-10-0"></a></h3>
+<ul><li>New sleep-period-time guiders following the GGIR sleep definitions (implemented without calling GGIR): <code><a href="../reference/acti_sleep_hdcza.html">acti_sleep_hdcza()</a></code>, <code><a href="../reference/acti_sleep_hlrb.html">acti_sleep_hlrb()</a></code>, <code><a href="../reference/acti_sleep_horangle.html">acti_sleep_horangle()</a></code>, <code><a href="../reference/acti_sleep_l5.html">acti_sleep_l5()</a></code>, <code><a href="../reference/acti_sleep_notworn.html">acti_sleep_notworn()</a></code>, <code><a href="../reference/acti_sleep_setwindow.html">acti_sleep_setwindow()</a></code>, and <code><a href="../reference/acti_sleep_diary.html">acti_sleep_diary()</a></code>, dispatched by <code><a href="../reference/acti_sleep_guider.html">acti_sleep_guider()</a></code> (see <code><a href="../reference/acti_sleep_guider_requirements.html">acti_sleep_guider_requirements()</a></code>). <code><a href="../reference/acti_sleep_sib.html">acti_sleep_sib()</a></code> detects sustained inactivity bouts, <code><a href="../reference/acti_sleep_label.html">acti_sleep_label()</a></code> and <code><a href="../reference/acti_sleep_labels.html">acti_sleep_labels()</a></code> turn guiders into epoch-level sleep/wake labels, <code><a href="../reference/acti_sleep_fuse_labels.html">acti_sleep_fuse_labels()</a></code> combines labels with STAPLE, and <code><a href="../reference/acti_sleep_ensemble.html">acti_sleep_ensemble()</a></code> runs the whole pipeline from raw or epoch data.</li>
+<li>New activity-intensity classifiers: <code><a href="../reference/acti_threshold_counts.html">acti_threshold_counts()</a></code> and <code><a href="../reference/acti_threshold_enmo.html">acti_threshold_enmo()</a></code> for user-supplied cut-points, and published cut-points in <code><a href="../reference/acti_threshold_montoye.html">acti_threshold_montoye()</a></code>, <code><a href="../reference/acti_threshold_sasaki.html">acti_threshold_sasaki()</a></code>, <code><a href="../reference/acti_threshold_romanzini.html">acti_threshold_romanzini()</a></code>, and <code><a href="../reference/acti_threshold_hildebrand.html">acti_threshold_hildebrand()</a></code> (with <code><a href="../reference/acti_threshold_hildebrand.html">acti_threshold_hildebrand_wrist()</a></code> and <code><a href="../reference/acti_threshold_hildebrand.html">acti_threshold_hildebrand_hip()</a></code>).</li>
+<li>New <code><a href="../reference/acti_calculate_wear_raw.html">acti_calculate_wear_raw()</a></code> estimates non-wear from raw tri-axial acceleration, implemented without calling GGIR or actipy. Like <code><a href="../reference/acti_calculate_counts.html">acti_calculate_wear()</a></code>, it takes a <code>method</code> argument and passes <code>...</code> to the method function:
+<ul><li>
+<code><a href="../reference/acti_calculate_wear_raw_ggir.html">acti_calculate_wear_raw_ggir()</a></code> (<code>method = "ggir"</code>, default): the GGIR non-wear and clipping algorithm (van Hees et al. 2011, 2013), exposing GGIR’s settings: the medium/long window sizes, the <code>"2023"</code> and <code>"2013"</code> approaches, the standard-deviation and range thresholds, the clipping threshold or dynamic range, edge correction, and the night-time short non-wear filter.</li>
+<li>
+<code><a href="../reference/acti_calculate_wear_raw_actipy.html">acti_calculate_wear_raw_actipy()</a></code> (<code>method = "actipy"</code>): stationary episodes of Doherty et al. (2017), as in actipy’s <code>detect_nonwear()</code>, with the window, patience, and standard-deviation threshold exposed.</li>
+</ul><code><a href="../reference/acti_calculate_counts.html">acti_calculate_wear()</a></code> remains the count-based (Choi/Troiano) method.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-and-other-changes-0-10-0">Bug fixes and other changes<a class="anchor" aria-label="anchor" href="#bug-fixes-and-other-changes-0-10-0"></a></h3>
 <ul><li><p><code><a href="../reference/acti_process.html">acti_process()</a></code> frees the raw data once counts are calculated, before non-wear detection and day inclusion.</p></li>
 <li><p><code><a href="../reference/acti_calculate_stepcount.html">acti_calculate_stepcount()</a></code> (and <code><a href="../reference/py_acti_calculate_stepcount.html">py_acti_calculate_stepcount()</a></code>) now return times in the input’s time zone. <code>stepcount</code> reports local clock times without a time zone, which were previously labelled UTC, shifting steps by the input’s UTC offset (e.g. one hour for British Summer Time). A new <code>tz</code> argument sets the time zone, which is needed for file input (default <code>"UTC"</code>).</p></li>
 <li><p><code>epoch</code>/<code>unit</code> arguments are standardized with <code><a href="https://jhuwit.github.io/actibase/reference/acti_standardize_epoch.html" class="external-link">actibase::acti_standardize_epoch()</a></code>, so <code><a href="../reference/acti_calculate_counts.html">acti_calculate_counts()</a></code> accepts <code>epoch = "1 min"</code> and the measure functions accept numeric seconds or strings such as <code>"30s"</code>. <code>ensure_all_time = TRUE</code> no longer errors for units such as <code>"5 seconds"</code> or <code>"1 minute"</code>, and <code><a href="../reference/acti_calculate_measures.html">acti_calculate_mims()</a></code> no longer errors for units without a space such as <code>"1min"</code>.</p></li>
@@ -42,6 +61,7 @@
 <li><p><code><a href="../reference/acti_calculate_counts.html">acti_apply_cole_kripke()</a></code>, <code><a href="../reference/acti_calculate_counts.html">acti_apply_sadeh()</a></code>, and <code><a href="../reference/acti_apply_tudor_locke.html">acti_apply_tudor_locke()</a></code> no longer add a superfluous <code>vector.magnitude</code> column (a copy of <code>counts</code>) to their output.</p></li>
 <li><p><code><a href="../reference/acti_calculate_counts.html">acti_apply_cole_kripke()</a></code> and <code><a href="../reference/acti_calculate_counts.html">acti_apply_sadeh()</a></code> no longer return the <code>count</code> column that <code>actigraph.sleepr</code> uses internally for scoring (<code>axis1</code> truncated and, for Cole-Kripke, divided by 100). It overwrote any <code>count</code> column in the input, which is now kept.</p></li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.9.0" id="actimetrics-090">actimetrics 0.9.0<a class="anchor" aria-label="anchor" href="#actimetrics-090"></a></h2><p class="text-muted">CRAN release: 2026-10-20</p>
 <ul><li>Works with both actibase 0.6.0 and 0.8.0: <code><a href="../reference/acti_calculate_measures.html">acti_calculate_measures()</a></code> uses <code><a href="https://jhuwit.github.io/actibase/reference/acti_flag_qc.html" class="external-link">acti_flag_qc_all()</a></code> when actibase provides it and <code><a href="https://jhuwit.github.io/actibase/reference/acti_flag_qc.html" class="external-link">flag_qc_all()</a></code> otherwise, since actibase 0.8.0 renames it.</li>

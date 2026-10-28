@@ -1,6 +1,77 @@
 # Changelog
 
-## actimetrics (development version)
+## actimetrics 0.10.0
+
+### Internal
+
+- Imports `actiread` with `except = "tzoffset_to_tz"`, so `actibase` can
+  export
+  [`tzoffset_to_tz()`](https://jhuwit.github.io/actiread/reference/tzoffset_to_tz.html)
+  later without an import conflict.
+- `GGIR` is no longer listed in `Suggests`; it was not used.
+
+### New features
+
+- New sleep-period-time guiders following the GGIR sleep definitions
+  (implemented without calling GGIR):
+  [`acti_sleep_hdcza()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_hdcza.md),
+  [`acti_sleep_hlrb()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_hlrb.md),
+  [`acti_sleep_horangle()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_horangle.md),
+  [`acti_sleep_l5()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_l5.md),
+  [`acti_sleep_notworn()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_notworn.md),
+  [`acti_sleep_setwindow()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_setwindow.md),
+  and
+  [`acti_sleep_diary()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_diary.md),
+  dispatched by
+  [`acti_sleep_guider()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_guider.md)
+  (see
+  [`acti_sleep_guider_requirements()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_guider_requirements.md)).
+  [`acti_sleep_sib()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_sib.md)
+  detects sustained inactivity bouts,
+  [`acti_sleep_label()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_label.md)
+  and
+  [`acti_sleep_labels()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_labels.md)
+  turn guiders into epoch-level sleep/wake labels,
+  [`acti_sleep_fuse_labels()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_fuse_labels.md)
+  combines labels with STAPLE, and
+  [`acti_sleep_ensemble()`](https://jhuwit.github.io/actimetrics/reference/acti_sleep_ensemble.md)
+  runs the whole pipeline from raw or epoch data.
+- New activity-intensity classifiers:
+  [`acti_threshold_counts()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_counts.md)
+  and
+  [`acti_threshold_enmo()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_enmo.md)
+  for user-supplied cut-points, and published cut-points in
+  [`acti_threshold_montoye()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_montoye.md),
+  [`acti_threshold_sasaki()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_sasaki.md),
+  [`acti_threshold_romanzini()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_romanzini.md),
+  and
+  [`acti_threshold_hildebrand()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_hildebrand.md)
+  (with
+  [`acti_threshold_hildebrand_wrist()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_hildebrand.md)
+  and
+  [`acti_threshold_hildebrand_hip()`](https://jhuwit.github.io/actimetrics/reference/acti_threshold_hildebrand.md)).
+- New
+  [`acti_calculate_wear_raw()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_wear_raw.md)
+  estimates non-wear from raw tri-axial acceleration, implemented
+  without calling GGIR or actipy. Like
+  [`acti_calculate_wear()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md),
+  it takes a `method` argument and passes `...` to the method function:
+  - [`acti_calculate_wear_raw_ggir()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_wear_raw_ggir.md)
+    (`method = "ggir"`, default): the GGIR non-wear and clipping
+    algorithm (van Hees et al. 2011, 2013), exposing GGIR’s settings:
+    the medium/long window sizes, the `"2023"` and `"2013"` approaches,
+    the standard-deviation and range thresholds, the clipping threshold
+    or dynamic range, edge correction, and the night-time short non-wear
+    filter.
+  - [`acti_calculate_wear_raw_actipy()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_wear_raw_actipy.md)
+    (`method = "actipy"`): stationary episodes of Doherty et al. (2017),
+    as in actipy’s `detect_nonwear()`, with the window, patience, and
+    standard-deviation threshold exposed.
+
+  [`acti_calculate_wear()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
+  remains the count-based (Choi/Troiano) method.
+
+### Bug fixes and other changes
 
 - [`acti_process()`](https://jhuwit.github.io/actimetrics/reference/acti_process.md)
   frees the raw data once counts are calculated, before non-wear

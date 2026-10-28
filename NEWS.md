@@ -1,4 +1,45 @@
-# actimetrics (development version)
+# actimetrics 0.10.0
+
+## Internal
+
+* Imports `actiread` with `except = "tzoffset_to_tz"`, so `actibase` can
+  export `tzoffset_to_tz()` later without an import conflict.
+* `GGIR` is no longer listed in `Suggests`; it was not used.
+
+## New features
+
+* New sleep-period-time guiders following the GGIR sleep definitions
+  (implemented without calling GGIR): `acti_sleep_hdcza()`,
+  `acti_sleep_hlrb()`, `acti_sleep_horangle()`, `acti_sleep_l5()`,
+  `acti_sleep_notworn()`, `acti_sleep_setwindow()`, and
+  `acti_sleep_diary()`, dispatched by `acti_sleep_guider()` (see
+  `acti_sleep_guider_requirements()`).  `acti_sleep_sib()` detects sustained
+  inactivity bouts, `acti_sleep_label()` and `acti_sleep_labels()` turn
+  guiders into epoch-level sleep/wake labels, `acti_sleep_fuse_labels()`
+  combines labels with STAPLE, and `acti_sleep_ensemble()` runs the whole
+  pipeline from raw or epoch data.
+* New activity-intensity classifiers: `acti_threshold_counts()` and
+  `acti_threshold_enmo()` for user-supplied cut-points, and published
+  cut-points in `acti_threshold_montoye()`, `acti_threshold_sasaki()`,
+  `acti_threshold_romanzini()`, and `acti_threshold_hildebrand()` (with
+  `acti_threshold_hildebrand_wrist()` and `acti_threshold_hildebrand_hip()`).
+* New `acti_calculate_wear_raw()` estimates non-wear from raw tri-axial
+  acceleration, implemented without calling GGIR or actipy.  Like
+  `acti_calculate_wear()`, it takes a `method` argument and passes `...` to
+  the method function:
+  * `acti_calculate_wear_raw_ggir()` (`method = "ggir"`, default): the GGIR
+    non-wear and clipping algorithm (van Hees et al. 2011, 2013), exposing
+    GGIR's settings: the medium/long window sizes, the `"2023"` and `"2013"`
+    approaches, the standard-deviation and range thresholds, the clipping
+    threshold or dynamic range, edge correction, and the night-time short
+    non-wear filter.
+  * `acti_calculate_wear_raw_actipy()` (`method = "actipy"`): stationary
+    episodes of Doherty et al. (2017), as in actipy's `detect_nonwear()`,
+    with the window, patience, and standard-deviation threshold exposed.
+
+  `acti_calculate_wear()` remains the count-based (Choi/Troiano) method.
+
+## Bug fixes and other changes
 
 * `acti_process()` frees the raw data once counts are calculated, before
   non-wear detection and day inclusion.
@@ -9,7 +50,6 @@
   steps by the input's UTC offset (e.g. one hour for British Summer Time).
   A new `tz` argument sets the time zone, which is needed for file input
   (default `"UTC"`).
-
 * `epoch`/`unit` arguments are standardized with
   `actibase::acti_standardize_epoch()`, so `acti_calculate_counts()` accepts
   `epoch = "1 min"` and the measure functions accept numeric seconds or

@@ -115,7 +115,11 @@ acti_calculate_counts = function(
     fix_first_second = TRUE,
     round_digits = NULL
 ) {
-  rlang::check_installed("agcounts")
+  # rlang::check_installed("agcounts")
+  # partial = TRUE avoids running agcounts's .onLoad (reticulate/Python)
+  if (!requireNamespace("agcounts", quietly = TRUE, partial = TRUE)) {
+    stop("Package 'agcounts' is required but is not installed.")
+  }
   epoch = acti_standardize_epoch(epoch)
   assertthat::assert_that(
     assertthat::is.count(epoch),

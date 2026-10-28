@@ -36,7 +36,11 @@ acti_calculate_stepcount = function(data,
                                     epoch = "1 minute",
                                     tz = NULL
 ) {
-  rlang::check_installed("stepcount")
+  # rlang::check_installed("stepcount")
+  # partial = TRUE avoids running stepcount's .onLoad (reticulate/Python)
+  if (!requireNamespace("stepcount", quietly = TRUE, partial = TRUE)) {
+    stop("Package 'stepcount' is required but is not installed.")
+  }
   epoch = acti_standardize_epoch(epoch, output = "character")
   if (is.data.frame(data)) {
     data = acti_standardize_data(data, check_xyz = TRUE)

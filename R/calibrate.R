@@ -28,7 +28,11 @@ acti_calibrate = function(
     fill_zeroes = TRUE,
     round_after_calibration = TRUE,
     ...) {
-  rlang::check_installed("agcounts")
+  # rlang::check_installed("agcounts")
+  # partial = TRUE avoids running agcounts's .onLoad (reticulate/Python)
+  if (!requireNamespace("agcounts", quietly = TRUE, partial = TRUE)) {
+    stop("Package 'agcounts' is required but is not installed.")
+  }
   if (is.character(data) && grepl("[.]gt3x(|[.]gz)$", data)) {
     if (verbose) {
       message("Detected gt3x file - reading in using acti_read_gt3x")

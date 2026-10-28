@@ -108,7 +108,7 @@ test_that("activity measure helpers cover tibble and data.table branches", {
 
 test_that("measure wrappers fail fast when dependencies are absent", {
   testthat::local_mocked_bindings(
-    requireNamespace = function(package, quietly = TRUE) {
+    requireNamespace = function(package, quietly = TRUE, ...) {
       if (package == "agcounts") {
         FALSE
       } else {
@@ -137,7 +137,7 @@ test_that("measure wrappers fail fast when dependencies are absent", {
 
 test_that("measure wrappers fail when MIMS is unavailable", {
   testthat::local_mocked_bindings(
-    requireNamespace = function(package, quietly = TRUE) {
+    requireNamespace = function(package, quietly = TRUE, ...) {
       if (package == "MIMSunit") {
         FALSE
       } else {
@@ -388,7 +388,7 @@ test_that("sleepr standardization and MIMS helpers cover reconstruction branches
 
 test_that("mims helpers error when the dependency is unavailable", {
   testthat::local_mocked_bindings(
-    requireNamespace = function(package, quietly = TRUE) FALSE,
+    requireNamespace = function(package, quietly = TRUE, ...) FALSE,
     .package = "base"
   )
   expect_error(
@@ -430,7 +430,7 @@ test_that("calculate_activity_counts passes a supplied sample rate on", {
 
 test_that("acti_calculate_mims requires MIMSunit", {
   testthat::local_mocked_bindings(
-    requireNamespace = function(package, quietly = TRUE) FALSE,
+    requireNamespace = function(package, quietly = TRUE, ...) FALSE,
     .package = "base"
   )
   expect_error(

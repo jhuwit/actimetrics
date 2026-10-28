@@ -5,6 +5,11 @@
 * Imports `actiread` with `except = "tzoffset_to_tz"`, so `actibase` can
   export `tzoffset_to_tz()` later without an import conflict.
 * `GGIR` is no longer listed in `Suggests`; it was not used.
+* Checks for `agcounts` and `stepcount` now use
+  `requireNamespace(pkg, partial = TRUE)` instead of
+  `rlang::check_installed()`/`rlang::is_installed()`, so their `.onLoad`
+  hooks (which initialize Python via `reticulate`) do not run during the
+  check. This fixes the CRAN NOTE in "checking dependencies in R code".
 
 ## New features
 

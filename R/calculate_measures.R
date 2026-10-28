@@ -67,7 +67,8 @@ acti_calculate_measures = function(
   sample_rate = NULL,
   ...) {
   unit = acti_standardize_epoch(unit, output = "character")
-  if (calculate_ac && !requireNamespace("agcounts", quietly = TRUE)) {
+  if (calculate_ac &&
+      !requireNamespace("agcounts", quietly = TRUE, partial = TRUE)) {
     stop("agcounts package required for calculating AC")
   }
 

@@ -1,4 +1,6 @@
-if (rlang::is_installed("stepcount") && rlang::is_installed("reticulate")) {
+# if (rlang::is_installed("stepcount") && rlang::is_installed("reticulate")) {
+if (requireNamespace("stepcount", quietly = TRUE, partial = TRUE) &&
+    requireNamespace("reticulate", quietly = TRUE)) {
   try({
     reticulate::py_require("stepcount==3.11.0", python_version = "3.10",
                            action = "add")

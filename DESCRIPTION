@@ -36,7 +36,8 @@ Suggests:
     reticulate,
     stepcount (>= 0.6.0),
     agcounts (>= 0.6.7),
-    callr
+    callr,
+    walking (>= 0.8.0)
 Encoding: UTF-8
 VignetteBuilder: knitr
 Imports: 
@@ -46,16 +47,14 @@ Imports:
     dplyr,
     lubridate,
     assertthat,
-    purrr,
     readr,
     tibble,
     rlang,
     stats,
     tidyr,
-    walking (>= 0.8.0),
     methods
 LazyData: true
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1
 URL: https://github.com/jhuwit/actimetrics, https://jhuwit.github.io/actimetrics/
 BugReports: https://github.com/jhuwit/actimetrics/issues
 Config/testthat/edition: 3

@@ -30,6 +30,8 @@ A tibble with minute-level \code{time}, \code{steps} columns.
 Calculate Step Counts via Verisense
 }
 \examples{
+\dontshow{if (rlang::is_installed("walking")) withAutoprint(\{ # examplesIf}
 data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 steps = acti_calculate_verisense(data)
+\dontshow{\}) # examplesIf}
 }

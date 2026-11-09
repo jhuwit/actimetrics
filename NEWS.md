@@ -1,3 +1,11 @@
+# actimetrics (development version)
+
+* 'walking' moved from Imports to Suggests. `acti_calculate_verisense()`,
+  `acti_calculate_sdt()`, and `acti_calculate_forest()` now check for it with
+  `rlang::check_installed()`. This drops reticulate, signal, matrixStats, MASS,
+  and Matrix from a default install, and removes the `actibase` -> `walking` ->
+  `actimetrics` coupling from the CRAN release order.
+
 # actimetrics 0.10.0
 
 ## Internal

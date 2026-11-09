@@ -47,7 +47,6 @@ Imports:
     dplyr,
     lubridate,
     assertthat,
-    purrr,
     readr,
     tibble,
     rlang,

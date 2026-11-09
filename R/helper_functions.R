@@ -1,21 +1,23 @@
 
 expand_start_stop = function(df, subtract_value = 60L) {
-  bed_time = purrr::pmap_dfr(
-    # change for the end - not the last value
-    list(df$in_bed_time, df$out_bed_time - subtract_value, df$index),
+  bed_time = dplyr::bind_rows(Map(
     function(from, to, index) {
       data.frame(time = seq(from, to, by = 60L),
                  in_bed = TRUE,
                  index = index)
-    })
-  onset_time = purrr::pmap_dfr(
+    },
     # change for the end - not the last value
-    list(df$onset_time, df$out_bed_time - subtract_value, df$index),
+    df$in_bed_time, df$out_bed_time - subtract_value, df$index
+  ))
+  onset_time = dplyr::bind_rows(Map(
     function(from, to, index) {
       data.frame(time = seq(from, to, by = 60L),
                  is_past_onset = TRUE,
                  index = index)
-    })
+    },
+    # change for the end - not the last value
+    df$onset_time, df$out_bed_time - subtract_value, df$index
+  ))
   bed_time = bed_time %>%
     dplyr::full_join(onset_time, by = join_by(time, index)) %>%
     tidyr::replace_na(list(in_bed = FALSE, is_past_onset = FALSE))

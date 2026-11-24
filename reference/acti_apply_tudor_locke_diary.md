@@ -2,7 +2,7 @@
 
 Adds a logical sleep column to epoch data from diary onset and wakeup
 times. The result can be passed to
-[`acti_apply_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
+[`acti_calculate_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
 when it also has activity counts and represents 60-second epochs. The
 wrapper converts the logical diary labels to the `S`/`W` states required
 downstream.

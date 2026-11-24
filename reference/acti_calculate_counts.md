@@ -33,7 +33,11 @@ acti_calculate_nonwear(
 
 acti_apply_cole_kripke(data)
 
+acti_calculate_cole_kripke(data)
+
 acti_apply_sadeh(data, ...)
+
+acti_calculate_sadeh(data, ...)
 ```
 
 ## Arguments
@@ -113,10 +117,11 @@ A `data.frame` of transformed data
 The sampling frequency is only needed when `resample = FALSE`; it is
 taken from the `sample_rate` attribute (or estimated from `time`).
 
-`acti_calculate_wear()`, `acti_apply_cole_kripke()`, and
-`acti_apply_sadeh()` require 60-second epochs. Cole–Kripke, Sadeh, and
-`acti_calculate_wear(use_magnitude = FALSE)` score the vertical axis, so
-`data` must contain `axis1`; vector-magnitude-only counts are an error.
+`acti_calculate_wear()`, `acti_calculate_cole_kripke()`, and
+`acti_calculate_sadeh()` require 60-second epochs. Cole–Kripke, Sadeh,
+and `acti_calculate_wear(use_magnitude = FALSE)` score the vertical
+axis, so `data` must contain `axis1`; vector-magnitude-only counts are
+an error.
 
 ## Note
 
@@ -144,7 +149,7 @@ out = acti_calculate_counts(ac)
 data = actimetrics::acti_count_data
 wear = actimetrics::acti_calculate_wear(data)
 tro_wear = actimetrics::acti_calculate_wear(data, method = "troiano")
-ck = actimetrics::acti_apply_cole_kripke(data)
-tl = actimetrics::acti_apply_tudor_locke(ck)
-sadeh = actimetrics::acti_apply_sadeh(ck)
+ck = actimetrics::acti_calculate_cole_kripke(data)
+tl = actimetrics::acti_calculate_tudor_locke(ck)
+sadeh = actimetrics::acti_calculate_sadeh(ck)
 ```

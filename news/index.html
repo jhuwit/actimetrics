@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,10 +34,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="actimetrics-development-version">actimetrics (development version)<a class="anchor" aria-label="anchor" href="#actimetrics-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.11.0" id="actimetrics-0110">actimetrics 0.11.0<a class="anchor" aria-label="anchor" href="#actimetrics-0110"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-11-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-11-0"></a></h3>
+<ul><li>New aliases <code><a href="../reference/acti_calculate_counts.html">acti_calculate_cole_kripke()</a></code>, <code><a href="../reference/acti_calculate_counts.html">acti_calculate_sadeh()</a></code>, and <code><a href="../reference/acti_apply_tudor_locke.html">acti_calculate_tudor_locke()</a></code> match the <code>acti_calculate_*()</code> naming used across activerse. The <code>acti_apply_*()</code> names remain available. Examples and messages now use the new names.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-0-11-0">Internal<a class="anchor" aria-label="anchor" href="#internal-0-11-0"></a></h3>
 <ul><li>‘walking’ moved from Imports to Suggests. <code><a href="../reference/acti_calculate_verisense.html">acti_calculate_verisense()</a></code>, <code><a href="../reference/acti_calculate_sdt.html">acti_calculate_sdt()</a></code>, and <code><a href="../reference/acti_calculate_forest.html">acti_calculate_forest()</a></code> now check for it with <code><a href="https://rlang.r-lib.org/reference/is_installed.html" class="external-link">rlang::check_installed()</a></code>. This drops reticulate, signal, matrixStats, MASS, and Matrix from a default install, and removes the <code>actibase</code> -&gt; <code>walking</code> -&gt; <code>actimetrics</code> coupling from the CRAN release order.</li>
 <li>‘purrr’ is no longer imported; its three uses are replaced by <code><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Map()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">dplyr::bind_rows()</a></code>.</li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.10.0" id="actimetrics-0100">actimetrics 0.10.0<a class="anchor" aria-label="anchor" href="#actimetrics-0100"></a></h2><p class="text-muted">CRAN release: 2026-10-29</p>
 <div class="section level3">

@@ -1,6 +1,19 @@
 # Changelog
 
-## actimetrics (development version)
+## actimetrics 0.11.0
+
+### New features
+
+- New aliases
+  [`acti_calculate_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md),
+  [`acti_calculate_sadeh()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md),
+  and
+  [`acti_calculate_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
+  match the `acti_calculate_*()` naming used across activerse. The
+  `acti_apply_*()` names remain available. Examples and messages now use
+  the new names.
+
+### Internal
 
 - ‘walking’ moved from Imports to Suggests.
   [`acti_calculate_verisense()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_verisense.md),

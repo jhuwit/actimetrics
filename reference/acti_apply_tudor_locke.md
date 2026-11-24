@@ -4,7 +4,7 @@ Delegates to
 [`actigraph.sleepr::apply_tudor_locke()`](https://rdrr.io/pkg/actigraph.sleepr/man/apply_tudor_locke.html).
 Input must be 60-second epoch data with activity counts and a `sleep`
 state. Data from
-[`acti_apply_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
+[`acti_calculate_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
 is accepted directly. Data labeled by
 [`acti_apply_tudor_locke_diary()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke_diary.md)
 is also accepted: its logical `sleep` column is converted to the `S`/`W`
@@ -14,6 +14,8 @@ states expected downstream.
 
 ``` r
 acti_apply_tudor_locke(data, ..., sleep_col = "sleep")
+
+acti_calculate_tudor_locke(data, ..., sleep_col = "sleep")
 ```
 
 ## Arguments

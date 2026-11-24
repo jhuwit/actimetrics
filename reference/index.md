@@ -3,6 +3,7 @@
 ## All functions
 
 - [`acti_apply_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
+  [`acti_calculate_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
   : Apply Tudor–Locke sleep period detection
 
 - [`acti_apply_tudor_locke_diary()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke_diary.md)
@@ -16,7 +17,9 @@
   [`acti_calculate_wear()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
   [`acti_calculate_nonwear()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
   [`acti_apply_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
+  [`acti_calculate_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
   [`acti_apply_sadeh()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
+  [`acti_calculate_sadeh()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md)
   : Process Count Data
 
 - [`acti_calculate_forest()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_forest.md)

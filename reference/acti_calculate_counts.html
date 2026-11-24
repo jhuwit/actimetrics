@@ -9,7 +9,7 @@ Process Count Data"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">actimetrics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,11 @@ Process Count Data"></head><body>
 <span></span>
 <span><span class="fu">acti_apply_cole_kripke</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">acti_apply_sadeh</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">acti_calculate_cole_kripke</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">acti_apply_sadeh</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">acti_calculate_sadeh</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -144,8 +148,8 @@ otherwise the axis1 value is used.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The sampling frequency is only needed when <code>resample = FALSE</code>;
 it is taken from the <code>sample_rate</code> attribute (or estimated from <code>time</code>).</p>
-<p><code>acti_calculate_wear()</code>, <code>acti_apply_cole_kripke()</code>, and
-<code>acti_apply_sadeh()</code> require 60-second epochs.  Cole–Kripke, Sadeh, and
+<p><code>acti_calculate_wear()</code>, <code>acti_calculate_cole_kripke()</code>, and
+<code>acti_calculate_sadeh()</code> require 60-second epochs.  Cole–Kripke, Sadeh, and
 <code>acti_calculate_wear(use_magnitude = FALSE)</code> score the vertical axis, so
 <code>data</code> must contain <code>axis1</code>; vector-magnitude-only counts are an error.</p>
     </div>
@@ -175,9 +179,9 @@ it is taken from the <code>sample_rate</code> attribute (or estimated from <code
 <span class="r-in"><span><span class="va">data</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="va"><a href="acti_count_data.html">acti_count_data</a></span></span></span>
 <span class="r-in"><span><span class="va">wear</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_calculate_wear</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tro_wear</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_calculate_wear</span><span class="op">(</span><span class="va">data</span>, method <span class="op">=</span> <span class="st">"troiano"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ck</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_apply_cole_kripke</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tl</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu"><a href="acti_apply_tudor_locke.html">acti_apply_tudor_locke</a></span><span class="op">(</span><span class="va">ck</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sadeh</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_apply_sadeh</span><span class="op">(</span><span class="va">ck</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ck</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_calculate_cole_kripke</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tl</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu"><a href="acti_apply_tudor_locke.html">acti_calculate_tudor_locke</a></span><span class="op">(</span><span class="va">ck</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sadeh</span> <span class="op">=</span> <span class="fu">actimetrics</span><span class="fu">::</span><span class="fu">acti_calculate_sadeh</span><span class="op">(</span><span class="va">ck</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

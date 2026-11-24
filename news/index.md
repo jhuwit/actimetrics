@@ -1,5 +1,21 @@
 # Changelog
 
+## actimetrics (development version)
+
+- ‘walking’ moved from Imports to Suggests.
+  [`acti_calculate_verisense()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_verisense.md),
+  [`acti_calculate_sdt()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_sdt.md),
+  and
+  [`acti_calculate_forest()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_forest.md)
+  now check for it with
+  [`rlang::check_installed()`](https://rlang.r-lib.org/reference/is_installed.html).
+  This drops reticulate, signal, matrixStats, MASS, and Matrix from a
+  default install, and removes the `actibase` -\> `walking` -\>
+  `actimetrics` coupling from the CRAN release order.
+- ‘purrr’ is no longer imported; its three uses are replaced by
+  [`Map()`](https://rdrr.io/r/base/funprog.html) and
+  [`dplyr::bind_rows()`](https://dplyr.tidyverse.org/reference/bind_rows.html).
+
 ## actimetrics 0.10.0
 
 CRAN release: 2026-10-29

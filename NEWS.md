@@ -6,8 +6,21 @@
   `acti_calculate_tudor_locke()` match the `acti_calculate_*()` naming used
   across activerse. The `acti_apply_*()` names remain available. Examples and
   messages now use the new names.
+* New `acti_calculate_sleep_diary_metrics()` scores each night from
+  sleep/wake epochs (e.g. `acti_calculate_cole_kripke()`) using diary in-bed,
+  sleep-onset, and out-of-bed times, as ActiLife does with diary bed times.
+  It returns latency, efficiency (sleep over time in bed), WASO, awakenings,
+  and the movement and fragmentation indices, in minutes, for any epoch
+  length that divides 60 seconds (e.g. 15, 30, or 60). With the bed times
+  `acti_calculate_tudor_locke()` detects, the metrics match Tudor--Locke's.
 
 ## Internal
+
+* The unused, unbuilt `R/helper_functions.R` (excluded in `.Rbuildignore`)
+  is removed; its diary helpers are now the internals of
+  `acti_calculate_sleep_diary_metrics()`. They no longer use `ncar::Round()`,
+  which was not a dependency, and latency and efficiency are now computed
+  within each in-bed period rather than over all of `data`.
 
 * 'walking' moved from Imports to Suggests. `acti_calculate_verisense()`,
   `acti_calculate_sdt()`, and `acti_calculate_forest()` now check for it with

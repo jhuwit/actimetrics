@@ -55,7 +55,7 @@ run_in_callr = function(fun, ..., pyenv_function, show = FALSE) {
 #' @return A tibble with minute-level `time`, `steps` columns.
 #' @export
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("walking")
 #' data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #' steps = acti_calculate_verisense(data)
 acti_calculate_verisense = function(data,
@@ -63,6 +63,7 @@ acti_calculate_verisense = function(data,
                                     method = c("original", "revised"),
                                     ...
 ) {
+  rlang::check_installed("walking")
   method = match.arg(method)
 
   sdata = walking::estimate_steps_verisense(
@@ -98,7 +99,8 @@ acti_calculate_verisense = function(data,
 #' @examples
 #' \donttest{
 #'   Sys.setenv("SSQ_PARALLEL" = 0)
-#'   if (reticulate::py_module_available("forest")) {
+#'   if (rlang::is_installed("walking") &&
+#'       reticulate::py_module_available("forest")) {
 #'     data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #'     steps = acti_calculate_forest(data, sample_rate = 100)
 #'   }
@@ -142,7 +144,8 @@ acti_calculate_forest = function(data,
 #' @examples
 #' \donttest{
 #'   Sys.setenv("SSQ_PARALLEL" = 0)
-#'   if (reticulate::py_module_available("forest")) {
+#'   if (rlang::is_installed("walking") &&
+#'       reticulate::py_module_available("forest")) {
 #'     data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #'     steps = py_acti_calculate_forest(data, sample_rate = 100)
 #'   }
@@ -172,12 +175,13 @@ py_acti_calculate_forest = function(
 #' @return A tibble with minute-level `time`, `steps` columns.
 #' @export
 #'
-#' @examples
+#' @examplesIf rlang::is_installed("walking")
 #' data = actiread::acti_read_gt3x(actiread::acti_example_gt3x())
 #' steps = acti_calculate_sdt(data)
 acti_calculate_sdt = function(data,
                               sample_rate = NULL,
                               ...) {
+  rlang::check_installed("walking")
   data = acti_standardize_data(data, check_xyz = TRUE)
   if (!is.null(sample_rate)) {
     attr(data, "sample_rate") = sample_rate

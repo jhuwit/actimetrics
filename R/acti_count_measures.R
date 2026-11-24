@@ -52,13 +52,14 @@ acti_calculate_wear = function(data,
   )
   choi_nonwear = func(data, ...)
   if (nrow(choi_nonwear) > 0) {
-    choi_df = purrr::map2_df(
-      # change for the end - not the last value
-      choi_nonwear$period_start, choi_nonwear$period_end - 60L,
+    choi_df = dplyr::bind_rows(Map(
       function(from, to) {
         data.frame(timestamp = seq(from, to, by = 60L),
                    wear = FALSE)
-      })
+      },
+      # change for the end - not the last value
+      choi_nonwear$period_start, choi_nonwear$period_end - 60L
+    ))
     choi_df = dplyr::left_join(
       dplyr::select(data, timestamp), choi_df, by = "timestamp") |>
       tidyr::replace_na(list(wear = TRUE))

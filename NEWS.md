@@ -16,10 +16,11 @@
 
 ## Internal
 
-* `R/helper_functions.R` is now part of the built package (it was in
-  `.Rbuildignore`). Its diary helpers no longer use `ncar::Round()`, which
-  was not a dependency, and latency and efficiency are now computed within
-  each in-bed period rather than over all of `data`.
+* The unused, unbuilt `R/helper_functions.R` (excluded in `.Rbuildignore`)
+  is removed; its diary helpers are now the internals of
+  `acti_calculate_sleep_diary_metrics()`. They no longer use `ncar::Round()`,
+  which was not a dependency, and latency and efficiency are now computed
+  within each in-bed period rather than over all of `data`.
 
 * 'walking' moved from Imports to Suggests. `acti_calculate_verisense()`,
   `acti_calculate_sdt()`, and `acti_calculate_forest()` now check for it with

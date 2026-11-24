@@ -1,4 +1,13 @@
-# actimetrics (development version)
+# actimetrics 0.11.0
+
+## New features
+
+* New aliases `acti_calculate_cole_kripke()`, `acti_calculate_sadeh()`, and
+  `acti_calculate_tudor_locke()` match the `acti_calculate_*()` naming used
+  across activerse. The `acti_apply_*()` names remain available. Examples and
+  messages now use the new names.
+
+## Internal
 
 * 'walking' moved from Imports to Suggests. `acti_calculate_verisense()`,
   `acti_calculate_sdt()`, and `acti_calculate_forest()` now check for it with

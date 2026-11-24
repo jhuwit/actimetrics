@@ -5,7 +5,9 @@
 \alias{acti_calculate_wear}
 \alias{acti_calculate_nonwear}
 \alias{acti_apply_cole_kripke}
+\alias{acti_calculate_cole_kripke}
 \alias{acti_apply_sadeh}
+\alias{acti_calculate_sadeh}
 \title{Process Count Data}
 \usage{
 acti_calculate_counts(
@@ -34,7 +36,11 @@ acti_calculate_nonwear(
 
 acti_apply_cole_kripke(data)
 
+acti_calculate_cole_kripke(data)
+
 acti_apply_sadeh(data, ...)
+
+acti_calculate_sadeh(data, ...)
 }
 \arguments{
 \item{data}{A \code{data.frame} from \code{acti_calculate_counts} that has
@@ -91,8 +97,8 @@ Process Count Data
 The sampling frequency is only needed when \code{resample = FALSE};
 it is taken from the \code{sample_rate} attribute (or estimated from \code{time}).
 
-\code{acti_calculate_wear()}, \code{acti_apply_cole_kripke()}, and
-\code{acti_apply_sadeh()} require 60-second epochs.  Cole--Kripke, Sadeh, and
+\code{acti_calculate_wear()}, \code{acti_calculate_cole_kripke()}, and
+\code{acti_calculate_sadeh()} require 60-second epochs.  Cole--Kripke, Sadeh, and
 \code{acti_calculate_wear(use_magnitude = FALSE)} score the vertical axis, so
 \code{data} must contain \code{axis1}; vector-magnitude-only counts are an error.
 }
@@ -110,7 +116,7 @@ out = acti_calculate_counts(ac)
 data = actimetrics::acti_count_data
 wear = actimetrics::acti_calculate_wear(data)
 tro_wear = actimetrics::acti_calculate_wear(data, method = "troiano")
-ck = actimetrics::acti_apply_cole_kripke(data)
-tl = actimetrics::acti_apply_tudor_locke(ck)
-sadeh = actimetrics::acti_apply_sadeh(ck)
+ck = actimetrics::acti_calculate_cole_kripke(data)
+tl = actimetrics::acti_calculate_tudor_locke(ck)
+sadeh = actimetrics::acti_calculate_sadeh(ck)
 }

@@ -33,7 +33,7 @@ wakeup (exclusive).
 }
 \description{
 Adds a logical sleep column to epoch data from diary onset and wakeup times.
-The result can be passed to \code{\link[=acti_apply_tudor_locke]{acti_apply_tudor_locke()}} when it also has
+The result can be passed to \code{\link[=acti_calculate_tudor_locke]{acti_calculate_tudor_locke()}} when it also has
 activity counts and represents 60-second epochs. The wrapper converts the
 logical diary labels to the \code{S}/\code{W} states required downstream.
 }

@@ -181,3 +181,9 @@ test_that("acti_process reads GT3X at 8 digits and rounds after resampling", {
   acti_process(path, verbose = FALSE, min_required = NULL, round_digits = NA)
   expect_equal(digits_used, list(3L, 3L, NULL, NA))
 })
+
+test_that("acti_calculate_* aliases are the acti_apply_* functions", {
+  expect_identical(acti_calculate_cole_kripke, acti_apply_cole_kripke)
+  expect_identical(acti_calculate_sadeh, acti_apply_sadeh)
+  expect_identical(acti_calculate_tudor_locke, acti_apply_tudor_locke)
+})

@@ -1,3 +1,17 @@
+# actimetrics 0.11.0
+
+## New features
+
+* New aliases `acti_calculate_cole_kripke()`, `acti_calculate_sadeh()`, and
+  `acti_calculate_tudor_locke()` match the `acti_calculate_*()` naming used
+  across activerse. The `acti_apply_*()` names remain available. Examples and
+  messages now use the new names.
+
+## Internal
+
+* 'purrr' is no longer imported; its three uses are replaced by `Map()` and
+  `dplyr::bind_rows()`.
+
 # actimetrics 0.10.0
 
 ## Internal

@@ -1,7 +1,7 @@
 Type: Package
 Package: actimetrics
 Title: Create Metrics of Actigraphy and Activity Analysis
-Version: 0.10.0
+Version: 0.11.0
 Authors@R: c(
     person(given = "John",
            family = "Muschelli",
@@ -46,7 +46,6 @@ Imports:
     dplyr,
     lubridate,
     assertthat,
-    purrr,
     readr,
     tibble,
     rlang,
@@ -55,7 +54,7 @@ Imports:
     walking (>= 0.8.0),
     methods
 LazyData: true
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1
 URL: https://github.com/jhuwit/actimetrics, https://jhuwit.github.io/actimetrics/
 BugReports: https://github.com/jhuwit/actimetrics/issues
 Config/testthat/edition: 3

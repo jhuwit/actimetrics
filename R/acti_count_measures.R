@@ -12,8 +12,8 @@
 #' @param use_magnitude  If `TRUE`, the magnitude of the vector
 #' (axis1, axis2, axis3) is used to measure activity;
 #' otherwise the axis1 value is used.
-#' @details `acti_calculate_wear()`, `acti_apply_cole_kripke()`, and
-#' `acti_apply_sadeh()` require 60-second epochs.  Cole--Kripke, Sadeh, and
+#' @details `acti_calculate_wear()`, `acti_calculate_cole_kripke()`, and
+#' `acti_calculate_sadeh()` require 60-second epochs.  Cole--Kripke, Sadeh, and
 #' `acti_calculate_wear(use_magnitude = FALSE)` score the vertical axis, so
 #' `data` must contain `axis1`; vector-magnitude-only counts are an error.
 #' @export
@@ -22,9 +22,9 @@
 #' data = actimetrics::acti_count_data
 #' wear = actimetrics::acti_calculate_wear(data)
 #' tro_wear = actimetrics::acti_calculate_wear(data, method = "troiano")
-#' ck = actimetrics::acti_apply_cole_kripke(data)
-#' tl = actimetrics::acti_apply_tudor_locke(ck)
-#' sadeh = actimetrics::acti_apply_sadeh(ck)
+#' ck = actimetrics::acti_calculate_cole_kripke(data)
+#' tl = actimetrics::acti_calculate_tudor_locke(ck)
+#' sadeh = actimetrics::acti_calculate_sadeh(ck)
 acti_calculate_wear = function(data,
                                method = c("choi", "troiano"),
                                use_magnitude = TRUE,
@@ -52,13 +52,14 @@ acti_calculate_wear = function(data,
   )
   choi_nonwear = func(data, ...)
   if (nrow(choi_nonwear) > 0) {
-    choi_df = purrr::map2_df(
-      # change for the end - not the last value
-      choi_nonwear$period_start, choi_nonwear$period_end - 60L,
+    choi_df = dplyr::bind_rows(Map(
       function(from, to) {
         data.frame(timestamp = seq(from, to, by = 60L),
                    wear = FALSE)
-      })
+      },
+      # change for the end - not the last value
+      choi_nonwear$period_start, choi_nonwear$period_end - 60L
+    ))
     choi_df = dplyr::left_join(
       dplyr::select(data, timestamp), choi_df, by = "timestamp") |>
       tidyr::replace_na(list(wear = TRUE))
@@ -96,7 +97,7 @@ acti_apply_cole_kripke = function(data) {
   timestamp = NULL
   rm(list = c("timestamp"))
   data = acti_standardize_actigraph.sleepr(
-    data, require_axis1 = TRUE, caller = "acti_apply_cole_kripke()")
+    data, require_axis1 = TRUE, caller = "acti_calculate_cole_kripke()")
 
   # https://actigraphcorp.my.site.com/support/s/article/What-does-the-Detect-Sleep-Periods-button-do-and-how-does-it-work
   ck = data |>
@@ -113,11 +114,15 @@ acti_apply_cole_kripke = function(data) {
   ck
 }
 
+#' @export
+#' @rdname acti_calculate_counts
+acti_calculate_cole_kripke = acti_apply_cole_kripke
+
 #' Apply Tudor--Locke sleep period detection
 #'
 #' Delegates to `actigraph.sleepr::apply_tudor_locke()`. Input must be
 #' 60-second epoch data with activity counts and a `sleep` state. Data from
-#' [acti_apply_cole_kripke()] is accepted directly. Data labeled by
+#' [acti_calculate_cole_kripke()] is accepted directly. Data labeled by
 #' [acti_apply_tudor_locke_diary()] is also accepted: its logical `sleep`
 #' column is converted to the `S`/`W` states expected downstream.
 #'
@@ -133,7 +138,7 @@ acti_apply_tudor_locke = function(data, ..., sleep_col = "sleep") {
   assertthat::assert_that(assertthat::is.string(sleep_col))
   if (!sleep_col %in% names(data)) {
     stop("`data` has no sleep-state column `", sleep_col, "`; set ",
-         "`sleep_col` or run acti_apply_cole_kripke() or ",
+         "`sleep_col` or run acti_calculate_cole_kripke() or ",
          "acti_apply_tudor_locke_diary() first.", call. = FALSE)
   }
   data$sleep = data[[sleep_col]]
@@ -152,13 +157,17 @@ acti_apply_tudor_locke = function(data, ..., sleep_col = "sleep") {
   tl
 }
 
+#' @export
+#' @rdname acti_apply_tudor_locke
+acti_calculate_tudor_locke = acti_apply_tudor_locke
+
 
 #' @export
 #' @rdname acti_calculate_counts
 acti_apply_sadeh = function(data, ...) {
   rlang::check_installed("actigraph.sleepr")
   data = acti_standardize_actigraph.sleepr(
-    data, require_axis1 = TRUE, caller = "acti_apply_sadeh()")
+    data, require_axis1 = TRUE, caller = "acti_calculate_sadeh()")
   tl = data |>
     actigraph.sleepr::apply_sadeh(...)
   tl = restore_count_column(tl, data)
@@ -170,6 +179,10 @@ acti_apply_sadeh = function(data, ...) {
                            add = TRUE)
   tl
 }
+
+#' @export
+#' @rdname acti_calculate_counts
+acti_calculate_sadeh = acti_apply_sadeh
 
 # actigraph.sleepr's Cole-Kripke and Sadeh scoring leave behind a `count`
 # column of truncated/rescaled axis1 values used to score.  It is not a count,

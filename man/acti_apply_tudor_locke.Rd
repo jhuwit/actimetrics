@@ -2,9 +2,12 @@
 % Please edit documentation in R/acti_count_measures.R
 \name{acti_apply_tudor_locke}
 \alias{acti_apply_tudor_locke}
+\alias{acti_calculate_tudor_locke}
 \title{Apply Tudor--Locke sleep period detection}
 \usage{
 acti_apply_tudor_locke(data, ..., sleep_col = "sleep")
+
+acti_calculate_tudor_locke(data, ..., sleep_col = "sleep")
 }
 \arguments{
 \item{data}{Epoch-level data containing activity counts and sleep state.}
@@ -21,7 +24,7 @@ A data frame summarizing detected sleep periods.
 \description{
 Delegates to \code{actigraph.sleepr::apply_tudor_locke()}. Input must be
 60-second epoch data with activity counts and a \code{sleep} state. Data from
-\code{\link[=acti_apply_cole_kripke]{acti_apply_cole_kripke()}} is accepted directly. Data labeled by
+\code{\link[=acti_calculate_cole_kripke]{acti_calculate_cole_kripke()}} is accepted directly. Data labeled by
 \code{\link[=acti_apply_tudor_locke_diary]{acti_apply_tudor_locke_diary()}} is also accepted: its logical \code{sleep}
 column is converted to the \code{S}/\code{W} states expected downstream.
 }

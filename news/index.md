@@ -2,11 +2,13 @@
 
 ## actimetrics 0.10.0
 
+CRAN release: 2026-10-29
+
 ### Internal
 
 - Imports `actiread` with `except = "tzoffset_to_tz"`, so `actibase` can
   export
-  [`tzoffset_to_tz()`](https://jhuwit.github.io/actiread/reference/tzoffset_to_tz.html)
+  [`tzoffset_to_tz()`](https://jhuwit.github.io/actibase/reference/tzoffset_to_tz.html)
   later without an import conflict.
 - `GGIR` is no longer listed in `Suggests`; it was not used.
 - Checks for `agcounts` and `stepcount` now use
@@ -83,6 +85,14 @@
 - [`acti_process()`](https://jhuwit.github.io/actimetrics/reference/acti_process.md)
   frees the raw data once counts are calculated, before non-wear
   detection and day inclusion.
+
+- [`acti_process()`](https://jhuwit.github.io/actimetrics/reference/acti_process.md)
+  no longer resamples data that are already on the 30 Hz grid that
+  [`acti_resample()`](https://jhuwit.github.io/actibase/reference/acti_resample.html)
+  would interpolate to (sorted, unique times exactly at 30 Hz), since
+  resampling returns the same samples. The result is unchanged; for a
+  7-day 30 Hz GT3X recording this saves about 2.5 GB of peak memory and
+  20-30 seconds.
 
 - [`acti_calculate_stepcount()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_stepcount.md)
   (and

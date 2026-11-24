@@ -262,6 +262,9 @@ Older Americans Independence Center (OAIC) Pepper Center grant.
 - [`acti_calculate_sdt()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_sdt.md)
   : Calculate Step Counts via SDT
 
+- [`acti_calculate_sleep_diary_metrics()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_sleep_diary_metrics.md)
+  : Calculate sleep metrics from diary bed times
+
 - [`acti_calculate_stepcount()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_stepcount.md)
   :
 

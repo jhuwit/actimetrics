@@ -12,8 +12,27 @@
   match the `acti_calculate_*()` naming used across activerse. The
   `acti_apply_*()` names remain available. Examples and messages now use
   the new names.
+- New
+  [`acti_calculate_sleep_diary_metrics()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_sleep_diary_metrics.md)
+  scores each night from sleep/wake epochs
+  (e.g. [`acti_calculate_cole_kripke()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_counts.md))
+  using diary in-bed, sleep-onset, and out-of-bed times, as ActiLife
+  does with diary bed times. It returns latency, efficiency (sleep over
+  time in bed), WASO, awakenings, and the movement and fragmentation
+  indices, in minutes, for any epoch length that divides 60 seconds
+  (e.g. 15, 30, or 60). With the bed times
+  [`acti_calculate_tudor_locke()`](https://jhuwit.github.io/actimetrics/reference/acti_apply_tudor_locke.md)
+  detects, the metrics match Tudor–Locke’s.
 
 ### Internal
+
+- The unused, unbuilt `R/helper_functions.R` (excluded in
+  `.Rbuildignore`) is removed; its diary helpers are now the internals
+  of
+  [`acti_calculate_sleep_diary_metrics()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_sleep_diary_metrics.md).
+  They no longer use `ncar::Round()`, which was not a dependency, and
+  latency and efficiency are now computed within each in-bed period
+  rather than over all of `data`.
 
 - ‘walking’ moved from Imports to Suggests.
   [`acti_calculate_verisense()`](https://jhuwit.github.io/actimetrics/reference/acti_calculate_verisense.md),
@@ -25,6 +44,7 @@
   This drops reticulate, signal, matrixStats, MASS, and Matrix from a
   default install, and removes the `actibase` -\> `walking` -\>
   `actimetrics` coupling from the CRAN release order.
+
 - ‘purrr’ is no longer imported; its three uses are replaced by
   [`Map()`](https://rdrr.io/r/base/funprog.html) and
   [`dplyr::bind_rows()`](https://dplyr.tidyverse.org/reference/bind_rows.html).

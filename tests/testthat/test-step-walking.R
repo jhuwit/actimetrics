@@ -60,6 +60,7 @@ test_that("stepcount wrapper uses the provided or inferred sample rate", {
 })
 
 test_that("stepcount and sdt infer sample rate when missing", {
+  testthat::skip_if_not_installed("walking")
   data = tibble::tibble(
     time = as.POSIXct(
       c("2020-01-01 00:00:00", "2020-01-01 00:00:01", "2020-01-01 00:00:02"),
@@ -131,6 +132,7 @@ test_that("summarize_to_minute aggregates step data", {
 })
 
 test_that("walking wrappers summarize mocked step outputs", {
+  testthat::skip_if_not_installed("walking")
   data = tibble::tibble(
     time = as.POSIXct(
       c("2020-01-01 00:00:00", "2020-01-01 00:00:01", "2020-01-01 00:00:02"),

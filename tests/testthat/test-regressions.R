@@ -98,6 +98,7 @@ test_that("acti_calculate_stepcount returns times in the input time zone", {
 })
 
 test_that("acti_calculate_verisense resolves a single method", {
+  testthat::skip_if_not_installed("walking")
   data = tibble::tibble(
     time = as.POSIXct("2020-01-01", tz = "UTC") + 0:2,
     X = 0, Y = 0, Z = 1
